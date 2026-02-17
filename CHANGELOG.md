@@ -1,5 +1,9 @@
 # Changelog
 
+## Version 1.0.6
+
+- Add CI diagnostics
+
 ## Version 1.0.5
 
 - CI fix only

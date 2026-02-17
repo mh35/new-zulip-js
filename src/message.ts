@@ -37,6 +37,7 @@ type SendDirectMessageParams = {
   to: string[] | number[]
   /**
    * Topic name. Ignored if direct message.
+
    * @see https://zulip.com/api/send-message#parameter-topic
    */
   topic: never
@@ -74,6 +75,7 @@ type SendMessageQueueParams = SendMessageWithQueueParams | SendMessageWithoutQue
 
 /**
  * SendMessage API parameters
+ * @see https://zulip.com/api/send-message#parameters
  */
 export type SendMessageParams = SendMessageDestinationParams & SendMessageQueueParams & {
   /**
@@ -90,10 +92,33 @@ export type SendMessageParams = SendMessageDestinationParams & SendMessageQueueP
 
 /**
  * SendMessage API response body
+ * @see https://zulip.com/api/send-message#response
  */
 export type SendMessageResponse = GeneralSuccessResponse & {
   id: number
   automatic_new_visibility_policy?: TopicVisibilityValues
+}
+
+/**
+ * UploadFile API response body
+ * https://zulip.com/api/upload-file#response
+ */
+export type UploadFileResponse = GeneralSuccessResponse & {
+  /**
+   * The URI of the file.
+   * @deprecated Deprecated from Zulip 9.0 (feature level 272). Use url field instead.
+   */
+  uri: string
+  /**
+   * The URL of the file.
+   * @since Zulip 9.0 (feature level 272)
+   */
+  url: string
+  /**
+   * The name of the file.
+   * @since Zulip 10.0 (feature level 285)
+   */
+  filename: string
 }
 
 /**
@@ -124,6 +149,22 @@ export async function sendMessage(client: AxiosInstance, params: SendMessagePara
   }
   
   const response = await client.post<SendMessageResponse>('/messages', body)
+  
+  return response.data
+}
+
+/**
+ * Upload a file.
+ * @param client Axios client initialized by generateCallApi function in api.ts
+ * @param file Upload target file
+ * @returns The response of UploadFile API.
+ * @see https://zulip.com/api/upload-file
+ */
+export async function uploadFile(client: AxiosInstance, file: File) {
+  const formData = new FormData()
+  formData.append('filename', file)
+  
+  const response = await client.post<UploadFileResponse>('/user_uploads', formData)
   
   return response.data
 }

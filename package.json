@@ -1,0 +1,33 @@
+{
+  "name": "new-zulip",
+  "version": "1.0.0",
+  "description": "Zulip JavaScript/TypeScript binding",
+  "keywords": [
+    "zulip"
+  ],
+  "homepage": "https://github.com/mh35/new-zulip-js#readme",
+  "bugs": {
+    "url": "https://github.com/mh35/new-zulip-js/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mh35/new-zulip-js.git"
+  },
+  "license": "MIT",
+  "author": "MH35",
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
+  "types": "dist/esm/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build:cjs": "tsc --project tsconfig.cjs.json",
+    "build:esm": "tsc --project tsconfig.esm.json"
+  },
+  "devDependencies": {
+    "@types/node": "^25.2.3",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.3"
+  }
+}

@@ -1,5 +1,9 @@
 # Changelog
 
+## Version 1.0.8
+
+- CI fix using Node.js version 24
+
 ## Version 1.0.7
 
 - CI fix

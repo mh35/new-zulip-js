@@ -1,5 +1,9 @@
 # Changelog
 
+## Version 1.0.5
+
+- CI fix only
+
 ## Version 1.0.4
 
 - Moved to namespace package

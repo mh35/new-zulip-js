@@ -5,10 +5,10 @@ export async function authByPassword(serverUrl: string, username: string, passwo
         result: string
         msg: string
         api_key: string
-    }>(`${serverUrl.replace(/\/+$/, '')}/api/v1/login`, {
+    }>(`${serverUrl.replace(/\/+$/, '')}/api/v1/login`, new URLSearchParams({
         username,
         password
-    }, {
+    }), {
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded'
         }

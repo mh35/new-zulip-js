@@ -18,7 +18,7 @@ export type GetMessagesNarrowItem =
       negated?: boolean
     }
   | {
-      operator: string
+      operator: Exclude<string, 'channel' | 'stream' | 'id' | 'sender' | 'group-pm-with' | 'dm-including' | 'with' | 'pm-with' | 'dm'>
       operand: string
       negated?: boolean
     }

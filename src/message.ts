@@ -2,6 +2,27 @@ import type { AxiosInstance } from "axios"
 import type { GeneralSuccessResponse } from './api'
 import type { TopicVisibilityValues } from "./constants"
 
+/**
+ * Narrow item for filtering messages
+ * @see https://zulip.com/api/get-messages
+ */
+export type GetMessagesNarrowItem = 
+  | {
+      operator: 'channel' | 'stream' | 'id' | 'sender' | 'group-pm-with' | 'dm-including' | 'with'
+      operand: string | number
+      negated?: boolean
+    }
+  | {
+      operator: 'pm-with' | 'dm'
+      operand: string | number[]
+      negated?: boolean
+    }
+  | {
+      operator: Exclude<string, 'channel' | 'stream' | 'id' | 'sender' | 'group-pm-with' | 'dm-including' | 'with' | 'pm-with' | 'dm'>
+      operand: string
+      negated?: boolean
+    }
+
 type SendStreamMessageParams = {
   /**
    * Message destination type

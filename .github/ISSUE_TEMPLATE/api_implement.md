@@ -2,7 +2,7 @@
 name: APIの実装
 about: Implementation API
 title: '関数の実装'
-labels: Enhancement
+labels: enhancement
 ---
 
 定義:

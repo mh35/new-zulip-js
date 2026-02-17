@@ -1,6 +1,6 @@
 {
   "name": "new-zulip",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Zulip JavaScript/TypeScript binding",
   "keywords": [
     "zulip"
@@ -24,6 +24,9 @@
   "scripts": {
     "build:cjs": "tsc --project tsconfig.cjs.json",
     "build:esm": "tsc --project tsconfig.esm.json"
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "devDependencies": {
     "@types/node": "^25.2.3",

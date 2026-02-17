@@ -360,3 +360,16 @@ export async function editMesssage(client: AxiosInstance, messageId: number, par
   
   return response.data
 }
+
+/**
+ * Delete a message.
+ * @param client Axios client initialized by generateCallApi function in api.ts
+ * @param messageId Message ID
+ * @returns The response of the DeleteMessage API.
+ * @see https://zulip.com/api/delete-message
+ */
+export async function deleteMessage(client: AxiosInstance, messageId: number) {
+  const response = await client.delete<GeneralSuccessResponse>(`/messages/${messageId}`)
+
+  return response
+}

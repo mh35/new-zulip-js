@@ -22,3 +22,14 @@ export async function authDev(serverUrl: string, email: string) {
   }))
   return response.data.api_key
 }
+
+export async function authByJwt(serverUrl: string, jwt: string) {
+  const response = await axios.post<{
+    result: string
+    msg: string
+    api_key: string
+  }>(`${serverUrl.replace(/\/+$/, '')}/api/v1/fetch_api_key`, new URLSearchParams({
+    token: jwt,
+  }))
+  return response.data.api_key
+}

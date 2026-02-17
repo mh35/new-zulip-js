@@ -1,5 +1,9 @@
 # Changelog
 
+## Version 1.0.4
+
+- Moved to namespace package
+
 ## Version 1.0.3
 
 - CI fix only

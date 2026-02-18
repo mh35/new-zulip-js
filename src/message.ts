@@ -719,7 +719,7 @@ export type EmojiTypes = 'unicode_emoji' | 'realm_emoji' | 'zulip_extra_emoji'
  * 
  * wildcard_mentioned: Whether the message contains a channel or topic
  * wildcard mention or not. Deprecated from Zulip 8.0 (feature level 224).
- * Use topic_wildcard_mentioned and topic_wildcard_mentioned istead.
+ * Use stream_wildcard_mentioned and topic_wildcard_mentioned instead.
  * 
  * You can flag manually only read, starred, and collapsed.
  * @see https://zulip.com/api/update-message-flags#available-flags

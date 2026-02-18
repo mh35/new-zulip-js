@@ -347,6 +347,341 @@ export type GetMessagesNarrowItem =
       negated?: boolean
     }
 
+/**
+ * Get messages with message ID parameters.
+ * If you specify message IDs, you cannot specify anchor parameters.
+ * @since Zulip 10.0 (feature level 300)
+ * @see https://zulip.com/api/get-messages#parameter-message_ids
+ */
+type GetMessagesWithMessageIdParams = {
+  /**
+   * Message retrieve base anchor. Whether message ID or some special strings.
+   * 
+   * newest: The most recent message.
+   * 
+   * oldest: The oldest message.
+   * 
+   * first_unread: If there are some messages which matches the query, the message which
+   * is the oldest and matches the query. Otherwise, the most recent message.
+   * 
+   * date: If there are some messages which is on or after the datetime indicated by the anchor_date,
+   * the newest message which is in them. Otherwise, the most recent message.
+   * This value supports since Zulip 12.0 (feature level 445).
+   * 
+   * You cannot specify both of anchor parameters and message IDs.
+   * @see https://zulip.com/api/get-messages#parameter-anchor
+   */
+  anchor: never
+  /**
+   * Fetch message which is the anchor or not.
+   * 
+   * You cannot specify both of anchor parameters and message IDs.
+   * @see https://zulip.com/api/get-messages#parameter-include_anchor
+   */
+  include_anchor: never
+  /**
+   * Anchor date value. This value is not used unless you specify anchor=date.
+   * 
+   * @since Zulip 12.0 (feature level 445)
+   * @see https://zulip.com/api/get-messages#parameter-anchor_date
+   */
+  anchor_date: never
+  /**
+   * The number of messages to retrieve which ID is less than the anchor.
+   * 
+   * You must specify this parameter if you does not specify message IDs.
+   * 
+   * You cannot specify both of anchor parameters and message IDs.
+   * @see https://zulip.com/api/get-messages#parameter-num_before
+   */
+  num_before: never
+  /**
+   * The number of messages to retrieve which ID is more than the anchor.
+   * 
+   * You must specify this parameter if you does not specify message IDs.
+   * 
+   * You cannot specify both of anchor parameters and message IDs.
+   * @see https://zulip.com/api/get-messages#parameter-num_after
+   */
+  num_after: never
+  /**
+   * The message IDs to retrieve.
+   * 
+   * You cannot specify both of anchor parameters and message IDs.
+   * 
+   * @since Zulip 10.0 (feature level 300)
+   * @see https://zulip.com/api/get-messages#parameter-message_ids
+   */
+  message_ids : number[]
+  /**
+   * Legacy way to specify "anchor": "first_unread" in Zulip 2.1.x and older.
+   * 
+   * You cannot specify both of anchor parameters and message IDs.
+   * 
+   * @deprecated Zulip 3.0 (feature level 1)
+   * @see https://zulip.com/api/get-messages#parameter-use_first_unread_anchor
+   */
+  use_first_unread_anchor: never
+}
+
+/**
+ * Get messages by date parameters.
+ * If you specify anchor, you cannot specify message IDs parameter.
+ * @since Zulip 12.0 (feature level 445)
+ */
+type GetMessagesWithAnchorDateParams = {
+  /**
+   * Message retrieve base anchor. Whether message ID or some special strings.
+   * 
+   * newest: The most recent message.
+   * 
+   * oldest: The oldest message.
+   * 
+   * first_unread: If there are some messages which matches the query, the message which
+   * is the oldest and matches the query. Otherwise, the most recent message.
+   * 
+   * date: If there are some messages which is on or after the datetime indicated by the anchor_date,
+   * the newest message which is in them. Otherwise, the most recent message.
+   * This value supports since Zulip 12.0 (feature level 445).
+   * 
+   * You cannot specify both of anchor parameters and message IDs.
+   * @see https://zulip.com/api/get-messages#parameter-anchor
+   */
+  anchor: 'date'
+  /**
+   * Fetch message which is the anchor or not.
+   * 
+   * You cannot specify both of anchor parameters and message IDs.
+   * @see https://zulip.com/api/get-messages#parameter-include_anchor
+   */
+  include_anchor?: boolean
+  /**
+   * Anchor date value. This value is not used unless you specify anchor=date.
+   * 
+   * @since Zulip 12.0 (feature level 445)
+   * @see https://zulip.com/api/get-messages#parameter-anchor_date
+   */
+  anchor_date: string
+  /**
+   * The number of messages to retrieve which ID is less than the anchor.
+   * 
+   * You must specify this parameter if you does not specify message IDs.
+   * 
+   * You cannot specify both of anchor parameters and message IDs.
+   * @see https://zulip.com/api/get-messages#parameter-num_before
+   */
+  num_before: number
+  /**
+   * The number of messages to retrieve which ID is more than the anchor.
+   * 
+   * You must specify this parameter if you does not specify message IDs.
+   * 
+   * You cannot specify both of anchor parameters and message IDs.
+   * @see https://zulip.com/api/get-messages#parameter-num_after
+   */
+  num_after: number
+  /**
+   * The message IDs to retrieve.
+   * 
+   * You cannot specify both of anchor parameters and message IDs.
+   * 
+   * @since Zulip 10.0 (feature level 300)
+   * @see https://zulip.com/api/get-messages#parameter-message_ids
+   */
+  message_ids: never
+  /**
+   * Legacy way to specify "anchor": "first_unread" in Zulip 2.1.x and older.
+   * 
+   * You cannot specify both of anchor parameters and message IDs.
+   * 
+   * @deprecated Zulip 3.0 (feature level 1)
+   * @see https://zulip.com/api/get-messages#parameter-use_first_unread_anchor
+   */
+  use_first_unread_anchor: never
+}
+
+/**
+ * Get messages by anchor parameters which is not the date anchor.
+ * If you specify anchor, you cannot specify message IDs parameter.
+ */
+type GetMessagesWithAnchorNotDateParams = {
+  /**
+   * Message retrieve base anchor. Whether message ID or some special strings.
+   * 
+   * newest: The most recent message.
+   * 
+   * oldest: The oldest message.
+   * 
+   * first_unread: If there are some messages which matches the query, the message which
+   * is the oldest and matches the query. Otherwise, the most recent message.
+   * 
+   * date: If there are some messages which is on or after the datetime indicated by the anchor_date,
+   * the newest message which is in them. Otherwise, the most recent message.
+   * This value supports since Zulip 12.0 (feature level 445).
+   * 
+   * You cannot specify both of anchor parameters and message IDs.
+   * @see https://zulip.com/api/get-messages#parameter-anchor
+   */
+  anchor: Exclude<string, 'date'> | number
+  /**
+   * Fetch message which is the anchor or not.
+   * 
+   * You cannot specify both of anchor parameters and message IDs.
+   * @see https://zulip.com/api/get-messages#parameter-include_anchor
+   */
+  include_anchor?: boolean
+  /**
+   * Anchor date value. This value is not used unless you specify anchor=date.
+   * 
+   * @since Zulip 12.0 (feature level 445)
+   * @see https://zulip.com/api/get-messages#parameter-anchor_date
+   */
+  anchor_date: never
+  /**
+   * The number of messages to retrieve which ID is less than the anchor.
+   * 
+   * You must specify this parameter if you does not specify message IDs.
+   * 
+   * You cannot specify both of anchor parameters and message IDs.
+   * @see https://zulip.com/api/get-messages#parameter-num_before
+   */
+  num_before: number
+  /**
+   * The number of messages to retrieve which ID is more than the anchor.
+   * 
+   * You must specify this parameter if you does not specify message IDs.
+   * 
+   * You cannot specify both of anchor parameters and message IDs.
+   * @see https://zulip.com/api/get-messages#parameter-num_after
+   */
+  num_after: number
+  /**
+   * The message IDs to retrieve.
+   * 
+   * You cannot specify both of anchor parameters and message IDs.
+   * 
+   * @since Zulip 10.0 (feature level 300)
+   * @see https://zulip.com/api/get-messages#parameter-message_ids
+   */
+  message_ids: never
+  /**
+   * Legacy way to specify "anchor": "first_unread" in Zulip 2.1.x and older.
+   * 
+   * You cannot specify both of anchor parameters and message IDs.
+   * 
+   * @deprecated Zulip 3.0 (feature level 1)
+   * @see https://zulip.com/api/get-messages#parameter-use_first_unread_anchor
+   */
+  use_first_unread_anchor: never
+}
+
+/**
+ * Legacy unread message anchor parameters.
+ * If you specify anchor, you cannot specify message IDs parameter.
+ * @deprecated Zulip 3.0 (feature level 1)
+ */
+type GetMessagesOldFirstUnreadParams = {
+  /**
+   * Message retrieve base anchor. Whether message ID or some special strings.
+   * 
+   * newest: The most recent message.
+   * 
+   * oldest: The oldest message.
+   * 
+   * first_unread: If there are some messages which matches the query, the message which
+   * is the oldest and matches the query. Otherwise, the most recent message.
+   * 
+   * date: If there are some messages which is on or after the datetime indicated by the anchor_date,
+   * the newest message which is in them. Otherwise, the most recent message.
+   * This value supports since Zulip 12.0 (feature level 445).
+   * 
+   * You cannot specify both of anchor parameters and message IDs.
+   * @see https://zulip.com/api/get-messages#parameter-anchor
+   */
+  anchor: never
+  /**
+   * Fetch message which is the anchor or not.
+   * 
+   * You cannot specify both of anchor parameters and message IDs.
+   * @see https://zulip.com/api/get-messages#parameter-include_anchor
+   */
+  include_anchor?: boolean
+  /**
+   * Anchor date value. This value is not used unless you specify anchor=date.
+   * 
+   * @since Zulip 12.0 (feature level 445)
+   * @see https://zulip.com/api/get-messages#parameter-anchor_date
+   */
+  anchor_date: never
+  /**
+   * The number of messages to retrieve which ID is less than the anchor.
+   * 
+   * You must specify this parameter if you does not specify message IDs.
+   * 
+   * You cannot specify both of anchor parameters and message IDs.
+   * @see https://zulip.com/api/get-messages#parameter-num_before
+   */
+  num_before: number
+  /**
+   * The number of messages to retrieve which ID is more than the anchor.
+   * 
+   * You must specify this parameter if you does not specify message IDs.
+   * 
+   * You cannot specify both of anchor parameters and message IDs.
+   * @see https://zulip.com/api/get-messages#parameter-num_after
+   */
+  num_after: number
+  /**
+   * The message IDs to retrieve.
+   * 
+   * You cannot specify both of anchor parameters and message IDs.
+   * 
+   * @since Zulip 10.0 (feature level 300)
+   * @see https://zulip.com/api/get-messages#parameter-message_ids
+   */
+  message_ids: never
+  /**
+   * Legacy way to specify "anchor": "first_unread" in Zulip 2.1.x and older.
+   * 
+   * You cannot specify both of anchor parameters and message IDs.
+   * 
+   * @deprecated Zulip 3.0 (feature level 1)
+   * @see https://zulip.com/api/get-messages#parameter-use_first_unread_anchor
+   */
+  use_first_unread_anchor: true
+}
+
+type GetMessagesBaseParams = GetMessagesWithMessageIdParams | GetMessagesWithAnchorDateParams |
+  GetMessagesWithAnchorNotDateParams | GetMessagesOldFirstUnreadParams
+
+/**
+ * GetMessages API parameters.
+ * @see https://zulip.com/api/get-messages#parameters
+ */
+export type GetMessagesParams = GetMessagesBaseParams & {
+  /**
+   * The narrow which filters messages. The default is empty array.
+   * @see https://zulip.com/api/get-messages#parameter-narrow
+   */
+  narrow?: (GetMessagesNarrowItem | string[])[]
+  /**
+   * Whether the client supports Gravater URL or not. The default is true.
+   * @see https://zulip.com/api/get-messages#parameter-client_gravatar
+   */
+  client_gravatar?: boolean
+  /**
+   * Apply markdown to the content or not. If false, the server returns
+   * the message content as raw Markdown. The default is true.
+   * @see https://zulip.com/api/get-messages#parameter-apply_markdown
+   */
+  apply_markdown?: boolean
+  /**
+   * Whether the client allows the empty topic name. The default is false.
+   * @since Zulip 10.0 (feature level 334)
+   * @see https://zulip.com/api/get-messages#parameter-allow_empty_topic_name
+   */
+  allow_empty_topic_name?: boolean
+}
 
 /**
  * Send a message.

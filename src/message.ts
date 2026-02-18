@@ -2,27 +2,6 @@ import type { AxiosInstance } from "axios"
 import type { GeneralSuccessResponse } from './api'
 import type { TopicVisibilityValues } from "./constants"
 
-/**
- * Narrow item for filtering messages
- * @see https://zulip.com/api/get-messages
- */
-export type GetMessagesNarrowItem = 
-  | {
-      operator: 'channel' | 'stream' | 'id' | 'sender' | 'group-pm-with' | 'dm-including' | 'with'
-      operand: string | number
-      negated?: boolean
-    }
-  | {
-      operator: 'pm-with' | 'dm'
-      operand: string | number[]
-      negated?: boolean
-    }
-  | {
-      operator: Exclude<string, 'channel' | 'stream' | 'id' | 'sender' | 'group-pm-with' | 'dm-including' | 'with' | 'pm-with' | 'dm'>
-      operand: string
-      negated?: boolean
-    }
-
 type SendStreamMessageParams = {
   /**
    * Message destination type
@@ -300,6 +279,74 @@ export type EditMessageResponse = GeneralSuccessResponse & {
    */
   detached_uploads?: EditMessageDetachedUploadItem[]
 }
+
+/**
+ * Channel narrow operators
+ * @see https://github.com/zulip/zulip/blob/main/zerver/lib/narrow_predicate.py#L11
+ */
+type ChannelNarrowOperators = 'channel' | 'stream'
+
+/**
+ * Operators which supports ID operand.
+ * @see https://github.com/zulip/zulip/blob/main/zerver/lib/narrow.py#L119
+ */
+type SupportingIdNarrowOperators = ChannelNarrowOperators | 'id' | 'sender' |
+  'group-pm-with' | 'dm-including' | 'with'
+
+/**
+ * Operators which supports IDs operand.
+ * @see https://github.com/zulip/zulip/blob/main/zerver/lib/narrow.py#L128
+ */
+type SupportingIdsNarrowOperators = 'pm-with' | 'dm'
+
+/**
+ * Narrow item for filtering messages
+ * @see https://zulip.com/api/construct-narrow
+ */
+export type GetMessagesNarrowItem = 
+  | {
+      /**
+       * Narrow operator
+       */
+      operator: SupportingIdNarrowOperators
+      /**
+       * Narrow operand
+       */
+      operand: string | number
+      /**
+       * Whether invert condition or not. Default is false.
+       */
+      negated?: boolean
+    }
+  | {
+      /**
+       * Narrow operator
+       */
+      operator: SupportingIdsNarrowOperators
+      /**
+       * Narrow operand
+       */
+      operand: string | number[]
+      /**
+       * Whether invert condition or not. Default is false.
+       */
+      negated?: boolean
+    }
+  | {
+      /**
+       * Narrow operator
+       */
+      operator: Exclude<string, SupportingIdNarrowOperators | SupportingIdsNarrowOperators>
+      /**
+       * Narrow operand
+       */
+      operand: string
+      /**
+       * Whether invert condition or not. Default is false.
+       */
+      negated?: boolean
+    }
+
 
 /**
  * Send a message.

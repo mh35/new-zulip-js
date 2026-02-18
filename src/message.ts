@@ -1033,7 +1033,7 @@ export type GetMessagesResponseMessageItem = (
  */
 export type GetMessagesResponse = GeneralSuccessResponse & {
   /**
-   * The same anchor specified in the request, or or the computed one, if
+   * The same anchor specified in the request, or the computed one, if
    * use_first_unread_anchor is true.
    * 
    * This field does not exist if message_ids field is provided.

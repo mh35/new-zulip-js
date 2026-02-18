@@ -365,7 +365,7 @@ type GetMessagesWithMessageIdParams = {
    * is the oldest and matches the query. Otherwise, the most recent message.
    * 
    * date: If there are some messages that are on or after the datetime indicated by the anchor_date,
-   * the newest message which is in them. Otherwise, the most recent message.
+   * the newest message among them. Otherwise, the most recent message.
    * This value supports since Zulip 12.0 (feature level 445).
    * 
    * You cannot specify both of anchor parameters and message IDs.
@@ -719,7 +719,7 @@ export type EmojiTypes = 'unicode_emoji' | 'realm_emoji' | 'zulip_extra_emoji'
  * 
  * wildcard_mentioned: Whether the message contains a channel or topic
  * wildcard mention or not. Deprecated from Zulip 8.0 (feature level 224).
- * Use topic_wildcard_mentioned and topic_wildcard_mentioned istead.
+ * Use stream_wildcard_mentioned and topic_wildcard_mentioned instead.
  * 
  * You can flag manually only read, starred, and collapsed.
  * @see https://zulip.com/api/update-message-flags#available-flags
@@ -1055,8 +1055,8 @@ export type GetMessagesResponse = GeneralSuccessResponse & {
   found_anchor: boolean
   /**
    * Whether the message history was limited due to plan restrictions.
-   * This flag is set to true only when the oldest messages(found_oldest) matching
-   * the narrow is fetched.
+   * This flag is set to true only when the oldest messages (when found_oldest is true)
+   * matching the narrow is fetched.
    */
   history_limited: boolean
   /**

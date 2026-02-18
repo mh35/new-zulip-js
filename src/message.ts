@@ -1089,6 +1089,29 @@ export type AddReactionParams = {
 }
 
 /**
+ * The request parameters of RemoveReaction API.
+ * @see https://zulip.com/api/remove-reaction#parameters
+ */
+export type RemoveReactionParams = {
+  /**
+   * Emoji name.
+   * @see https://zulip.com/api/remove-reaction#parameter-emoji_name
+   */
+  emoji_name?: string
+  /**
+   * A unique identifier, defining the specific emoji codepoint requested,
+   * within the namespace of the reaction_type.
+   * @see https://zulip.com/api/remove-reaction#parameter-emoji_code
+   */
+  emoji_code?: string
+  /**
+   * Emoji type
+   * @see https://zulip.com/api/remove-reaction#parameter-reaction_type
+   */
+  reaction_type?: EmojiTypes
+}
+
+/**
  * Send a message.
  * @param client Axios client initialized by generateCallApi function in api.ts
  * @param params API parameters
@@ -1227,4 +1250,25 @@ export async function addReaction(client: AxiosInstance, messageId: number, para
   const response = await client.post<GeneralSuccessResponse>(`/messages/${messageId}/reactions`, body)
 
   return response.data
+}
+
+/**
+ * Remove emoji reaction from the message.
+ * @param client Axios client initialized by generateCallApi function in api.ts
+ * @param messageId Message ID
+ * @param params API parameters
+ * @returns The response of the RemoveReaction API
+ * @see https://zulip.com/api/remove-reaction
+ */
+export async function removeReaction(client: AxiosInstance, messageId: number, params: RemoveReactionParams) {
+  const body = new URLSearchParams(params)
+  if (body.size === 0) {
+    const response = await client.delete<GeneralSuccessResponse>(`/messages/${messageId}/reactions`)
+    return response.data
+  } else {
+    const response = await client.delete<GeneralSuccessResponse>(`/messages/${messageId}/reactions`, {
+      data: body
+    })
+    return response.data
+  }
 }

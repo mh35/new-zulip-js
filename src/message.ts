@@ -389,7 +389,7 @@ type GetMessagesWithMessageIdParams = {
   /**
    * The number of messages to retrieve which ID is less than the anchor.
    * 
-   * You must specify this parameter if you does not specify message IDs.
+   * You must specify this parameter if you do not specify message IDs.
    * 
    * You cannot specify both of anchor parameters and message IDs.
    * @see https://zulip.com/api/get-messages#parameter-num_before
@@ -398,7 +398,7 @@ type GetMessagesWithMessageIdParams = {
   /**
    * The number of messages to retrieve which ID is more than the anchor.
    * 
-   * You must specify this parameter if you does not specify message IDs.
+   * You must specify this parameter if you do not specify message IDs.
    * 
    * You cannot specify both of anchor parameters and message IDs.
    * @see https://zulip.com/api/get-messages#parameter-num_after
@@ -663,7 +663,7 @@ export type GetMessagesParams = GetMessagesBaseParams & {
    * The narrow which filters messages. The default is empty array.
    * @see https://zulip.com/api/get-messages#parameter-narrow
    */
-  narrow?: (GetMessagesNarrowItem | string[])[]
+  narrow?: (GetMessagesNarrowItem | [string, string])[]
   /**
    * Whether the client supports Gravater URL or not. The default is true.
    * @see https://zulip.com/api/get-messages#parameter-client_gravatar

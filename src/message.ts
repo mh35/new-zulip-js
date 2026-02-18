@@ -715,7 +715,7 @@ export type EmojiTypes = 'unicode_emoji' | 'realm_emoji' | 'zulip_extra_emoji'
  * which the current user configured.
  * 
  * historical: The current user did not receive the message when
- * it sent, but later the message was added to the user's history.
+ * it was sent, but later the message was added to the user's history.
  * 
  * wildcard_mentioned: Whether the message contains a channel or topic
  * wildcard mention or not. Deprecated from Zulip 8.0 (feature level 224).

@@ -1135,6 +1135,176 @@ export type RenderMessageResponse = GeneralSuccessResponse & {
 }
 
 /**
+ * The parameters of GetMessage API.
+ * @see https://zulip.com/api/get-message#parameters
+ */
+export type GetMessageParams = {
+  /**
+   * Whether render content markdown or not. Default is true.
+   * @see https://zulip.com/api/get-message#parameter-apply_markdown
+   */
+  apply_markdown?: boolean
+  /**
+   * Whether the client supports processing the empty string as a topic in the topic name
+   * @since Zulip 10.0 (feature level 334)
+   * @see https://zulip.com/api/get-message#parameter-allow_empty_topic_name
+   */
+  allow_empty_topic_name?: boolean
+}
+
+/**
+ * Recipient object item for message in GetMessage API response.
+ */
+export type GetMessageMessageRecipientObjItem = GetMassagesResponseMessageItemDisplayRecipientObjItem
+/**
+ * Message edit history for message in GetMessage API response.
+ */
+export type GetMessageMessageEditHistoryItem = GetMessagesResponseMessageItemEditHistoryItem
+/**
+ * Reaction for message in GetMessage API response.
+ */
+export type GetMessageMessageReactionItem = GetMessagesResponseMessageItemReactionItem
+/**
+ * Submessage for message in GetMessage API response.
+ */
+export type GetMessageMessageSubmessageItem = GetMessagesResponseMessageItemSubmessageItem
+/**
+ * Topic link for message in GetMessage API response.
+ */
+export type GetMessageMessageTopicLinkItem = GetMessagesResponseMessageItemTopicLinkItem
+
+/**
+ * Stream message fields for GetMessage API.
+ */
+type GetMessageStreamMessage = GetMessagesResponseStreamMessageItem
+/**
+ * Direct message fields for GetMessage API.
+ */
+type GetMessageDirectMessage = GetMessagesResponseDirectMessageItem
+
+/**
+ * Message in GetMessage API.
+ * @since Zulip 5.0 (feature level 120)
+ */
+export type GetMessageMessage = (GetMessageStreamMessage | GetMessageDirectMessage) & {
+  /**
+   * Avatar URL. If the request specifies client_gravatar=true and
+   * the user does not upload avatar, this field is null.
+   */
+  avatar_url: string | null
+  /**
+   * A Zulip "client" string, describing what Zulip client sent the message.
+   */
+  client: string
+  /**
+   * The content/body of the message. If the request specifies
+   * apply_markdown=false, this field is the form of raw Markdown.
+   * Otherwise, this field is the form of HTML.
+   */
+  content: string
+  /**
+   * The content type of the content.
+   */
+  content_type: 'text/html' | 'text/x-markdown'
+  /**
+   * Data on the recipient of the message.
+   * 
+   * If this is string, this is the name of the channel. If this is the
+   * list of objects, this is the basic data on the users who received the message.
+   */
+  display_recipient: string | GetMessageMessageRecipientObjItem[]
+  /**
+   * Edit history. This field is present only if the message was edited.
+   */
+  edit_history?: GetMessageMessageEditHistoryItem[]
+  /**
+   * The ID of the message
+   */
+  id: number
+  /**
+   * Whether the message is a /me status message
+   */
+  is_me_message: boolean
+  /**
+   * The UNIX timestamp for when the message's content was last edited,
+   * in UTC seconds. This field is present only if the content was edited.
+   */
+  last_edit_timestamp?: number
+  /**
+   * The UNIX timestamp for when the message was last moved to a different
+   * channel or topic, in UTC seconds. This field is present only if
+   * the message was moved.
+   * @since Zulip 10.0 (feature level 365)
+   */
+  last_moved_timestamp?: number
+  /**
+   * Reactions to the message.
+   */
+  reactions: GetMessageMessageReactionItem[]
+  /**
+   * A unique ID for the set of users receiving the message
+   * (either a channel or group of users). Useful primarily for hashing.
+   */
+  recipient_id: number
+  /**
+   * The Zulip API email address of the message's sender.
+   */
+  sender_email: string
+  /**
+   * The full name of the message's sender.
+   */
+  sender_full_name: string
+  /**
+   * The user ID of the message's sender.
+   */
+  sender_id: number
+  /**
+   * A string identifier for the realm the sender is in.
+   * 
+   * For example, if the server domain is example.zulip.com, this value is example.
+   */
+  sender_realm_str: string
+  /**
+   * The topic of the message. If this message is a direct message,
+   * this field value is the empty string.
+   */
+  subject: string
+  /**
+   * Data used for certain experimental Zulip integrations.
+   */
+  submessages: GetMessageMessageSubmessageItem[]
+  /**
+   * The UNIX timestamp for when the message was sent, in UTC seconds.
+   */
+  timestamp: number
+  /**
+   * Data on any links to be included in the topic line
+   */
+  topic_links: GetMessageMessageTopicLinkItem[]
+  /**
+   * The user's message flags for the message.
+   */
+  flags: MessageFlags[]
+}
+
+/**
+ * The response of GetMessage API.
+ * @see https://zulip.com/api/get-message#response
+ */
+export type GetMessageResponse = GeneralSuccessResponse & {
+  /**
+   * The raw Markdown content of the message.
+   * @deprecated If you want to get raw content, pass apply_markdown=false
+   */
+  raw_content: string
+  /**
+   * The message.
+   * @since Zulip 5.0 (feature level 120)
+   */
+  message: GetMessageMessage
+}
+
+/**
  * Send a message.
  * @param client Axios client initialized by generateCallApi function in api.ts
  * @param params API parameters
@@ -1306,6 +1476,29 @@ export async function removeReaction(client: AxiosInstance, messageId: number, p
 export async function renderMessage(client: AxiosInstance, params: RenderMessageParams) {
   const body = new URLSearchParams(params)
   const response = await client.post<RenderMessageResponse>('/messages/render', body)
+
+  return response.data
+}
+
+/**
+ * Get a single message.
+ * @param client Axios client initialized by generateCallApi function in api.ts
+ * @param messageId Message ID
+ * @param params API parameters
+ * @returns The response of GetMessage API
+ * @see https://zulip.com/api/get-message
+ */
+export async function getMessage(client: AxiosInstance, messageId: number, params: GetMessageParams) {
+  const sendParams = {} as Record<string, string>
+  for (const [key, value] of Object.entries(params)) {
+    if (value === undefined || value === null) {
+      continue
+    }
+    sendParams[key] = String(value)
+  }
+  const response = await client.get<GetMessageResponse>(`/messages/${messageId}`, {
+    params: sendParams
+  })
 
   return response.data
 }

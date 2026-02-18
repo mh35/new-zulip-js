@@ -465,7 +465,7 @@ type GetMessagesWithAnchorDateParams = {
   /**
    * The number of messages to retrieve which ID is less than the anchor.
    * 
-   * You must specify this parameter if you does not specify message IDs.
+   * You must specify this parameter if you do not specify message IDs.
    * 
    * You cannot specify both of anchor parameters and message IDs.
    * @see https://zulip.com/api/get-messages#parameter-num_before
@@ -474,7 +474,7 @@ type GetMessagesWithAnchorDateParams = {
   /**
    * The number of messages to retrieve which ID is more than the anchor.
    * 
-   * You must specify this parameter if you does not specify message IDs.
+   * You must specify this parameter if you do not specify message IDs.
    * 
    * You cannot specify both of anchor parameters and message IDs.
    * @see https://zulip.com/api/get-messages#parameter-num_after

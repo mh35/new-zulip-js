@@ -665,7 +665,7 @@ export type GetMessagesParams = GetMessagesBaseParams & {
    */
   narrow?: (GetMessagesNarrowItem | [string, string])[]
   /**
-   * Whether the client supports Gravater URL or not. The default is true.
+   * Whether the client supports Gravatar URL or not. The default is true.
    * @see https://zulip.com/api/get-messages#parameter-client_gravatar
    */
   client_gravatar?: boolean

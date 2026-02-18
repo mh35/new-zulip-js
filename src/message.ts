@@ -1055,8 +1055,8 @@ export type GetMessagesResponse = GeneralSuccessResponse & {
   found_anchor: boolean
   /**
    * Whether the message history was limited due to plan restrictions.
-   * This flag is set to true only when the oldest messages(found_oldest) matching
-   * the narrow is fetched.
+   * This flag is set to true only when the oldest messages (when found_oldest is true)
+   * matching the narrow is fetched.
    */
   history_limited: boolean
   /**

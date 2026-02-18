@@ -1066,6 +1066,29 @@ export type GetMessagesResponse = GeneralSuccessResponse & {
 }
 
 /**
+ * The request parameters of AddReaction API.
+ * @see https://zulip.com/api/add-reaction#parameters
+ */
+export type AddReactionParams = {
+  /**
+   * Emoji name.
+   * @see https://zulip.com/api/add-reaction#parameter-emoji_name
+   */
+  emoji_name: string
+  /**
+   * A unique identifier, defining the specific emoji codepoint requested,
+   * within the namespace of the reaction_type.
+   * @see https://zulip.com/api/add-reaction#parameter-emoji_code
+   */
+  emoji_code?: string
+  /**
+   * Emoji type
+   * @see https://zulip.com/api/add-reaction#parameter-reaction_type
+   */
+  reaction_type?: EmojiTypes
+}
+
+/**
  * Send a message.
  * @param client Axios client initialized by generateCallApi function in api.ts
  * @param params API parameters
@@ -1187,6 +1210,21 @@ export async function getMessages(client: AxiosInstance, params: GetMessagesPara
   const response = await client.get<GetMessagesResponse>('/messages', {
     params: sendParams
   })
+
+  return response.data
+}
+
+/**
+ * Add emoji reaction to the message.
+ * @param client Axios client initialized by generateCallApi function in api.ts
+ * @param messageId Message ID
+ * @param params API parameters
+ * @returns The response of the AddReaction API
+ * @see https://zulip.com/api/add-reaction
+ */
+export async function addReaction(client: AxiosInstance, messageId: number, params: AddReactionParams) {
+  const body = new URLSearchParams(params)
+  const response = await client.post<GeneralSuccessResponse>(`/messages/${messageId}/reactions`, body)
 
   return response.data
 }

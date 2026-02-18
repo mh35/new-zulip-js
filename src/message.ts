@@ -441,7 +441,7 @@ type GetMessagesWithAnchorDateParams = {
    * is the oldest and matches the query. Otherwise, the most recent message.
    * 
    * date: If there are some messages that are on or after the datetime indicated by the anchor_date,
-   * the newest message which is in them. Otherwise, the most recent message.
+   * the newest message among them. Otherwise, the most recent message.
    * This value supports since Zulip 12.0 (feature level 445).
    * 
    * You cannot specify both of anchor parameters and message IDs.

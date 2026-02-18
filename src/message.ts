@@ -1112,6 +1112,29 @@ export type RemoveReactionParams = {
 }
 
 /**
+ * The request parameters of RenderMessage API
+ * @see https://zulip.com/api/render-message#parameters
+ */
+export type RenderMessageParams = {
+  /**
+   * The content of the message.
+   * @see https://zulip.com/api/render-message#parameter-content
+   */
+  content: string
+}
+
+/**
+ * The response data of RenderMessage API
+ * @see https://zulip.com/api/render-message#response
+ */
+export type RenderMessageResponse = GeneralSuccessResponse & {
+  /**
+   * The rendered content.
+   */
+  rendered: string
+}
+
+/**
  * Send a message.
  * @param client Axios client initialized by generateCallApi function in api.ts
  * @param params API parameters
@@ -1271,4 +1294,18 @@ export async function removeReaction(client: AxiosInstance, messageId: number, p
     })
     return response.data
   }
+}
+
+/**
+ * Render message content.
+ * @param client Axios client initialized by generateCallApi function in api.ts
+ * @param params API parameters
+ * @returns The response of the RenderMessage API
+ * @see https://zulip.com/api/render-message
+ */
+export async function renderMessage(client: AxiosInstance, params: RenderMessageParams) {
+  const body = new URLSearchParams(params)
+  const response = await client.post<RenderMessageResponse>('/messages/render', body)
+
+  return response.data
 }

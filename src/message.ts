@@ -515,8 +515,8 @@ type GetMessagesWithAnchorNotDateParams = {
    * first_unread: If there are some messages which matches the query, the message which
    * is the oldest and matches the query. Otherwise, the most recent message.
    * 
-   * date: If there are some messages which is on or after the datetime indicated by the anchor_date,
-   * the newest message which is in them. Otherwise, the most recent message.
+   * date: If there are any messages that are on or after the datetime indicated by anchor_date,
+   * the newest of those messages. Otherwise, the most recent message.
    * This value supports since Zulip 12.0 (feature level 445).
    * 
    * You cannot specify both of anchor parameters and message IDs.

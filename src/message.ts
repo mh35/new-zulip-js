@@ -1605,6 +1605,18 @@ export type UpdateMessageFlagsForNarrowResponse = GeneralSuccessResponse & {
 }
 
 /**
+ * The response of MarkAllAsRead API
+ * @deprecated Use UpdateMessageFlagsForNarrow API instead
+ * @see https://zulip.com/api/mark-all-as-read#response
+ */
+export type MarkAllAsReadResponse = GeneralSuccessResponse & {
+  /**
+   * Whether the mark process are completed or not
+   */
+  complete: boolean
+}
+
+/**
  * Send a message.
  * @param client Axios client initialized by generateCallApi function in api.ts
  * @param params API parameters
@@ -1976,6 +1988,19 @@ export async function updateMessageFlagsForNarrow(
     '/messages/flags/narrow',
     body,
   )
+
+  return resp.data
+}
+
+/**
+ * Mark all messages as read.
+ * @param client Axios client initialized by generateCallApi function in api.ts
+ * @returns The response of MarkAllAsRead API
+ * @deprecated Use updateMessageFlagsForNarrow function instead.
+ * @see https://zulip.com/api/mark-all-as-read
+ */
+export async function markAllAsRead(client: AxiosInstance) {
+  const resp = await client.post<MarkAllAsReadResponse>('/mark_all_as_read')
 
   return resp.data
 }

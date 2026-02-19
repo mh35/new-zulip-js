@@ -754,6 +754,13 @@ export type MessageFlags =
   | 'wildcard_mentioned'
 
 /**
+ * Message flags which you can update.
+ *
+ * @see https://zulip.com/api/update-message-flags#available-flags
+ */
+export type UpdatableMessageFlags = 'read' | 'starred' | 'collapsed'
+
+/**
  * Display recipients field item as object in GetMessages API.
  */
 export type GetMassagesResponseMessageItemDisplayRecipientObjItem = {
@@ -1469,6 +1476,43 @@ export type GetMessageHistoryResponse = GeneralSuccessResponse & {
 }
 
 /**
+ * The parameters of UpdateMessageFlags API
+ * @see https://zulip.com/api/update-message-flags#parameters
+ */
+export type UpdateMessageFlagsParams = {
+  /**
+   * The target message IDs
+   * @see https://zulip.com/api/update-message-flags#parameter-messages
+   */
+  messages: number[]
+  /**
+   * Whether to add or remove flags
+   * @see https://zulip.com/api/update-message-flags#parameter-op
+   */
+  op: 'add' | 'remove'
+  /**
+   * The flag
+   * @see https://zulip.com/api/update-message-flags#parameter-flag
+   */
+  flag: UpdatableMessageFlags
+}
+
+/**
+ * The response of UpdateMessageFlags API
+ * @see https://zulip.com/api/update-message-flags#response
+ */
+export type UPdateMessageFlagsResponse = GeneralSuccessResponse & {
+  /**
+   * Message IDs that were successfully updated.
+   */
+  messages: number[]
+  /**
+   * Message IDs that were ignored. Exists only if op=remove and flag=read.
+   */
+  ignored_because_not_subscribed_channels?: number[]
+}
+
+/**
  * Send a message.
  * @param client Axios client initialized by generateCallApi function in api.ts
  * @param params API parameters
@@ -1763,6 +1807,43 @@ export async function getMessageEditHistory(
     {
       params: sendParams,
     },
+  )
+
+  return resp.data
+}
+
+/**
+ * Update flags of messages
+ * @param client Axios client initialized by generateCallApi function in api.ts
+ * @param params API parameters
+ * @returns The response of UpdateMessageFlags API
+ * @see https://zulip.com/api/update-message-flags
+ */
+export async function updateMessageFlags(
+  client: AxiosInstance,
+  params: UpdateMessageFlagsParams,
+) {
+  const body = new URLSearchParams()
+
+  for (const [key, value] of Object.entries(params)) {
+    if (value === undefined || value === null) {
+      continue
+    }
+
+    if (Array.isArray(value)) {
+      // Encode arrays as JSON strings
+      body.append(key, JSON.stringify(value))
+    } else if (typeof value === 'boolean') {
+      // Encode booleans as strings
+      body.append(key, String(value))
+    } else {
+      // Other values (strings, numbers)
+      body.append(key, String(value))
+    }
+  }
+  const resp = await client.post<UPdateMessageFlagsResponse>(
+    '/messages/flags',
+    body,
   )
 
   return resp.data

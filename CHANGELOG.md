@@ -1,5 +1,9 @@
 # Changelog
 
+## Version 1.1.0-alpha.0
+
+- Message API functions
+
 ## Version 1.0.9
 
 - Add README

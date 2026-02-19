@@ -1,6 +1,6 @@
 {
   "name": "@mh35/new-zulip",
-  "version": "1.1.0",
+  "version": "1.1.0-alpha.0",
   "description": "Zulip JavaScript/TypeScript binding",
   "keywords": [
     "zulip"

@@ -1671,6 +1671,46 @@ export type GetFileTemporaryUrlResponse = GeneralSuccessResponse & {
 }
 
 /**
+ * Report message parameters if the report type is other.
+ */
+type ReportMessageOtherReasonParams = {
+  /**
+   * The report type.
+   * @see https://zulip.com/api/report-message#parameter-report_type
+   */
+  report_type: 'other'
+  /**
+   * The description of the report.
+   * If report type is other, you must specify this as not empty string.
+   * @see https://zulip.com/api/report-message#parameter-description
+   */
+  description: string
+}
+
+type ReportMessageNotOtherReasonParams = {
+  /**
+   * The report type.
+   * @see https://zulip.com/api/report-message#parameter-report_type
+   */
+  report_type: 'spam' | 'harassment' | 'inappropriate' | 'norms'
+  /**
+   * The description of the report.
+   * If report type is other, you must specify this as not empty string.
+   * @see https://zulip.com/api/report-message#parameter-description
+   */
+  description?: string
+}
+
+/**
+ * ReportMessage API parameeters
+ * @since Zulip 11.0 (feature level 382)
+ * @see https://zulip.com/api/report-message#parameters
+ */
+export type ReportMessageParams =
+  | ReportMessageOtherReasonParams
+  | ReportMessageNotOtherReasonParams
+
+/**
  * Send a message.
  * @param client Axios client initialized by generateCallApi function in api.ts
  * @param params API parameters
@@ -2142,6 +2182,37 @@ export async function getFileTemporaryUrl(
 ) {
   const resp = await client.get<GetFileTemporaryUrlResponse>(
     `/user_uploads/${realmId}/${filename}`,
+  )
+
+  return resp.data
+}
+
+/**
+ * Report message
+ * @param client Axios client initialized by generateCallApi function in api.ts
+ * @param messageId Message ID
+ * @param params API parameters
+ * @returns The response of ReportMessage API
+ * @since Zulip 11.0 (feature level 382)
+ * @see https://zulip.com/api/report-message
+ */
+export async function reportMessage(
+  client: AxiosInstance,
+  messageId: number,
+  params: ReportMessageParams,
+) {
+  const body = new URLSearchParams()
+
+  for (const [key, value] of Object.entries(params)) {
+    if (value === undefined || value === null) {
+      continue
+    }
+    body.append(key, String(value))
+  }
+
+  const resp = await client.post<GeneralSuccessResponse>(
+    `/messages/${messageId}/report`,
+    body,
   )
 
   return resp.data

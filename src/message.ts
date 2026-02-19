@@ -1,6 +1,6 @@
-import type { AxiosInstance } from "axios"
+import type { AxiosInstance } from 'axios'
 import type { GeneralSuccessResponse } from './api'
-import type { TopicVisibilityValues } from "./constants"
+import type { TopicVisibilityValues } from './constants'
 
 type SendStreamMessageParams = {
   /**
@@ -43,7 +43,9 @@ type SendDirectMessageParams = {
   topic: never
 }
 
-type SendMessageDestinationParams = SendStreamMessageParams | SendDirectMessageParams
+type SendMessageDestinationParams =
+  | SendStreamMessageParams
+  | SendDirectMessageParams
 
 type SendMessageWithQueueParams = {
   /**
@@ -71,24 +73,27 @@ type SendMessageWithoutQueueParams = {
   local_id: never
 }
 
-type SendMessageQueueParams = SendMessageWithQueueParams | SendMessageWithoutQueueParams
+type SendMessageQueueParams =
+  | SendMessageWithQueueParams
+  | SendMessageWithoutQueueParams
 
 /**
  * SendMessage API parameters
  * @see https://zulip.com/api/send-message#parameters
  */
-export type SendMessageParams = SendMessageDestinationParams & SendMessageQueueParams & {
-  /**
-   * Message content.
-   * @see https://zulip.com/api/send-message#parameter-content
-   */
-  content: string
-  /**
-   * Whether mark as read by sender. If not specified, the server uses heuristic based on client name.
-   * @see https://zulip.com/api/send-message#parameter-read_by_sender
-   */
-  read_by_sender?: boolean
-}
+export type SendMessageParams = SendMessageDestinationParams &
+  SendMessageQueueParams & {
+    /**
+     * Message content.
+     * @see https://zulip.com/api/send-message#parameter-content
+     */
+    content: string
+    /**
+     * Whether mark as read by sender. If not specified, the server uses heuristic based on client name.
+     * @see https://zulip.com/api/send-message#parameter-read_by_sender
+     */
+    read_by_sender?: boolean
+  }
 
 /**
  * SendMessage API response body
@@ -166,8 +171,10 @@ type EditMessageWithoutContentAndStreamParams = {
   stream_id: never
 }
 
-type EditMessageContentStreamParams = EditMessageContentParams |
-  EditMessageStreamParams | EditMessageWithoutContentAndStreamParams
+type EditMessageContentStreamParams =
+  | EditMessageContentParams
+  | EditMessageStreamParams
+  | EditMessageWithoutContentAndStreamParams
 
 /**
  * EditMessage API parameters
@@ -182,11 +189,11 @@ export type EditMessageParams = EditMessageContentStreamParams & {
   /**
    * Propagation mode. The default value is change_one.
    * If you modify only message content, you cannot specify other than change_one.
-   * 
+   *
    * change_later: The target message and all following messages.
-   * 
+   *
    * change_one: Only the target message.
-   * 
+   *
    * change_all: All messages in this topic.
    * @see https://zulip.com/api/update-message#parameter-propagate_mode
    */
@@ -219,7 +226,7 @@ export type EditMessageParams = EditMessageContentStreamParams & {
 export type EditMessageDetachedUploadItemMessageItem = {
   /**
    * Time when the message was sent as a UNIX timestamp.
-   * 
+   *
    * If the server is Zulip 12.0 (feature level 443) or later, this field is the
    * seconds from the Epoch.
    * If the server is before Zulip 12.0 (feature level 443), this field is the
@@ -254,7 +261,7 @@ export type EditMessageDetachedUploadItem = {
   size: number
   /**
    * Time when the attachment was uploaded as a UNIX timestamp.
-   * 
+   *
    * If the server is Zulip 12.0 (feature level 443) or later, this field is the
    * seconds from the Epoch.
    * If the server is before Zulip 12.0 (feature level 443), this field is the
@@ -262,7 +269,7 @@ export type EditMessageDetachedUploadItem = {
    */
   create_time: number
   /**
-   * Basic details on any Zulip messages that have been sent referencing this uploaded file. 
+   * Basic details on any Zulip messages that have been sent referencing this uploaded file.
    */
   messages: EditMessageDetachedUploadItemMessageItem[]
 }
@@ -290,8 +297,13 @@ type ChannelNarrowOperators = 'channel' | 'stream'
  * Operators which supports ID operand.
  * @see https://github.com/zulip/zulip/blob/main/zerver/lib/narrow.py#L119
  */
-type SupportingIdNarrowOperators = ChannelNarrowOperators | 'id' | 'sender' |
-  'group-pm-with' | 'dm-including' | 'with'
+type SupportingIdNarrowOperators =
+  | ChannelNarrowOperators
+  | 'id'
+  | 'sender'
+  | 'group-pm-with'
+  | 'dm-including'
+  | 'with'
 
 /**
  * Operators which supports IDs operand.
@@ -303,7 +315,7 @@ type SupportingIdsNarrowOperators = 'pm-with' | 'dm'
  * Narrow item for filtering messages
  * @see https://zulip.com/api/construct-narrow
  */
-export type GetMessagesNarrowItem = 
+export type GetMessagesNarrowItem =
   | {
       /**
        * Narrow operator
@@ -336,7 +348,10 @@ export type GetMessagesNarrowItem =
       /**
        * Narrow operator
        */
-      operator: Exclude<string, SupportingIdNarrowOperators | SupportingIdsNarrowOperators>
+      operator: Exclude<
+        string,
+        SupportingIdNarrowOperators | SupportingIdsNarrowOperators
+      >
       /**
        * Narrow operand
        */
@@ -356,68 +371,68 @@ export type GetMessagesNarrowItem =
 type GetMessagesWithMessageIdParams = {
   /**
    * Message retrieve base anchor. Whether message ID or some special strings.
-   * 
+   *
    * newest: The most recent message.
-   * 
+   *
    * oldest: The oldest message.
-   * 
+   *
    * first_unread: If there are some messages which matches the query, the message which
    * is the oldest and matches the query. Otherwise, the most recent message.
-   * 
+   *
    * date: If there are some messages that are on or after the datetime indicated by the anchor_date,
    * the newest message among them. Otherwise, the most recent message.
    * This value supports since Zulip 12.0 (feature level 445).
-   * 
+   *
    * You cannot specify both of anchor parameters and message IDs.
    * @see https://zulip.com/api/get-messages#parameter-anchor
    */
   anchor: never
   /**
    * Fetch message which is the anchor or not.
-   * 
+   *
    * You cannot specify both of anchor parameters and message IDs.
    * @see https://zulip.com/api/get-messages#parameter-include_anchor
    */
   include_anchor: never
   /**
    * Anchor date value. This value is not used unless you specify anchor=date.
-   * 
+   *
    * @since Zulip 12.0 (feature level 445)
    * @see https://zulip.com/api/get-messages#parameter-anchor_date
    */
   anchor_date: never
   /**
    * The number of messages to retrieve which ID is less than the anchor.
-   * 
+   *
    * You must specify this parameter if you do not specify message IDs.
-   * 
+   *
    * You cannot specify both of anchor parameters and message IDs.
    * @see https://zulip.com/api/get-messages#parameter-num_before
    */
   num_before: never
   /**
    * The number of messages to retrieve which ID is more than the anchor.
-   * 
+   *
    * You must specify this parameter if you do not specify message IDs.
-   * 
+   *
    * You cannot specify both of anchor parameters and message IDs.
    * @see https://zulip.com/api/get-messages#parameter-num_after
    */
   num_after: never
   /**
    * The message IDs to retrieve.
-   * 
+   *
    * You cannot specify both of anchor parameters and message IDs.
-   * 
+   *
    * @since Zulip 10.0 (feature level 300)
    * @see https://zulip.com/api/get-messages#parameter-message_ids
    */
-  message_ids : number[]
+  message_ids: number[]
   /**
    * Legacy way to specify "anchor": "first_unread" in Zulip 2.1.x and older.
-   * 
+   *
    * You cannot specify both of anchor parameters and message IDs.
-   * 
+   *
    * @deprecated Zulip 3.0 (feature level 1)
    * @see https://zulip.com/api/get-messages#parameter-use_first_unread_anchor
    */
@@ -432,68 +447,68 @@ type GetMessagesWithMessageIdParams = {
 type GetMessagesWithAnchorDateParams = {
   /**
    * Message retrieve base anchor. Whether message ID or some special strings.
-   * 
+   *
    * newest: The most recent message.
-   * 
+   *
    * oldest: The oldest message.
-   * 
+   *
    * first_unread: If there are some messages which matches the query, the message which
    * is the oldest and matches the query. Otherwise, the most recent message.
-   * 
+   *
    * date: If there are some messages that are on or after the datetime indicated by the anchor_date,
    * the newest message among them. Otherwise, the most recent message.
    * This value supports since Zulip 12.0 (feature level 445).
-   * 
+   *
    * You cannot specify both of anchor parameters and message IDs.
    * @see https://zulip.com/api/get-messages#parameter-anchor
    */
   anchor: 'date'
   /**
    * Fetch message which is the anchor or not.
-   * 
+   *
    * You cannot specify both of anchor parameters and message IDs.
    * @see https://zulip.com/api/get-messages#parameter-include_anchor
    */
   include_anchor?: boolean
   /**
    * Anchor date value. This value is not used unless you specify anchor=date.
-   * 
+   *
    * @since Zulip 12.0 (feature level 445)
    * @see https://zulip.com/api/get-messages#parameter-anchor_date
    */
   anchor_date: string
   /**
    * The number of messages to retrieve which ID is less than the anchor.
-   * 
+   *
    * You must specify this parameter if you do not specify message IDs.
-   * 
+   *
    * You cannot specify both of anchor parameters and message IDs.
    * @see https://zulip.com/api/get-messages#parameter-num_before
    */
   num_before: number
   /**
    * The number of messages to retrieve which ID is more than the anchor.
-   * 
+   *
    * You must specify this parameter if you do not specify message IDs.
-   * 
+   *
    * You cannot specify both of anchor parameters and message IDs.
    * @see https://zulip.com/api/get-messages#parameter-num_after
    */
   num_after: number
   /**
    * The message IDs to retrieve.
-   * 
+   *
    * You cannot specify both of anchor parameters and message IDs.
-   * 
+   *
    * @since Zulip 10.0 (feature level 300)
    * @see https://zulip.com/api/get-messages#parameter-message_ids
    */
   message_ids: never
   /**
    * Legacy way to specify "anchor": "first_unread" in Zulip 2.1.x and older.
-   * 
+   *
    * You cannot specify both of anchor parameters and message IDs.
-   * 
+   *
    * @deprecated Zulip 3.0 (feature level 1)
    * @see https://zulip.com/api/get-messages#parameter-use_first_unread_anchor
    */
@@ -507,68 +522,68 @@ type GetMessagesWithAnchorDateParams = {
 type GetMessagesWithAnchorNotDateParams = {
   /**
    * Message retrieve base anchor. Whether message ID or some special strings.
-   * 
+   *
    * newest: The most recent message.
-   * 
+   *
    * oldest: The oldest message.
-   * 
+   *
    * first_unread: If there are some messages which matches the query, the message which
    * is the oldest and matches the query. Otherwise, the most recent message.
-   * 
+   *
    * date: If there are any messages that are on or after the datetime indicated by anchor_date,
    * the newest of those messages. Otherwise, the most recent message.
    * This value supports since Zulip 12.0 (feature level 445).
-   * 
+   *
    * You cannot specify both of anchor parameters and message IDs.
    * @see https://zulip.com/api/get-messages#parameter-anchor
    */
   anchor: Exclude<string, 'date'> | number
   /**
    * Fetch message which is the anchor or not.
-   * 
+   *
    * You cannot specify both of anchor parameters and message IDs.
    * @see https://zulip.com/api/get-messages#parameter-include_anchor
    */
   include_anchor?: boolean
   /**
    * Anchor date value. This value is not used unless you specify anchor=date.
-   * 
+   *
    * @since Zulip 12.0 (feature level 445)
    * @see https://zulip.com/api/get-messages#parameter-anchor_date
    */
   anchor_date: never
   /**
    * The number of messages to retrieve which ID is less than the anchor.
-   * 
+   *
    * You must specify this parameter if you do not specify message IDs.
-   * 
+   *
    * You cannot specify both of anchor parameters and message IDs.
    * @see https://zulip.com/api/get-messages#parameter-num_before
    */
   num_before: number
   /**
    * The number of messages to retrieve which ID is more than the anchor.
-   * 
+   *
    * You must specify this parameter if you do not specify message IDs.
-   * 
+   *
    * You cannot specify both of anchor parameters and message IDs.
    * @see https://zulip.com/api/get-messages#parameter-num_after
    */
   num_after: number
   /**
    * The message IDs to retrieve.
-   * 
+   *
    * You cannot specify both of anchor parameters and message IDs.
-   * 
+   *
    * @since Zulip 10.0 (feature level 300)
    * @see https://zulip.com/api/get-messages#parameter-message_ids
    */
   message_ids: never
   /**
    * Legacy way to specify "anchor": "first_unread" in Zulip 2.1.x and older.
-   * 
+   *
    * You cannot specify both of anchor parameters and message IDs.
-   * 
+   *
    * @deprecated Zulip 3.0 (feature level 1)
    * @see https://zulip.com/api/get-messages#parameter-use_first_unread_anchor
    */
@@ -583,76 +598,79 @@ type GetMessagesWithAnchorNotDateParams = {
 type GetMessagesOldFirstUnreadParams = {
   /**
    * Message retrieve base anchor. Whether message ID or some special strings.
-   * 
+   *
    * newest: The most recent message.
-   * 
+   *
    * oldest: The oldest message.
-   * 
+   *
    * first_unread: If there are some messages which matches the query, the message which
    * is the oldest and matches the query. Otherwise, the most recent message.
-   * 
+   *
    * date: If there are some messages that are on or after the datetime indicated by the anchor_date,
    * the newest message which is in them. Otherwise, the most recent message.
    * This value supports since Zulip 12.0 (feature level 445).
-   * 
+   *
    * You cannot specify both of anchor parameters and message IDs.
    * @see https://zulip.com/api/get-messages#parameter-anchor
    */
   anchor: never
   /**
    * Fetch message which is the anchor or not.
-   * 
+   *
    * You cannot specify both of anchor parameters and message IDs.
    * @see https://zulip.com/api/get-messages#parameter-include_anchor
    */
   include_anchor?: boolean
   /**
    * Anchor date value. This value is not used unless you specify anchor=date.
-   * 
+   *
    * @since Zulip 12.0 (feature level 445)
    * @see https://zulip.com/api/get-messages#parameter-anchor_date
    */
   anchor_date: never
   /**
    * The number of messages to retrieve which ID is less than the anchor.
-   * 
+   *
    * You must specify this parameter if you do not specify message IDs.
-   * 
+   *
    * You cannot specify both of anchor parameters and message IDs.
    * @see https://zulip.com/api/get-messages#parameter-num_before
    */
   num_before: number
   /**
    * The number of messages to retrieve which ID is more than the anchor.
-   * 
+   *
    * You must specify this parameter if you do not specify message IDs.
-   * 
+   *
    * You cannot specify both of anchor parameters and message IDs.
    * @see https://zulip.com/api/get-messages#parameter-num_after
    */
   num_after: number
   /**
    * The message IDs to retrieve.
-   * 
+   *
    * You cannot specify both of anchor parameters and message IDs.
-   * 
+   *
    * @since Zulip 10.0 (feature level 300)
    * @see https://zulip.com/api/get-messages#parameter-message_ids
    */
   message_ids: never
   /**
    * Legacy way to specify "anchor": "first_unread" in Zulip 2.1.x and older.
-   * 
+   *
    * You cannot specify both of anchor parameters and message IDs.
-   * 
+   *
    * @deprecated Zulip 3.0 (feature level 1)
    * @see https://zulip.com/api/get-messages#parameter-use_first_unread_anchor
    */
   use_first_unread_anchor: true
 }
 
-type GetMessagesBaseParams = GetMessagesWithMessageIdParams | GetMessagesWithAnchorDateParams |
-  GetMessagesWithAnchorNotDateParams | GetMessagesOldFirstUnreadParams
+type GetMessagesBaseParams =
+  | GetMessagesWithMessageIdParams
+  | GetMessagesWithAnchorDateParams
+  | GetMessagesWithAnchorNotDateParams
+  | GetMessagesOldFirstUnreadParams
 
 /**
  * GetMessages API parameters.
@@ -685,48 +703,55 @@ export type GetMessagesParams = GetMessagesBaseParams & {
 
 /**
  * Emoji types
- * 
+ *
  * unicode_emoji: Emoji in Unicode namespace.
- * 
+ *
  * realm_emoji: Emoji uploaded to realm as custom emoji.
- * 
+ *
  * zulip_extra_emoji: Special emoji included with Zulip
  */
 export type EmojiTypes = 'unicode_emoji' | 'realm_emoji' | 'zulip_extra_emoji'
 
 /**
  * Message flags
- * 
+ *
  * read: The user has read the message.
- * 
+ *
  * starred: Whether the user has starred the message or not.
- * 
+ *
  * collapsed: Whether the user has collapsed the message or not.
- * 
+ *
  * mentioned: Whether the current user was mentioned in the message.
- * 
+ *
  * stream_wildcard_mentioned: Whether the message contains a channel
  * wildcard mention or not. New in Zulip 8.0 (feature level 224).
- * 
+ *
  * topic_wildcard_mentioned: Whether the message contains a topic
  * wildcard mention or not. New in Zulip 8.0 (feature level 224).
- * 
+ *
  * has_alert_word: Whether the message contains an alert word
  * which the current user configured.
- * 
+ *
  * historical: The current user did not receive the message when
  * it was sent, but later the message was added to the user's history.
- * 
+ *
  * wildcard_mentioned: Whether the message contains a channel or topic
  * wildcard mention or not. Deprecated from Zulip 8.0 (feature level 224).
  * Use stream_wildcard_mentioned and topic_wildcard_mentioned instead.
- * 
+ *
  * You can flag manually only read, starred, and collapsed.
  * @see https://zulip.com/api/update-message-flags#available-flags
  */
-export type MessageFlags = 'read' | 'starred' | 'collapsed' | 'mentioned' |
-  'stream_wildcard_mentioned' | 'topic_wildcard_mentioned' |
-  'has_alert_word' | 'historical' | 'wildcard_mentioned'
+export type MessageFlags =
+  | 'read'
+  | 'starred'
+  | 'collapsed'
+  | 'mentioned'
+  | 'stream_wildcard_mentioned'
+  | 'topic_wildcard_mentioned'
+  | 'has_alert_word'
+  | 'historical'
+  | 'wildcard_mentioned'
 
 /**
  * Display recipients field item as object in GetMessages API.
@@ -800,9 +825,9 @@ type GetMessagesResponseMessageItemEditHistoryMoveStreamItem = {
  * Edit history item of the message in GetMessages API
  */
 export type GetMessagesResponseMessageItemEditHistoryItem = (
-  GetMessagesResponseMessageItemEditHistoryEditContentItem |
-  GetMessagesResponseMessageItemEditHistoryEditTopicItem |
-  GetMessagesResponseMessageItemEditHistoryMoveStreamItem
+  | GetMessagesResponseMessageItemEditHistoryEditContentItem
+  | GetMessagesResponseMessageItemEditHistoryEditTopicItem
+  | GetMessagesResponseMessageItemEditHistoryMoveStreamItem
 ) & {
   /**
    * The UNIX timestamp when the message was edited.
@@ -811,7 +836,7 @@ export type GetMessagesResponseMessageItemEditHistoryItem = (
   /**
    * The user ID who edited. This field is only be null if the edit was done
    * before March 2017.
-   * 
+   *
    * If this field is null, this edit was taken by the sender (content edit)
    * or the unknown user (topic edit).
    */
@@ -884,9 +909,9 @@ type GetMessagesResponseStreamMessageItem = {
   stream_id: number
   /**
    * The type of the message
-   * 
+   *
    * stream: Post to the channel.
-   * 
+   *
    * private: Direct message.
    */
   type: 'stream'
@@ -902,9 +927,9 @@ type GetMessagesResponseDirectMessageItem = {
   stream_id: never
   /**
    * The type of the message
-   * 
+   *
    * stream: Post to the channel.
-   * 
+   *
    * private: Direct message.
    */
   type: 'private'
@@ -914,8 +939,8 @@ type GetMessagesResponseDirectMessageItem = {
  * Message item in GetMessages API.
  */
 export type GetMessagesResponseMessageItem = (
-  GetMessagesResponseStreamMessageItem |
-  GetMessagesResponseDirectMessageItem
+  | GetMessagesResponseStreamMessageItem
+  | GetMessagesResponseDirectMessageItem
 ) & {
   /**
    * Avatar URL. If the request specifies client_gravatar=true and
@@ -938,11 +963,13 @@ export type GetMessagesResponseMessageItem = (
   content_type: 'text/html' | 'text/x-markdown'
   /**
    * Data on the recipient of the message.
-   * 
+   *
    * If this is string, this is the name of the channel. If this is the
    * list of objects, this is the basic data on the users who received the message.
    */
-  display_recipient: string | GetMassagesResponseMessageItemDisplayRecipientObjItem[]
+  display_recipient:
+    | string
+    | GetMassagesResponseMessageItemDisplayRecipientObjItem[]
   /**
    * Edit history. This field is present only if the message was edited.
    */
@@ -990,7 +1017,7 @@ export type GetMessagesResponseMessageItem = (
   sender_id: number
   /**
    * A string identifier for the realm the sender is in.
-   * 
+   *
    * For example, if the server domain is example.zulip.com, this value is example.
    */
   sender_realm_str: string
@@ -1035,7 +1062,7 @@ export type GetMessagesResponse = GeneralSuccessResponse & {
   /**
    * The same anchor specified in the request, or the computed one, if
    * use_first_unread_anchor is true.
-   * 
+   *
    * This field does not exist if message_ids field is provided.
    */
   anchor?: number
@@ -1155,23 +1182,28 @@ export type GetMessageParams = {
 /**
  * Recipient object item for message in GetMessage API response.
  */
-export type GetMessageMessageRecipientObjItem = GetMassagesResponseMessageItemDisplayRecipientObjItem
+export type GetMessageMessageRecipientObjItem =
+  GetMassagesResponseMessageItemDisplayRecipientObjItem
 /**
  * Message edit history for message in GetMessage API response.
  */
-export type GetMessageMessageEditHistoryItem = GetMessagesResponseMessageItemEditHistoryItem
+export type GetMessageMessageEditHistoryItem =
+  GetMessagesResponseMessageItemEditHistoryItem
 /**
  * Reaction for message in GetMessage API response.
  */
-export type GetMessageMessageReactionItem = GetMessagesResponseMessageItemReactionItem
+export type GetMessageMessageReactionItem =
+  GetMessagesResponseMessageItemReactionItem
 /**
  * Submessage for message in GetMessage API response.
  */
-export type GetMessageMessageSubmessageItem = GetMessagesResponseMessageItemSubmessageItem
+export type GetMessageMessageSubmessageItem =
+  GetMessagesResponseMessageItemSubmessageItem
 /**
  * Topic link for message in GetMessage API response.
  */
-export type GetMessageMessageTopicLinkItem = GetMessagesResponseMessageItemTopicLinkItem
+export type GetMessageMessageTopicLinkItem =
+  GetMessagesResponseMessageItemTopicLinkItem
 
 /**
  * Stream message fields for GetMessage API.
@@ -1186,7 +1218,10 @@ type GetMessageDirectMessage = GetMessagesResponseDirectMessageItem
  * Message in GetMessage API.
  * @since Zulip 5.0 (feature level 120)
  */
-export type GetMessageMessage = (GetMessageStreamMessage | GetMessageDirectMessage) & {
+export type GetMessageMessage = (
+  | GetMessageStreamMessage
+  | GetMessageDirectMessage
+) & {
   /**
    * Avatar URL. If the request specifies client_gravatar=true and
    * the user does not upload avatar, this field is null.
@@ -1208,7 +1243,7 @@ export type GetMessageMessage = (GetMessageStreamMessage | GetMessageDirectMessa
   content_type: 'text/html' | 'text/x-markdown'
   /**
    * Data on the recipient of the message.
-   * 
+   *
    * If this is string, this is the name of the channel. If this is the
    * list of objects, this is the basic data on the users who received the message.
    */
@@ -1260,7 +1295,7 @@ export type GetMessageMessage = (GetMessageStreamMessage | GetMessageDirectMessa
   sender_id: number
   /**
    * A string identifier for the realm the sender is in.
-   * 
+   *
    * For example, if the server domain is example.zulip.com, this value is example.
    */
   sender_realm_str: string
@@ -1350,7 +1385,7 @@ export type CheckMessagesMatchNarrowResponse = GeneralSuccessResponse & {
   /**
    * Matched messages. The key is message ID, and the value is the matched message data.
    */
-  messages: {[key: string]: CheckMessagesMatchNarrowResponseMessageItem}
+  messages: { [key: string]: CheckMessagesMatchNarrowResponseMessageItem }
 }
 
 /**
@@ -1360,14 +1395,17 @@ export type CheckMessagesMatchNarrowResponse = GeneralSuccessResponse & {
  * @returns The response of SendMessage API.
  * @see https://zulip.com/api/send-message
  */
-export async function sendMessage(client: AxiosInstance, params: SendMessageParams) {
+export async function sendMessage(
+  client: AxiosInstance,
+  params: SendMessageParams,
+) {
   const body = new URLSearchParams()
-  
+
   for (const [key, value] of Object.entries(params)) {
     if (value === undefined || value === null) {
       continue
     }
-    
+
     if (Array.isArray(value)) {
       // Encode arrays as JSON strings
       body.append(key, JSON.stringify(value))
@@ -1379,9 +1417,9 @@ export async function sendMessage(client: AxiosInstance, params: SendMessagePara
       body.append(key, String(value))
     }
   }
-  
+
   const response = await client.post<SendMessageResponse>('/messages', body)
-  
+
   return response.data
 }
 
@@ -1395,9 +1433,12 @@ export async function sendMessage(client: AxiosInstance, params: SendMessagePara
 export async function uploadFile(client: AxiosInstance, file: File) {
   const formData = new FormData()
   formData.append('filename', file)
-  
-  const response = await client.post<UploadFileResponse>('/user_uploads', formData)
-  
+
+  const response = await client.post<UploadFileResponse>(
+    '/user_uploads',
+    formData,
+  )
+
   return response.data
 }
 
@@ -1409,14 +1450,18 @@ export async function uploadFile(client: AxiosInstance, file: File) {
  * @returns The response of the EditMessage API.
  * @see https://zulip.com/api/update-message
  */
-export async function editMesssage(client: AxiosInstance, messageId: number, params: EditMessageParams) {
+export async function editMesssage(
+  client: AxiosInstance,
+  messageId: number,
+  params: EditMessageParams,
+) {
   const body = new URLSearchParams()
-  
+
   for (const [key, value] of Object.entries(params)) {
     if (value === undefined || value === null) {
       continue
     }
-    
+
     if (Array.isArray(value)) {
       // Encode arrays as JSON strings
       body.append(key, JSON.stringify(value))
@@ -1428,9 +1473,12 @@ export async function editMesssage(client: AxiosInstance, messageId: number, par
       body.append(key, String(value))
     }
   }
-  
-  const response = await client.patch<EditMessageResponse>(`/messages/${messageId}`, body)
-  
+
+  const response = await client.patch<EditMessageResponse>(
+    `/messages/${messageId}`,
+    body,
+  )
+
   return response.data
 }
 
@@ -1442,7 +1490,9 @@ export async function editMesssage(client: AxiosInstance, messageId: number, par
  * @see https://zulip.com/api/delete-message
  */
 export async function deleteMessage(client: AxiosInstance, messageId: number) {
-  const response = await client.delete<GeneralSuccessResponse>(`/messages/${messageId}`)
+  const response = await client.delete<GeneralSuccessResponse>(
+    `/messages/${messageId}`,
+  )
 
   return response.data
 }
@@ -1454,13 +1504,16 @@ export async function deleteMessage(client: AxiosInstance, messageId: number) {
  * @returns The response of the GetMessages API
  * @see https://zulip.com/api/get-messages
  */
-export async function getMessages(client: AxiosInstance, params: GetMessagesParams) {
+export async function getMessages(
+  client: AxiosInstance,
+  params: GetMessagesParams,
+) {
   const sendParams = {} as Record<string, string>
   for (const [key, value] of Object.entries(params)) {
     if (value === undefined || value === null) {
       continue
     }
-    
+
     if (Array.isArray(value)) {
       // Encode arrays as JSON strings
       sendParams[key] = JSON.stringify(value)
@@ -1473,7 +1526,7 @@ export async function getMessages(client: AxiosInstance, params: GetMessagesPara
     }
   }
   const response = await client.get<GetMessagesResponse>('/messages', {
-    params: sendParams
+    params: sendParams,
   })
 
   return response.data
@@ -1487,9 +1540,16 @@ export async function getMessages(client: AxiosInstance, params: GetMessagesPara
  * @returns The response of the AddReaction API
  * @see https://zulip.com/api/add-reaction
  */
-export async function addReaction(client: AxiosInstance, messageId: number, params: AddReactionParams) {
+export async function addReaction(
+  client: AxiosInstance,
+  messageId: number,
+  params: AddReactionParams,
+) {
   const body = new URLSearchParams(params)
-  const response = await client.post<GeneralSuccessResponse>(`/messages/${messageId}/reactions`, body)
+  const response = await client.post<GeneralSuccessResponse>(
+    `/messages/${messageId}/reactions`,
+    body,
+  )
 
   return response.data
 }
@@ -1502,15 +1562,24 @@ export async function addReaction(client: AxiosInstance, messageId: number, para
  * @returns The response of the RemoveReaction API
  * @see https://zulip.com/api/remove-reaction
  */
-export async function removeReaction(client: AxiosInstance, messageId: number, params: RemoveReactionParams) {
+export async function removeReaction(
+  client: AxiosInstance,
+  messageId: number,
+  params: RemoveReactionParams,
+) {
   const body = new URLSearchParams(params)
   if (body.size === 0) {
-    const response = await client.delete<GeneralSuccessResponse>(`/messages/${messageId}/reactions`)
+    const response = await client.delete<GeneralSuccessResponse>(
+      `/messages/${messageId}/reactions`,
+    )
     return response.data
   } else {
-    const response = await client.delete<GeneralSuccessResponse>(`/messages/${messageId}/reactions`, {
-      data: body
-    })
+    const response = await client.delete<GeneralSuccessResponse>(
+      `/messages/${messageId}/reactions`,
+      {
+        data: body,
+      },
+    )
     return response.data
   }
 }
@@ -1522,9 +1591,15 @@ export async function removeReaction(client: AxiosInstance, messageId: number, p
  * @returns The response of the RenderMessage API
  * @see https://zulip.com/api/render-message
  */
-export async function renderMessage(client: AxiosInstance, params: RenderMessageParams) {
+export async function renderMessage(
+  client: AxiosInstance,
+  params: RenderMessageParams,
+) {
   const body = new URLSearchParams(params)
-  const response = await client.post<RenderMessageResponse>('/messages/render', body)
+  const response = await client.post<RenderMessageResponse>(
+    '/messages/render',
+    body,
+  )
 
   return response.data
 }
@@ -1537,7 +1612,11 @@ export async function renderMessage(client: AxiosInstance, params: RenderMessage
  * @returns The response of GetMessage API
  * @see https://zulip.com/api/get-message
  */
-export async function getMessage(client: AxiosInstance, messageId: number, params: GetMessageParams) {
+export async function getMessage(
+  client: AxiosInstance,
+  messageId: number,
+  params: GetMessageParams,
+) {
   const sendParams = {} as Record<string, string>
   for (const [key, value] of Object.entries(params)) {
     if (value === undefined || value === null) {
@@ -1545,9 +1624,12 @@ export async function getMessage(client: AxiosInstance, messageId: number, param
     }
     sendParams[key] = String(value)
   }
-  const response = await client.get<GetMessageResponse>(`/messages/${messageId}`, {
-    params: sendParams
-  })
+  const response = await client.get<GetMessageResponse>(
+    `/messages/${messageId}`,
+    {
+      params: sendParams,
+    },
+  )
 
   return response.data
 }
@@ -1559,13 +1641,19 @@ export async function getMessage(client: AxiosInstance, messageId: number, param
  * @returns The response of CheckMessagesMatchNarrow API
  * @see https://zulip.com/api/check-messages-match-narrow
  */
-export async function checkMessagesMatchNarrow(client: AxiosInstance, params: CheckMessagesMatchNarrowParams) {
+export async function checkMessagesMatchNarrow(
+  client: AxiosInstance,
+  params: CheckMessagesMatchNarrowParams,
+) {
   const body = new URLSearchParams()
-  
+
   for (const [key, value] of Object.entries(params)) {
     body.append(key, JSON.stringify(value))
   }
 
-  const response = await client.post<CheckMessagesMatchNarrowResponse>('/messages/matches_narrow', body)
+  const response = await client.post<CheckMessagesMatchNarrowResponse>(
+    '/messages/matches_narrow',
+    body,
+  )
   return response.data
 }

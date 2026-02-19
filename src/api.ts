@@ -7,13 +7,17 @@ import axios from 'axios'
  * @param apiKey API key for authentication
  * @returns Axios instance configured with basic auth
  */
-export function generateCallApi(serverUrl: string, email: string, apiKey: string) {
+export function generateCallApi(
+  serverUrl: string,
+  email: string,
+  apiKey: string,
+) {
   const instance = axios.create({
     baseURL: `${serverUrl.replace(/\/+$/, '')}/api/v1/`,
     auth: {
       username: email,
-      password: apiKey
-    }
+      password: apiKey,
+    },
   })
   return instance
 }

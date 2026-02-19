@@ -1305,6 +1305,55 @@ export type GetMessageResponse = GeneralSuccessResponse & {
 }
 
 /**
+ * Narrow item for check if messages match narrow
+ */
+export type CheckMessagesMatchNarrowNarrowItem = GetMessagesNarrowItem
+
+/**
+ * Parameters for CheckMessagesMatchNarrow API
+ * @see https://zulip.com/api/check-messages-match-narrow#parameters
+ */
+export type CheckMessagesMatchNarrowParams = {
+  /**
+   * Message IDs
+   * @see https://zulip.com/api/check-messages-match-narrow#parameter-msg_ids
+   */
+  msg_ids: number[]
+  /**
+   * Narrow to check
+   * @see https://zulip.com/api/check-messages-match-narrow#parameter-narrow
+   */
+  narrow: CheckMessagesMatchNarrowNarrowItem[]
+}
+
+/**
+ * Message item for CheckMessagesMatchNarrow API response
+ */
+export type CheckMessagesMatchNarrowResponseMessageItem = {
+  /**
+   * HTML content of a queried message that matches the narrow.
+   * If the narrow is a search narrow, highlight element will be included.
+   */
+  match_content: string
+  /**
+   * HTML-escaped topic of a queried message that matches the narrow.
+   * If the narrow is a search narrow, highlight element will be included.
+   */
+  match_subject: string
+}
+
+/**
+ * Response of CheckMessagesMatchNarrow API
+ * @see https://zulip.com/api/check-messages-match-narrow#response
+ */
+export type CheckMessagesMatchNarrowResponse = GeneralSuccessResponse & {
+  /**
+   * Matched messages. The key is message ID, and the value is the matched message data.
+   */
+  messages: {[key: string]: CheckMessagesMatchNarrowResponseMessageItem}
+}
+
+/**
  * Send a message.
  * @param client Axios client initialized by generateCallApi function in api.ts
  * @param params API parameters
@@ -1500,5 +1549,23 @@ export async function getMessage(client: AxiosInstance, messageId: number, param
     params: sendParams
   })
 
+  return response.data
+}
+
+/**
+ * Check whether messages match narrow or not.
+ * @param client Axios client initialized by generateCallApi function in api.ts
+ * @param params API parameters
+ * @returns The response of CheckMessagesMatchNarrow API
+ * @see https://zulip.com/api/check-messages-match-narrow
+ */
+export async function checkMessagesMatchNarrow(client: AxiosInstance, params: CheckMessagesMatchNarrowParams) {
+  const body = new URLSearchParams()
+  
+  for (const [key, value] of Object.entries(params)) {
+    body.append(key, JSON.stringify(value))
+  }
+
+  const response = await client.post<CheckMessagesMatchNarrowResponse>('/messages/matches_narrow', body)
   return response.data
 }

@@ -8,15 +8,22 @@ import axios from 'axios'
  * @returns API key for authenticated user
  * @see https://zulip.com/api/fetch-api-key
  */
-export async function authByPassword(serverUrl: string, email: string, password: string) {
+export async function authByPassword(
+  serverUrl: string,
+  email: string,
+  password: string,
+) {
   const response = await axios.post<{
     result: string
     msg: string
     api_key: string
-  }>(`${serverUrl.replace(/\/+$/, '')}/api/v1/login`, new URLSearchParams({
-    username: email,
-    password
-  }))
+  }>(
+    `${serverUrl.replace(/\/+$/, '')}/api/v1/login`,
+    new URLSearchParams({
+      username: email,
+      password,
+    }),
+  )
   return response.data.api_key
 }
 
@@ -32,9 +39,12 @@ export async function authDev(serverUrl: string, email: string) {
     result: string
     msg: string
     api_key: string
-  }>(`${serverUrl.replace(/\/+$/, '')}/api/v1/dev_fetch_api_key`, new URLSearchParams({
-    username: email,
-  }))
+  }>(
+    `${serverUrl.replace(/\/+$/, '')}/api/v1/dev_fetch_api_key`,
+    new URLSearchParams({
+      username: email,
+    }),
+  )
   return response.data.api_key
 }
 
@@ -50,8 +60,11 @@ export async function authByJwt(serverUrl: string, jwt: string) {
     result: string
     msg: string
     api_key: string
-  }>(`${serverUrl.replace(/\/+$/, '')}/api/v1/fetch_api_key`, new URLSearchParams({
-    token: jwt,
-  }))
+  }>(
+    `${serverUrl.replace(/\/+$/, '')}/api/v1/fetch_api_key`,
+    new URLSearchParams({
+      token: jwt,
+    }),
+  )
   return response.data.api_key
 }

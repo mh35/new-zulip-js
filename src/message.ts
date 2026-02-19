@@ -1659,6 +1659,18 @@ export type GetReadReceiptsResponse = GeneralSuccessResponse & {
 }
 
 /**
+ * The response of GetFileTemporaryUrl API
+ * @see https://zulip.com/api/get-file-temporary-url
+ */
+export type GetFileTemporaryUrlResponse = GeneralSuccessResponse & {
+  /**
+   * A temporary URL that can be used to access the uploaded file
+   * without Zulip's normal API authentication.
+   */
+  url: string
+}
+
+/**
  * Send a message.
  * @param client Axios client initialized by generateCallApi function in api.ts
  * @param params API parameters
@@ -2110,6 +2122,26 @@ export async function getReadReceipts(
 ) {
   const resp = await client.get<GetReadReceiptsResponse>(
     `/messages/${messageId}/read_receipts`,
+  )
+
+  return resp.data
+}
+
+/**
+ * Get the URL of the file without authentication
+ * @param client Axios client initialized by generateCallApi function in api.ts
+ * @param realmId The ID of the Zulip organization.
+ * @param filename Path to the uploaded file.
+ * @returns The response of GetFileTemporaryUrl API
+ * @see https://zulip.com/api/get-file-temporary-url
+ */
+export async function getFileTemporaryUrl(
+  client: AxiosInstance,
+  realmId: number,
+  filename: string,
+) {
+  const resp = await client.get<GetFileTemporaryUrlResponse>(
+    `/user_uploads/${realmId}/${filename}`,
   )
 
   return resp.data

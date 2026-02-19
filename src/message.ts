@@ -1630,6 +1630,24 @@ export type MarkStreamAsReadParams = {
 }
 
 /**
+ * The parameters of MarkTopicAsReadParams
+ * @deprecated Use UpdateMessageFlagsForNarrow API instead
+ * @see https://zulip.com/api/mark-topic-as-read#parameters
+ */
+export type MarkTopicAsReadParams = {
+  /**
+   * The stream ID
+   * @see https://zulip.com/api/mark-topic-as-read#parameter-stream_id
+   */
+  stream_id: number
+  /**
+   * The topic name
+   * @see https://zulip.com/api/mark-topic-as-read#parameter-topic_name
+   */
+  topic_name: string
+}
+
+/**
  * Send a message.
  * @param client Axios client initialized by generateCallApi function in api.ts
  * @param params API parameters
@@ -2039,6 +2057,31 @@ export async function markStreamAsRead(
     body.append(key, String(value))
   }
   const resp = await client.post<GeneralSuccessResponse>('/mark_stream_as_read')
+
+  return resp.data
+}
+
+/**
+ * Mark all messages in the topic as read.
+ * @param client Axios client initialized by generateCallApi function in api.ts
+ * @param params API parameters
+ * @returns The response of MarkTopicAsRead response
+ * @deprecated Use updateMessageFlagsForNarrow function instead.
+ * @see https://zulip.com/api/mark-topic-as-read
+ */
+export async function markTopicAsRead(
+  client: AxiosInstance,
+  params: MarkTopicAsReadParams,
+) {
+  const body = new URLSearchParams()
+
+  for (const [key, value] of Object.entries(params)) {
+    if (value === undefined || value === null) {
+      continue
+    }
+    body.append(key, String(value))
+  }
+  const resp = await client.post<GeneralSuccessResponse>('/mark_topic_as_read')
 
   return resp.data
 }

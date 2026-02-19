@@ -1501,11 +1501,103 @@ export type UpdateMessageFlagsParams = {
  * The response of UpdateMessageFlags API
  * @see https://zulip.com/api/update-message-flags#response
  */
-export type UPdateMessageFlagsResponse = GeneralSuccessResponse & {
+export type UpdateMessageFlagsResponse = GeneralSuccessResponse & {
   /**
    * Message IDs that were successfully updated.
    */
   messages: number[]
+  /**
+   * Message IDs that were ignored. Exists only if op=remove and flag=read.
+   */
+  ignored_because_not_subscribed_channels?: number[]
+}
+
+/**
+ * Narrow item for UpdateMessageFlagsForNarrow API
+ */
+export type UpdateMessageFlagsForNarrowNarrowItem = GetMessagesNarrowItem
+
+/**
+ * The parameters of UpdateMessageFlagsForNarrow API
+ * @since Zulip 6.0 (feature level 155)
+ * @see https://zulip.com/api/update-message-flags-for-narrow#parameters
+ */
+export type UpdateMessageFlagsForNarrowParams = {
+  /**
+   * The anchor. Message ID or the special string below.
+   *
+   * newest: The most recent message.
+   *
+   * oldest: The oldest message.
+   *
+   * first_unread: The first unread message if any. Otherwise, the newest message.
+   * @see https://zulip.com/api/update-message-flags-for-narrow#parameter-anchor
+   */
+  anchor: string | number
+  /**
+   * Whether to include anchor or not. Default is true
+   *
+   * If you specify num_before>0 and num_after>0, you must specify include_anchor=true.
+   * @see https://zulip.com/api/update-message-flags-for-narrow#parameter-include_anchor
+   */
+  include_anchor?: boolean
+  /**
+   * The number of messages to apply operations before anchor.
+   * @see https://zulip.com/api/update-message-flags-for-narrow#parameter-num_before
+   */
+  num_before: number
+  /**
+   * THe number of messages to apply operations after anchor.
+   * @see https://zulip.com/api/update-message-flags-for-narrow#parameter-num_after
+   */
+  num_after: number
+  /**
+   * Narrow to filter messages.
+   * @see https://zulip.com/api/update-message-flags-for-narrow#parameter-narrow
+   */
+  narrow: (UpdateMessageFlagsForNarrowNarrowItem | [string, string])[]
+  /**
+   * Whether to add or remove flags
+   * @see https://zulip.com/api/update-message-flags-for-narrow#parameter-op
+   */
+  op: 'add' | 'remove'
+  /**
+   * The flag
+   * @see https://zulip.com/api/update-message-flags-for-narrow#parameter-flag
+   */
+  flag: UpdatableMessageFlags
+}
+
+/**
+ * The response of UpdateMessageFlagsForNarrow API
+ * @since Zulip 6.0 (feature level 155)
+ * @see https://zulip.com/api/update-message-flags-for-narrow#response
+ */
+export type UpdateMessageFlagsForNarrowResponse = GeneralSuccessResponse & {
+  /**
+   * The number of messages which are processed in this operation.
+   */
+  processed_count: number
+  /**
+   * The number of messages which flags are changed.
+   */
+  updated_count: number
+  /**
+   * The oldest processed message ID. If this is null, no messages are processed.
+   */
+  first_processed_id: number | null
+  /**
+   * The newest processed message ID. If this is null, no messages are processed.
+   */
+  last_processed_id: number | null
+  /**
+   * Whether the operation processed the oldest message which matches the narrow.
+   */
+  found_oldest: boolean
+  /**
+   * Whether the operation processed the newest message which matches the narrow.
+   */
+  found_newest: boolean
   /**
    * Message IDs that were ignored. Exists only if op=remove and flag=read.
    */
@@ -1841,8 +1933,47 @@ export async function updateMessageFlags(
       body.append(key, String(value))
     }
   }
-  const resp = await client.post<UPdateMessageFlagsResponse>(
+  const resp = await client.post<UpdateMessageFlagsResponse>(
     '/messages/flags',
+    body,
+  )
+
+  return resp.data
+}
+
+/**
+ * Update flags of messages that match the narrow.
+ * @param client Axios client initialized by generateCallApi function in api.ts
+ * @param params API parameters
+ * @returns The response of UpdateMessageFlagsForNarrow
+ * @since Zulip 6.0 (feature level 155)
+ * @see https://zulip.com/api/update-message-flags-for-narrow
+ */
+export async function updateMessageFlagsForNarrow(
+  client: AxiosInstance,
+  params: UpdateMessageFlagsForNarrowParams,
+) {
+  const body = new URLSearchParams()
+
+  for (const [key, value] of Object.entries(params)) {
+    if (value === undefined || value === null) {
+      continue
+    }
+
+    if (Array.isArray(value)) {
+      // Encode arrays as JSON strings
+      body.append(key, JSON.stringify(value))
+    } else if (typeof value === 'boolean') {
+      // Encode booleans as strings
+      body.append(key, String(value))
+    } else {
+      // Other values (strings, numbers)
+      body.append(key, String(value))
+    }
+  }
+
+  const resp = await client.post<UpdateMessageFlagsForNarrowResponse>(
+    '/messages/flags/narrow',
     body,
   )
 

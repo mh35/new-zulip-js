@@ -1389,6 +1389,86 @@ export type CheckMessagesMatchNarrowResponse = GeneralSuccessResponse & {
 }
 
 /**
+ * The parameters of GetMessageHistory API
+ * @see https://zulip.com/api/get-message-history#parameters
+ */
+export type GetMessageHistoryParams = {
+  /**
+   * Whether the topic names can be empty string. Default is false.
+   * @since Zulip 10.0 (feature level 334)
+   * @see https://zulip.com/api/get-message-history#parameter-allow_empty_topic_name
+   */
+  allow_empty_topic_name?: boolean
+}
+
+/**
+ * The history item of GetMessageHistory API
+ */
+export type GetMessageHistoryHistoryItem = {
+  /**
+   * The topic of the message
+   */
+  topic: string
+  /**
+   * The previous topic of the message. Exists only if the topic was changed.
+   */
+  prev_topic?: string
+  /**
+   * The stream ID. Exists only if the channel was changed.
+   */
+  stream?: number
+  /**
+   * The previous stream ID. Exists only if the channel was changed.
+   */
+  prev_stream?: number
+  /**
+   * The raw Zulip-flavored Markdown content.
+   */
+  content: string
+  /**
+   * The rendered HTML content.
+   */
+  rendered_content: string
+  /**
+   * The previous Zulip-flavored Markdown content. Exists only if the content was edited.
+   */
+  prev_content?: string
+  /**
+   * The previous rendered HTML content. Exists only if the content was edited.
+   */
+  prev_rendered_content?: string
+  /**
+   * The ID of the user who edited this message.
+   * This field is only be null if the edit was done
+   * before March 2017.
+   *
+   * If this field is null, this edit was taken by the sender (content edit)
+   * or the unknown user (topic edit).
+   */
+  user_id: number | null
+  /**
+   * The difference of the rendered content.
+   * Exists only if the content was edited.
+   */
+  content_html_diff?: string
+  /**
+   * The UNIX timestamp for this edit
+   */
+  timestamp: number
+}
+
+/**
+ * The response of GetMessageHistory API
+ * @see https://zulip.com/api/get-message-history#response
+ */
+export type GetMessageHistoryResponse = GeneralSuccessResponse & {
+  /**
+   * A chronologically sorted, oldest to newest message edit history.
+   */
+  message_history: GetMessageHistoryHistoryItem[]
+}
+
+/**
  * Send a message.
  * @param client Axios client initialized by generateCallApi function in api.ts
  * @param params API parameters
@@ -1656,4 +1736,34 @@ export async function checkMessagesMatchNarrow(
     body,
   )
   return response.data
+}
+
+/**
+ * Get the edit history of the message
+ * @param client Axios client initialized by generateCallApi function in api.ts
+ * @param messageId Message ID
+ * @param params API parameters
+ * @returns The response of GetMessageHistory API
+ * @see https://zulip.com/api/get-message-history
+ */
+export async function getMessageEditHistory(
+  client: AxiosInstance,
+  messageId: number,
+  params: GetMessageHistoryParams,
+) {
+  const sendParams = {} as Record<string, string>
+  for (const [key, value] of Object.entries(params)) {
+    if (value === undefined || value === null) {
+      continue
+    }
+    sendParams[key] = String(value)
+  }
+  const resp = await client.get<GetMessageHistoryResponse>(
+    `/messages/${messageId}/history`,
+    {
+      params: sendParams,
+    },
+  )
+
+  return resp.data
 }

@@ -1648,6 +1648,17 @@ export type MarkTopicAsReadParams = {
 }
 
 /**
+ * The response of GetReadReceipts API
+ * @see https://zulip.com/api/get-read-receipts#response
+ */
+export type GetReadReceiptsResponse = GeneralSuccessResponse & {
+  /**
+   * User IDs of users who have read the message.
+   */
+  user_ids: number[]
+}
+
+/**
  * Send a message.
  * @param client Axios client initialized by generateCallApi function in api.ts
  * @param params API parameters
@@ -2082,6 +2093,24 @@ export async function markTopicAsRead(
     body.append(key, String(value))
   }
   const resp = await client.post<GeneralSuccessResponse>('/mark_topic_as_read')
+
+  return resp.data
+}
+
+/**
+ * Get users who read the message.
+ * @param client Axios client initialized by generateCallApi function in api.ts
+ * @param messageId Message ID
+ * @returns The response of GetReadReceipts API.
+ * @see https://zulip.com/api/get-read-receipts
+ */
+export async function getReadReceipts(
+  client: AxiosInstance,
+  messageId: number,
+) {
+  const resp = await client.get<GetReadReceiptsResponse>(
+    `/messages/${messageId}/read_receipts`,
+  )
 
   return resp.data
 }

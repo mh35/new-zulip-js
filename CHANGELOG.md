@@ -1,5 +1,9 @@
 # Changelog
 
+## Version 1.1.0-alpha.2
+
+- Reminder API functions
+
 ## Version 1.1.0-alpha.1
 
 - Scheduled message API functions

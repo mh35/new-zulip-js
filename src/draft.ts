@@ -12,7 +12,7 @@ export type GetDraftsResponseItem = {
   /**
    * The type of message
    */
-  type: 'stream' | 'private'
+  type: '' | 'stream' | 'private'
   /**
    * The target stream or user IDs.
    */

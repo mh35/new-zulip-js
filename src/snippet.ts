@@ -158,3 +158,19 @@ export async function editSnippet(
 
   return resp.data
 }
+
+/**
+ * Delete a snippet
+ * @param client Axios client initialized by generateCallApi function in api.ts
+ * @param snippetId Snippet ID
+ * @returns The response of DeleteSnippet API
+ * @since Zulip 10.0 (feature level 297)
+ * @see https://zulip.com/api/delete-saved-snippet
+ */
+export async function deleteSnippet(client: AxiosInstance, snippetId: number) {
+  const resp = await client.delete<GeneralSuccessResponse>(
+    `/saved_snippets/${snippetId}`,
+  )
+
+  return resp.data
+}

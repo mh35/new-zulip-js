@@ -5,5 +5,15 @@ import * as draft from './draft'
 import * as message from './message'
 import * as reminder from './reminder'
 import * as scheduledMessage from './scheduled-message'
+import * as snippet from './snippet'
 
-export { api, auth, constants, draft, message, reminder, scheduledMessage }
+export {
+  api,
+  auth,
+  constants,
+  draft,
+  message,
+  reminder,
+  scheduledMessage,
+  snippet,
+}

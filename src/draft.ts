@@ -49,6 +49,53 @@ export type GetDraftsResponse = GeneralSuccessResponse & {
 }
 
 /**
+ * Create drafts parameter draft item.
+ */
+export type CreateDraftsParamItem = {
+  /**
+   * The type of message
+   */
+  type: '' | 'stream' | 'private'
+  /**
+   * The target stream or user IDs.
+   */
+  to: number[]
+  /**
+   * The topic of the message.
+   *
+   * If direct message, empty string
+   */
+  topic: string
+  /**
+   * The content of the draft
+   */
+  content: string
+}
+
+/**
+ * The API parameters for CreateDrafts API
+ * @see https://zulip.com/api/create-drafts#parameters
+ */
+export type CreateDraftsParams = {
+  /**
+   * Drafts to create
+   * @see https://zulip.com/api/create-drafts#parameter-drafts
+   */
+  drafts: CreateDraftsParamItem[]
+}
+
+/**
+ * The API response for CreateDrafts API
+ * @see https://zulip.com/api/create-drafts#response
+ */
+export type CreateDraftsResponse = GeneralSuccessResponse & {
+  /**
+   * Draft IDs. The order is the same as the request.
+   */
+  ids: number[]
+}
+
+/**
  * Get all drafts
  * @param client Axios client initialized by generateCallApi function in api.ts
  * @returns The response of GetDrafts API
@@ -56,6 +103,26 @@ export type GetDraftsResponse = GeneralSuccessResponse & {
  */
 export async function getDrafts(client: AxiosInstance) {
   const resp = await client.get<GetDraftsResponse>('/drafts')
+
+  return resp.data
+}
+
+/**
+ * Create drafts
+ * @param client Axios client initialized by generateCallApi function in api.ts
+ * @param params API parameters
+ * @returns The response of CreateDrafts API
+ * @see https://zulip.com/api/create-drafts
+ */
+export async function createDrafts(
+  client: AxiosInstance,
+  params: CreateDraftsParams,
+) {
+  const body = new URLSearchParams()
+
+  body.append('drafts', JSON.stringify(params.drafts))
+
+  const resp = await client.post<CreateDraftsResponse>('/drafts', body)
 
   return resp.data
 }

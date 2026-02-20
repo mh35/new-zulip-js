@@ -168,3 +168,16 @@ export async function editDraft(
 
   return resp.data
 }
+
+/**
+ * Delete a draft
+ * @param client Axios client initialized by generateCallApi function in api.ts
+ * @param draftId Draft ID
+ * @returns The response of DeleteDraft API
+ * @see https://zulip.com/api/delete-draft
+ */
+export async function deleteDraft(client: AxiosInstance, draftId: number) {
+  const resp = await client.delete<GeneralSuccessResponse>(`/drafts/${draftId}`)
+
+  return resp.data
+}

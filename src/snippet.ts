@@ -66,6 +66,37 @@ export type CreateSnippetResponse = GeneralSuccessResponse & {
 }
 
 /**
+ * EditSnippet API parameters to edit title
+ */
+type EditSnippetEditTitleParams = {
+  /**
+   * The title of the snippet
+   * @see https://zulip.com/api/edit-saved-snippet#parameter-title
+   */
+  title: string
+}
+
+/**
+ * EditSnippet API parameters to edit content
+ */
+type EditSnippetEditContentParams = {
+  /**
+   * The content of the snippet
+   * @see https://zulip.com/api/edit-saved-snippet#parameter-content
+   */
+  content: string
+}
+
+/**
+ * The parameters for EditSnippet API
+ * @since Zulip 10.0 (feature level 368)
+ * @see https://zulip.com/api/edit-saved-snippet#parameters
+ */
+export type EditSnippetParams =
+  | EditSnippetEditTitleParams
+  | EditSnippetEditContentParams
+
+/**
  * Get all saved snippets
  * @param client Axios client initialized by generateCallApi function in api.ts
  * @returns The response of GetSnippets API
@@ -93,6 +124,37 @@ export async function createSnippet(
   const body = new URLSearchParams(params)
 
   const resp = await client.post<CreateSnippetResponse>('/saved_snippets', body)
+
+  return resp.data
+}
+
+/**
+ * Edit a snippet
+ * @param client Axios client initialized by generateCallApi function in api.ts
+ * @param snippetId Snippet ID
+ * @param params API parameters
+ * @returns The response of EditSnippet API
+ * @since Zulip 10.0 (feature level 368)
+ * @see https://zulip.com/api/edit-saved-snippet
+ */
+export async function editSnippet(
+  client: AxiosInstance,
+  snippetId: number,
+  params: EditSnippetParams,
+) {
+  const body = new URLSearchParams()
+
+  for (const [key, value] of Object.entries(params)) {
+    if (value === undefined || value === null) {
+      continue
+    }
+    body.append(key, String(value))
+  }
+
+  const resp = await client.patch<GeneralSuccessResponse>(
+    `/saved_snippets/${snippetId}`,
+    body,
+  )
 
   return resp.data
 }

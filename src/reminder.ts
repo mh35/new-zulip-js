@@ -130,3 +130,22 @@ export async function getReminders(client: AxiosInstance) {
 
   return resp.data
 }
+
+/**
+ * Delete a reminder
+ * @param client Axios client initialized by generateCallApi function in api.ts
+ * @param reminderId Reminder ID
+ * @returns The response of DeleteReminder API
+ * @since Zulip 11.0 (feature level 399)
+ * @see https://zulip.com/api/delete-reminder
+ */
+export async function deleteReminder(
+  client: AxiosInstance,
+  reminderId: number,
+) {
+  const resp = await client.delete<GeneralSuccessResponse>(
+    `/reminders/${reminderId}`,
+  )
+
+  return resp.data
+}

@@ -38,6 +38,54 @@ export type CreateReminderResponse = GeneralSuccessResponse & {
 }
 
 /**
+ * The reminder item of GetReminders API response
+ */
+export type GetRemindersResponseItem = {
+  /**
+   * Reminder ID
+   */
+  reminder_id: number
+  /**
+   * Message type. Always be private
+   */
+  type: 'private'
+  /**
+   * Target user IDs. This contains the ID of the user who created the reminder,
+   * and the ID of the user who is the target.
+   */
+  to: number[]
+  /**
+   * The raw Zulip-flavored Markdown content
+   */
+  content: string
+  /**
+   * The rendered HTMl content
+   */
+  rendered_content: string
+  /**
+   * The UNIX timestamp for when the reminder will be sent
+   */
+  scheduled_delivery_timestamp: number
+  /**
+   * Whether sending the reminder failed or not
+   */
+  failed: boolean
+  /**
+   * Target message ID
+   */
+  reminder_target_message_id: number
+}
+
+/**
+ * The response of GetReminders API
+ * @since Zulip 11.0 (feature level 399)
+ * @see https://zulip.com/api/get-reminders#response
+ */
+export type GetRemindersResponse = GeneralSuccessResponse & {
+  reminders: GetRemindersResponseItem[]
+}
+
+/**
  * Create a reminder.
  * @param client Axios client initialized by generateCallApi function in api.ts
  * @param params API parameters
@@ -66,6 +114,19 @@ export async function createReminder(
   }
 
   const resp = await client.post<CreateReminderResponse>('/reminders', body)
+
+  return resp.data
+}
+
+/**
+ * Get reminders
+ * @param client Axios client initialized by generateCallApi function in api.ts
+ * @returns The response of GetReminders API
+ * @since Zulip 11.0 (feature level 399)
+ * @see https://zulip.com/api/get-reminders
+ */
+export async function getReminders(client: AxiosInstance) {
+  const resp = await client.get<GetRemindersResponse>('/reminders')
 
   return resp.data
 }

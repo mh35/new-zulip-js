@@ -36,7 +36,7 @@ type GetScheduleMessagesResponsePrivateItem = {
    * If stream message, the ID of the stream. If private message,
    * the ID of the user or IDs of users.
    */
-  to: number | number[]
+  to: number[]
   /**
    * Topic of the message. Only exists in stream message.
    */

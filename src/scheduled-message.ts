@@ -529,3 +529,22 @@ export async function editScheduledMessage(
 
   return resp.data
 }
+
+/**
+ * Delete a scheduled message.
+ * @param client Axios client initialized by generateCallApi function in api.ts
+ * @param scheduledMessageId Scheduled message ID
+ * @returns The response of DeleteScheduledMessage API
+ * @since Zulip 7.0 (feature level 173)
+ * @see https://zulip.com/api/delete-scheduled-message
+ */
+export async function deleteScheduledMessage(
+  client: AxiosInstance,
+  scheduledMessageId: number,
+) {
+  const resp = await client.delete<GeneralSuccessResponse>(
+    `/scheduled_messages/${scheduledMessageId}`,
+  )
+
+  return resp.data
+}

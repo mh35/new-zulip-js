@@ -1,5 +1,10 @@
 # Changelog
 
+## Version 1.1.0-alpha.3
+
+- Draft API functions
+- Saved snippet API functions
+
 ## Version 1.1.0-alpha.2
 
 - Reminder API functions

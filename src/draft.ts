@@ -96,6 +96,23 @@ export type CreateDraftsResponse = GeneralSuccessResponse & {
 }
 
 /**
+ * Draft in EditDraft API parameters
+ */
+export type EditDraftParamDraft = CreateDraftsParamItem
+
+/**
+ * EditDraft API parameters
+ * @see https://zulip.com/api/edit-draft#parameters
+ */
+export type EditDraftParams = {
+  /**
+   * The draft data
+   * @see https://zulip.com/api/edit-draft#parameter-draft
+   */
+  draft: EditDraftParamDraft
+}
+
+/**
  * Get all drafts
  * @param client Axios client initialized by generateCallApi function in api.ts
  * @returns The response of GetDrafts API
@@ -123,6 +140,31 @@ export async function createDrafts(
   body.append('drafts', JSON.stringify(params.drafts))
 
   const resp = await client.post<CreateDraftsResponse>('/drafts', body)
+
+  return resp.data
+}
+
+/**
+ * Edit a draft
+ * @param client Axios client initialized by generateCallApi function in api.ts
+ * @param draftId Draft ID
+ * @param params API parameters
+ * @returns The response of EditDraft API
+ * @see https://zulip.com/api/edit-draft
+ */
+export async function editDraft(
+  client: AxiosInstance,
+  draftId: number,
+  params: EditDraftParams,
+) {
+  const body = new URLSearchParams()
+
+  body.append('draft', JSON.stringify(params.draft))
+
+  const resp = await client.patch<GeneralSuccessResponse>(
+    `/drafts/${draftId}`,
+    body,
+  )
 
   return resp.data
 }

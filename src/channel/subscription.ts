@@ -543,6 +543,17 @@ export type UnsubscribeChannelsResponse = GeneralSuccessResponse & {
 }
 
 /**
+ * The response of GetSubscriptionStatus API
+ * @see https://zulip.com/api/get-subscription-status#response
+ */
+export type GetSubscriptionStatusResponse = GeneralSuccessResponse & {
+  /**
+   * Whether the user is subscribed the channel or not
+   */
+  is_subscribed: boolean
+}
+
+/**
  *
  * @param client Axios client initialized by generateCallApi function in api.ts
  * @param params API parameters
@@ -627,5 +638,24 @@ export async function unsubscribeChannels(
     },
   )
 
+  return resp.data
+}
+
+/**
+ * Check whether the user subscribes a channel or not
+ * @param client Axios client initialized by generateCallApi function in api.ts
+ * @param userId User ID
+ * @param streamId Stream ID
+ * @returns The response of GetSubscriptionStatus API
+ * @see https://zulip.com/api/get-subscription-status
+ */
+export async function getSubscriptionStatus(
+  client: AxiosInstance,
+  userId: number,
+  streamId: number,
+) {
+  const resp = await client.get<GetSubscriptionStatusResponse>(
+    `/users/${userId}/subscriptions/${streamId}`,
+  )
   return resp.data
 }

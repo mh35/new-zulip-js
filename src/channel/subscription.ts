@@ -511,6 +511,38 @@ export type SubscribeChannelsResponse = GeneralSuccessResponse & {
 }
 
 /**
+ * Parameters of UnsubscribeChannels API
+ * @see https://zulip.com/api/unsubscribe#parameters
+ */
+export type UnsubscribeChannelsParams = {
+  /**
+   * The list of channels to unsubscribe
+   * @see https://zulip.com/api/unsubscribe#parameter-subscriptions
+   */
+  subscriptions: string[]
+  /**
+   * Users to unsubscribe. If omitted, unsubscribe the requesting user.
+   * @see https://zulip.com/api/unsubscribe#parameter-principals
+   */
+  principals?: number[] | string[]
+}
+
+/**
+ * Response of UnsubscribeChannels API
+ * @see https://zulip.com/api/unsubscribe#response
+ */
+export type UnsubscribeChannelsResponse = GeneralSuccessResponse & {
+  /**
+   * A list of channels unsubscribed by this request.
+   */
+  removed: string[]
+  /**
+   * A list of channels that were already unsubscribed.
+   */
+  not_removed: string[]
+}
+
+/**
  *
  * @param client Axios client initialized by generateCallApi function in api.ts
  * @param params API parameters
@@ -558,6 +590,41 @@ export async function subscribeChannels(
   const resp = await client.post<SubscribeChannelsResponse>(
     '/users/me/subscriptions',
     body,
+  )
+
+  return resp.data
+}
+
+/**
+ * Unsubscribe one or more users from one or more channels.
+ * @param client Axios client initialized by generateCallApi function in api.ts
+ * @param params API parameters
+ * @returns The response of UnsubscribeChannels API
+ * @see https://zulip.com/api/unsubscribe
+ */
+export async function unsubscribeChannels(
+  client: AxiosInstance,
+  params: UnsubscribeChannelsParams,
+) {
+  const body = new URLSearchParams()
+
+  for (const [key, value] of Object.entries(params)) {
+    if (value === undefined || value === null) {
+      continue
+    }
+
+    if (Array.isArray(value) || typeof value === 'object') {
+      body.append(key, JSON.stringify(value))
+    } else {
+      body.append(key, String(value))
+    }
+  }
+
+  const resp = await client.delete<UnsubscribeChannelsResponse>(
+    '/users/me/subscriptions',
+    {
+      data: body,
+    },
   )
 
   return resp.data

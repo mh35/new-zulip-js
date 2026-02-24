@@ -577,6 +577,76 @@ export type GetUserChannelsResponse = GeneralSuccessResponse & {
 }
 
 /**
+ * Updatable subscription properties on UpdateSubscriptionSettings API.
+ * @see https://zulip.com/api/update-subscription-settings#parameter-subscription_data
+ */
+export type UpdateSubscriptionSettingsProperty =
+  | 'color'
+  | 'is_muted'
+  | 'in_home_view'
+  | 'pin_to_top'
+  | 'desktop_notifications'
+  | 'audible_notifications'
+  | 'push_notifications'
+  | 'email_notifications'
+  | 'wildcard_mentions_notify'
+
+/**
+ * A single subscription update item where value is a string color.
+ */
+type UpdateSubscriptionSettingsColorItem = {
+  /**
+   * The unique ID of a channel.
+   */
+  stream_id: number
+  /**
+   * The property to update.
+   */
+  property: 'color'
+  /**
+   * The hex value of the user's display color for the channel.
+   */
+  value: string
+}
+
+/**
+ * A single subscription update item where value is a boolean.
+ */
+type UpdateSubscriptionSettingsBooleanItem = {
+  /**
+   * The unique ID of a channel.
+   */
+  stream_id: number
+  /**
+   * The property to update.
+   */
+  property: Exclude<UpdateSubscriptionSettingsProperty, 'color'>
+  /**
+   * The new boolean value for the property.
+   */
+  value: boolean
+}
+
+/**
+ * A single subscription update item.
+ */
+export type UpdateSubscriptionSettingsItem =
+  | UpdateSubscriptionSettingsColorItem
+  | UpdateSubscriptionSettingsBooleanItem
+
+/**
+ * Parameters of UpdateSubscriptionSettings API
+ * @see https://zulip.com/api/update-subscription-settings#parameters
+ */
+export type UpdateSubscriptionSettingsParams = {
+  /**
+   * The list of subscription settings updates.
+   * @see https://zulip.com/api/update-subscription-settings#parameter-subscription_data
+   */
+  subscription_data: UpdateSubscriptionSettingsItem[]
+}
+
+/**
  *
  * @param client Axios client initialized by generateCallApi function in api.ts
  * @param params API parameters
@@ -709,5 +779,38 @@ export async function getUserChannels(client: AxiosInstance, userId: number) {
   const resp = await client.get<GetUserChannelsResponse>(
     `/users/${userId}/channels`,
   )
+  return resp.data
+}
+
+/**
+ * Update the user's personal subscription settings for one or more channels.
+ * @param client Axios client initialized by generateCallApi function in api.ts
+ * @param params API parameters
+ * @returns The response of UpdateSubscriptionSettings API
+ * @see https://zulip.com/api/update-subscription-settings
+ */
+export async function updateSubscriptionSettings(
+  client: AxiosInstance,
+  params: UpdateSubscriptionSettingsParams,
+) {
+  const body = new URLSearchParams()
+
+  for (const [key, value] of Object.entries(params)) {
+    if (value === undefined || value === null) {
+      continue
+    }
+
+    if (Array.isArray(value) || typeof value === 'object') {
+      body.append(key, JSON.stringify(value))
+    } else {
+      body.append(key, String(value))
+    }
+  }
+
+  const resp = await client.post<GeneralSuccessResponse>(
+    '/users/me/subscriptions/properties',
+    body,
+  )
+
   return resp.data
 }

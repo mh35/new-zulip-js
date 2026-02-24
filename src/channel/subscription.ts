@@ -554,6 +554,17 @@ export type GetSubscriptionStatusResponse = GeneralSuccessResponse & {
 }
 
 /**
+ * The response of GetSubscribers API
+ * @see https://zulip.com/api/get-subscribers#response
+ */
+export type GetSubscribersResponse = GeneralSuccessResponse & {
+  /**
+   * User IDs of subscribers
+   */
+  subscribers: number[]
+}
+
+/**
  *
  * @param client Axios client initialized by generateCallApi function in api.ts
  * @param params API parameters
@@ -656,6 +667,20 @@ export async function getSubscriptionStatus(
 ) {
   const resp = await client.get<GetSubscriptionStatusResponse>(
     `/users/${userId}/subscriptions/${streamId}`,
+  )
+  return resp.data
+}
+
+/**
+ * Get the IDs of subscribers
+ * @param client Axios client initialized by generateCallApi function in api.ts
+ * @param streamId Stream ID
+ * @returns The response of GetSubscribers API
+ * @see https://zulip.com/api/get-subscribers
+ */
+export async function getSubscribers(client: AxiosInstance, streamId: number) {
+  const resp = await client.get<GetSubscribersResponse>(
+    `/streams/${streamId}/members`,
   )
   return resp.data
 }

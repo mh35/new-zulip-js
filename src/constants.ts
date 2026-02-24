@@ -25,3 +25,38 @@ export const VISIBILITY_FOLLOWED = 3
  * @see https://zulip.com/api/update-user-topic#parameter-visibility_policy
  */
 export type TopicVisibilityValues = 0 | 1 | 2 | 3
+
+/**
+ * Stream policy anyone can post to channel
+ * @deprecated Since Zulip 10.0 (feature level 333)
+ * @see https://zulip.com/api/get-streams#response
+ */
+export const STREAM_POST_POLICY_ANYONE_CAN_POST = 1
+
+/**
+ * Stream policy only administrators can post to channel
+ * @deprecated Since Zulip 10.0 (feature level 333)
+ * @see https://zulip.com/api/get-streams#response
+ */
+export const STREAM_POST_POLICY_ADMIN_CAN_POST = 2
+
+/**
+ * Stream policy only full members can post to channel
+ * @deprecated Since Zulip 10.0 (feature level 333)
+ * @see https://zulip.com/api/get-streams#response
+ */
+export const STREAM_POST_POLICY_FULL_MEMBER_CAN_POST = 3
+
+/**
+ * Stream policy only moderators can post to channel
+ * @deprecated Since Zulip 10.0 (feature level 333)
+ * @see https://zulip.com/api/get-streams#response
+ */
+export const STREAM_POST_POLICY_MODERATOR_CAN_POST = 4
+
+/**
+ * Stream policy values
+ * @deprecated Since Zulip 10.0 (feature level 333)
+ * @see https://zulip.com/api/get-streams#response
+ */
+export type StreamPostPlicyValues = 1 | 2 | 3 | 4

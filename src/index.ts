@@ -1,5 +1,6 @@
 import * as api from './api'
 import * as auth from './auth'
+import * as channel from './channel'
 import * as constants from './constants'
 import * as draft from './draft'
 import * as message from './message'
@@ -11,6 +12,7 @@ import * as snippet from './snippet'
 export {
   api,
   auth,
+  channel,
   constants,
   draft,
   message,

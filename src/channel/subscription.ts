@@ -322,6 +322,195 @@ export type GetSubscriptionsResponse = GeneralSuccessResponse & {
 }
 
 /**
+ * Subscription target item of SubscribeChannels API
+ * @see https://zulip.com/api/subscribe#parameter-subscriptions
+ */
+export type SubscribeChannelsSubscriptionItem = {
+  /**
+   * The name of the channel
+   */
+  name: string
+  /**
+   * The description of the channel in Zulip-flavored Markdown.
+   * Used only when creating new channels.
+   */
+  description?: string
+}
+
+/**
+ * A dictionary where key is user ID and value is channel names.
+ */
+type SubscribeChannelsMap = Record<string, string[]>
+
+/**
+ * Parameters of SubscribeChannels API
+ * @see https://zulip.com/api/subscribe#parameters
+ */
+export type SubscribeChannelsParams = {
+  /**
+   * The list of channels to subscribe
+   * @see https://zulip.com/api/subscribe#parameter-subscriptions
+   */
+  subscriptions: SubscribeChannelsSubscriptionItem[]
+  /**
+   * Users to subscribe. If omitted, subscribe the requesting user.
+   * The default value is only current user.
+   * @see https://zulip.com/api/subscribe#parameter-principals
+   */
+  principals?: number[] | string[]
+  /**
+   * Treat authorization errors as fatal or not.
+   * The default value is true.
+   * @see https://zulip.com/api/subscribe#parameter-authorization_errors_fatal
+   */
+  authorization_errors_fatal?: boolean
+  /**
+   * Send a notification-bot announcement when creating new channels.
+   * The default value is false.
+   * @see https://zulip.com/api/subscribe#parameter-announce
+   */
+  announce?: boolean
+  /**
+   * Whether newly created channels are private. The default value is false.
+   * @see https://zulip.com/api/subscribe#parameter-invite_only
+   */
+  invite_only?: boolean
+  /**
+   * Whether newly created channels are web-public. The default value is false.
+   * @since Zulip 5.0 (feature level 98)
+   * @see https://zulip.com/api/subscribe#parameter-is_web_public
+   */
+  is_web_public?: boolean
+  /**
+   * Whether newly created channels are default channels.
+   * The default value is false.
+   * @since Zulip 8.0 (feature level 200)
+   * @see https://zulip.com/api/subscribe#parameter-is_default_stream
+   */
+  is_default_stream?: boolean
+  /**
+   * Whether history is available to newly subscribed users.
+   * @see https://zulip.com/api/subscribe#parameter-history_public_to_subscribers
+   */
+  history_public_to_subscribers?: boolean
+  /**
+   * The channel-level message retention policy.
+   *
+   * If number, retain for that number of days.
+   *
+   * realm_default: Use organization-level policy.
+   *
+   * unlimited: Never delete by retention policy.
+   * @since Zulip 3.0 (feature level 17)
+   * @see https://zulip.com/api/subscribe#parameter-message_retention_days
+   */
+  message_retention_days?: number | 'realm_default' | 'unlimited'
+  /**
+   * Topic policy setting for newly created channels.
+   * @since Zulip 11.0 (feature level 392)
+   * @see https://zulip.com/api/subscribe#parameter-topics_policy
+   */
+  topics_policy?:
+    | 'inherit'
+    | 'allow_empty_topic'
+    | 'disable_empty_topic'
+    | 'empty_topic_only'
+  /**
+   * Group setting for add-subscribers permission.
+   * @since Zulip 10.0 (feature level 342)
+   */
+  can_add_subscribers_group?: number | ChannelPermissionGroupObj
+  /**
+   * Group setting for remove-subscribers permission.
+   * @since Zulip 6.0 (feature level 142)
+   */
+  can_remove_subscribers_group?: number | ChannelPermissionGroupObj
+  /**
+   * Group setting for channel-administer permission.
+   * @since Zulip 10.0 (feature level 325)
+   */
+  can_administer_channel_group?: number | ChannelPermissionGroupObj
+  /**
+   * Group setting for deleting any message.
+   * @since Zulip 11.0 (feature level 407)
+   */
+  can_delete_any_message_group?: number | ChannelPermissionGroupObj
+  /**
+   * Group setting for deleting own messages.
+   * @since Zulip 11.0 (feature level 407)
+   */
+  can_delete_own_message_group?: number | ChannelPermissionGroupObj
+  /**
+   * Group setting for moving messages out of channel.
+   * @since Zulip 11.0 (feature level 396)
+   */
+  can_move_messages_out_of_channel_group?: number | ChannelPermissionGroupObj
+  /**
+   * Group setting for moving messages within channel.
+   * @since Zulip 11.0 (feature level 396)
+   */
+  can_move_messages_within_channel_group?: number | ChannelPermissionGroupObj
+  /**
+   * Group setting for sending messages.
+   * @since Zulip 10.0 (feature level 333)
+   */
+  can_send_message_group?: number | ChannelPermissionGroupObj
+  /**
+   * Group setting for subscribing to channel.
+   * @since Zulip 10.0 (feature level 357)
+   */
+  can_subscribe_group?: number | ChannelPermissionGroupObj
+  /**
+   * Group setting for resolving topics.
+   * @since Zulip 11.0 (feature level 402)
+   */
+  can_resolve_topics_group?: number | ChannelPermissionGroupObj
+  /**
+   * Group setting for creating topics.
+   * @since Zulip 12.0 (feature level 441)
+   */
+  can_create_topic_group?: number | ChannelPermissionGroupObj
+  /**
+   * Add newly created channel to this folder.
+   * @since Zulip 11.0 (feature level 389)
+   * @see https://zulip.com/api/subscribe#parameter-folder_id
+   */
+  folder_id?: number
+  /**
+   * Send notification-bot direct messages to newly subscribed users.
+   * The default value is true.
+   * @see https://zulip.com/api/subscribe#parameter-send_new_subscription_messages
+   */
+  send_new_subscription_messages?: boolean
+}
+
+/**
+ * Response of SubscribeChannels API
+ * @see https://zulip.com/api/subscribe#response
+ */
+export type SubscribeChannelsResponse = GeneralSuccessResponse & {
+  /**
+   * Subscriptions added by this request
+   */
+  subscribed: SubscribeChannelsMap
+  /**
+   * Subscriptions that already existed
+   */
+  already_subscribed: SubscribeChannelsMap
+  /**
+   * Unauthorized channel names.
+   * Exists only if authorization_errors_fatal=false.
+   */
+  unauthorized?: string[]
+  /**
+   * Whether Notification Bot DMs were sent.
+   * Exists only if send_new_subscription_messages=true.
+   * @since Zulip 11.0 (feature level 397)
+   */
+  new_subscription_messages_sent?: boolean
+}
+
+/**
  *
  * @param client Axios client initialized by generateCallApi function in api.ts
  * @param params API parameters
@@ -338,5 +527,38 @@ export async function getSubscriptions(
       params,
     },
   )
+  return resp.data
+}
+
+/**
+ * Subscribe one or more users to one or more channels.
+ * @param client Axios client initialized by generateCallApi function in api.ts
+ * @param params API parameters
+ * @returns The response of SubscribeChannels API
+ * @see https://zulip.com/api/subscribe
+ */
+export async function subscribeChannels(
+  client: AxiosInstance,
+  params: SubscribeChannelsParams,
+) {
+  const body = new URLSearchParams()
+
+  for (const [key, value] of Object.entries(params)) {
+    if (value === undefined || value === null) {
+      continue
+    }
+
+    if (Array.isArray(value) || typeof value === 'object') {
+      body.append(key, JSON.stringify(value))
+    } else {
+      body.append(key, String(value))
+    }
+  }
+
+  const resp = await client.post<SubscribeChannelsResponse>(
+    '/users/me/subscriptions',
+    body,
+  )
+
   return resp.data
 }

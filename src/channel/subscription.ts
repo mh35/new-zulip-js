@@ -565,6 +565,18 @@ export type GetSubscribersResponse = GeneralSuccessResponse & {
 }
 
 /**
+ * The response of GetUserChannels API
+ * @since Zulip 12.0 (feature level 440)
+ * @see https://zulip.com/api/get-user-channels#response
+ */
+export type GetUserChannelsResponse = GeneralSuccessResponse & {
+  /**
+   * Subscribed channel IDs
+   */
+  subscribed_channel_ids: number[]
+}
+
+/**
  *
  * @param client Axios client initialized by generateCallApi function in api.ts
  * @param params API parameters
@@ -681,6 +693,21 @@ export async function getSubscriptionStatus(
 export async function getSubscribers(client: AxiosInstance, streamId: number) {
   const resp = await client.get<GetSubscribersResponse>(
     `/streams/${streamId}/members`,
+  )
+  return resp.data
+}
+
+/**
+ * Get IDs of channels that the user subscribes
+ * @param client Axios client initialized by generateCallApi function in api.ts
+ * @param userId User ID
+ * @returns The response of GetUserChannels API
+ * @since Zulip 12.0 (feature level 440)
+ * @see https://zulip.com/api/get-user-channels
+ */
+export async function getUserChannels(client: AxiosInstance, userId: number) {
+  const resp = await client.get<GetUserChannelsResponse>(
+    `/users/${userId}/channels`,
   )
   return resp.data
 }

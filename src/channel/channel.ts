@@ -673,6 +673,7 @@ export type CreateChannelParams = {
    * realm_default: Use organization-level policy.
    *
    * unlimited: Never delete by retention policy.
+   * @see https://zulip.com/api/create-channel#parameter-message_retention_days
    */
   message_retention_days?: number | 'realm_default' | 'unlimited'
   /**
@@ -682,6 +683,7 @@ export type CreateChannelParams = {
    * - If number, the ID of the user group
    *
    * - If object, the permission group object
+   * @see https://zulip.com/api/create-channel#parameter-can_add_subscribers_group
    */
   can_add_subscribers_group?: number | ChannelPermissionGroupObj
   /**
@@ -692,6 +694,7 @@ export type CreateChannelParams = {
    *
    * - If object, the permission group object
    * @since Zulip 12.0 (feature level 441)
+   * @see https://zulip.com/api/create-channel#parameter-can_create_topic_group
    */
   can_create_topic_group?: number | ChannelPermissionGroupObj
   /**
@@ -701,6 +704,7 @@ export type CreateChannelParams = {
    * - If number, the ID of the user group
    *
    * - If object, the permission group object
+   * @see https://zulip.com/api/create-channel#parameter-can_delete_any_message_group
    */
   can_delete_any_message_group?: number | ChannelPermissionGroupObj
   /**
@@ -710,6 +714,7 @@ export type CreateChannelParams = {
    * - If number, the ID of the user group
    *
    * - If object, the permission group object
+   * @see https://zulip.com/api/create-channel#parameter-can_delete_own_message_group
    */
   can_delete_own_message_group?: number | ChannelPermissionGroupObj
   /**
@@ -719,6 +724,7 @@ export type CreateChannelParams = {
    * - If number, the ID of the user group
    *
    * - If object, the permission group object
+   * @see https://zulip.com/api/create-channel#parameter-can_remove_subscribers_group
    */
   can_remove_subscribers_group?: number | ChannelPermissionGroupObj
   /**
@@ -728,6 +734,7 @@ export type CreateChannelParams = {
    * - If number, the ID of the user group
    *
    * - If object, the permission group object
+   * @see https://zulip.com/api/create-channel#parameter-can_administer_channel_group
    */
   can_administer_channel_group?: number | ChannelPermissionGroupObj
   /**
@@ -737,6 +744,7 @@ export type CreateChannelParams = {
    * - If number, the ID of the user group
    *
    * - If object, the permission group object
+   * @see https://zulip.com/api/create-channel#parameter-can_move_messages_out_of_channel_group
    */
   can_move_messages_out_of_channel_group?: number | ChannelPermissionGroupObj
   /**
@@ -746,6 +754,7 @@ export type CreateChannelParams = {
    * - If number, the ID of the user group
    *
    * - If object, the permission group object
+   * @see https://zulip.com/api/create-channel#parameter-can_move_messages_within_channel_group
    */
   can_move_messages_within_channel_group?: number | ChannelPermissionGroupObj
   /**
@@ -755,6 +764,7 @@ export type CreateChannelParams = {
    * - If number, the ID of the user group
    *
    * - If object, the permission group object
+   * @see https://zulip.com/api/create-channel#parameter-can_send_message_group
    */
   can_send_message_group?: number | ChannelPermissionGroupObj
   /**
@@ -764,6 +774,7 @@ export type CreateChannelParams = {
    * - If number, the ID of the user group
    *
    * - If object, the permission group object
+   * @see https://zulip.com/api/create-channel#parameter-can_subscribe_group
    */
   can_subscribe_group?: number | ChannelPermissionGroupObj
   /**
@@ -773,6 +784,7 @@ export type CreateChannelParams = {
    * - If number, the ID of the user group
    *
    * - If object, the permission group object
+   * @see https://zulip.com/api/create-channel#parameter-can_resolve_topics_group
    */
   can_resolve_topics_group?: number | ChannelPermissionGroupObj
 }
@@ -788,6 +800,333 @@ export type CreateChannelResponse = GeneralSuccessResponse & {
    */
   id: number
 }
+
+/**
+ * Permission settings object for UpdateChannel API
+ */
+export type UpdateChannelPermissionSetting = {
+  /**
+   * New permission settings.
+   *
+   * - If number, the ID of the user group
+   *
+   * - If object, the permission group object
+   */
+  new: number | ChannelPermissionGroupObj
+  /**
+   * Old expected permission settings.
+   *
+   * - If number, the ID of the user group
+   *
+   * - If object, the permission group object
+   */
+  old?: number | ChannelPermissionGroupObj
+}
+
+/**
+ * Change description parameters for UpdateChannel API
+ */
+type UpdateChannelChangeDescriptionParams = {
+  /**
+   * The new description
+   * @see https://zulip.com/api/update-stream#parameter-description
+   */
+  description: string
+}
+
+/**
+ * Change name parameters for UpdateChannel API
+ */
+type UpdateChannelChangeNameParams = {
+  /**
+   * The new name
+   * @see https://zulip.com/api/update-stream#parameter-new_name
+   */
+  new_name: string
+}
+
+/**
+ * Change private channel settings parameters for UpdateChannel API
+ */
+type UpdateChannelChangePrivateParams = {
+  /**
+   * Whether the channel is private or not
+   * @see https://zulip.com/api/update-stream#parameter-is_private
+   */
+  is_private: boolean
+}
+
+/**
+ * Change web publicity settings parameters for UpdateChannel API
+ */
+type UpdateChannelChangeWebPublicParams = {
+  /**
+   * Whether the channel is public for web or not
+   * @since Zulip 5.0 (feature level 98)
+   * @see https://zulip.com/api/update-stream#parameter-is_web_public
+   */
+  is_web_public: boolean
+}
+
+/**
+ * Change history publicity settings parameters for UpdateChannel API
+ */
+type UpdateChannelChangeHistoryPublicParams = {
+  /**
+   * Whether the history of the channel is public to its subscribers.
+   * @see https://zulip.com/api/update-stream#parameter-history_public_to_subscribers
+   */
+  history_public_to_subscribers: boolean
+}
+
+/**
+ * Change default channel settings parameters for UpdateChannel API
+ */
+type UpdateChannelChangeDefaultChannelParams = {
+  /**
+   * Whether this stream is the default stream or not
+   * @since Zulip 8.0 (feature level 200)
+   * @see https://zulip.com/api/update-stream#parameter-is_default_stream
+   */
+  is_default_stream: boolean
+}
+
+/**
+ * Change message retention settings parameters for UpdateChannel API
+ */
+type UpdateChannelChangeRetentionParams = {
+  /**
+   * The channel-level message retention policy.
+   *
+   * If number, retain for that number of days.
+   *
+   * realm_default: Use organization-level policy.
+   *
+   * unlimited: Never delete by retention policy.
+   * @see https://zulip.com/api/update-stream#parameter-message_retention_days
+   */
+  message_retention_days: number | 'realm_default' | 'unlimited'
+}
+
+/**
+ * Unarchive channel parameters for UpdateChannel API
+ */
+type UpdateChannelUnarchiveParams = {
+  /**
+   * Whether the channel is archived or not.
+   * In UpdateChannel API, only unarchive channel is supported.
+   * If you want to archive channel, use ArchiveChannel API instead.
+   * @since Zulip 11.0 (feature level 388)
+   * @see https://zulip.com/api/update-stream#parameter-is_archived
+   */
+  is_archived: false
+}
+
+/**
+ * Change folder parameters for UpdateChannel API
+ */
+type UpdateChannelChangeFolderParams = {
+  /**
+   * Folder ID. If null, removes from current folder.
+   * @since Zulip 11.0 (feature level 389)
+   * @see https://zulip.com/api/update-stream#parameter-folder_id
+   */
+  folder_id: number | null
+}
+
+/**
+ * Change topics policy parameters for UpdateChannel API
+ */
+type UpdateChannelChangeTopicsPolicyParams = {
+  /**
+   * Whether empty name topic and named topics are enabled or not.
+   * Default is inherit
+   *
+   * inherit: Inherits from organization-level realm_topics_policy
+   *
+   * allow_empty_topic: Both empty name topic and named topics are enabled
+   *
+   * disable_empty_topic: Only named topics are enabled
+   *
+   * empty_topic_only: Only empty topic name is enabled
+   * @since Zulip 11.0 (feature level 392)
+   * @see https://zulip.com/api/update-stream#parameter-topics_policy
+   */
+  topics_policy:
+    | 'inherit'
+    | 'allow_empty_topic'
+    | 'disable_empty_topic'
+    | 'empty_topic_only'
+}
+
+/**
+ * Change add subscribers permission settings parameters for UpdateChannel API
+ */
+type UpdateChannelChangeAddSubscribersPermissionParams = {
+  /**
+   * A group-setting value defining the set of users who have permission to
+   * add subscribers to this channel.
+   * @since Zulip 10.0 (feature level 342)
+   * @see https://zulip.com/api/update-stream#parameter-can_add_subscribers_group
+   */
+  can_add_subscribers_group: UpdateChannelPermissionSetting
+}
+
+/**
+ * Change remove subscribers permission settings parameters for UpdateChannel API
+ */
+type UpdateChannelChangeRemoveSubscribersPermissionParams = {
+  /**
+   * A group-setting value defining the set of users who have permission to
+   * remove subscribers from this channel.
+   * @since Zulip 7.0 (feature level 161)
+   * @see https://zulip.com/api/update-stream#parameter-can_remove_subscribers_group
+   */
+  can_remove_subscribers_group: UpdateChannelPermissionSetting
+}
+
+/**
+ * Change administraotr permission settings parameters for UpdateChannel API
+ */
+type UpdateChannelChangeAdminPermissionParams = {
+  /**
+   * A group-setting value defining the set of users who have permission to
+   * move messages from this channel to another channel.
+   * @since Zulip 10.0 (feature level 325)
+   * @see https://zulip.com/api/update-stream#parameter-can_administer_channel_group
+   */
+  can_administer_channel_group: UpdateChannelPermissionSetting
+}
+
+/**
+ * Change remove any messages permission settings parameters for UpdateChannel API
+ */
+type UpdateChannelChangeRemoveAnyMessagePermissionParams = {
+  /**
+   * A group-setting value defining the set of users who have permission to
+   * delete any messages in this channel.
+   * @since Zulip 11.0 (feature level 407)
+   * @see https://zulip.com/api/update-stream#parameter-can_delete_any_message_group
+   */
+  can_delete_any_message_group: UpdateChannelPermissionSetting
+}
+
+/**
+ * Change remove own messages permission settings parameters for UpdateChannel API
+ */
+type UpdateChannelChangeRemoveOwnMessagePermissionParams = {
+  /**
+   * A group-setting value defining the set of users who have permission to
+   * delete messages the user sent in this channel.
+   * @since Zulip 11.0 (feature level 407)
+   * @see https://zulip.com/api/update-stream#parameter-can_delete_own_message_group
+   */
+  can_delete_own_message_group: UpdateChannelPermissionSetting
+}
+
+/**
+ * Change moving message outside the channel permission settings parameters
+ * for UpdateChannel API
+ */
+type UpdateChannelChangeMoveMessageOutsidePermissionParams = {
+  /**
+   * A group-setting value defining the set of users who have permission to
+   * move messages from this channel to another channel.
+   * @since Zulip 11.0 (feature level 396)
+   * @see https://zulip.com/api/update-stream#parameter-can_move_messages_out_of_channel_group
+   */
+  can_move_messages_out_of_channel_group: UpdateChannelPermissionSetting
+}
+
+/**
+ * Change moving message into the channel permission settings parameters
+ * for UpdateChannel API
+ */
+type UpdateChannelChangeMoveMessageInsidePermissionParams = {
+  /**
+   * A group-setting value defining the set of users who have permission to
+   * move messages from another channel to this channel.
+   * @since Zulip 11.0 (feature level 396)
+   * @see https://zulip.com/api/update-stream#parameter-can_move_messages_within_channel_group
+   */
+  can_move_messages_within_channel_group: UpdateChannelPermissionSetting
+}
+
+/**
+ * Change sending message permission settings parameters for UpdateChannel API
+ */
+type UpdateChannelChangeSendMessagePermissionParams = {
+  /**
+   * A group-setting value defining the set of users who have permission to
+   * send messages in this channel.
+   * @since Zulip 10.0 (feature level 333)
+   * @see https://zulip.com/api/update-stream#parameter-can_send_message_group
+   */
+  can_send_message_group: UpdateChannelPermissionSetting
+}
+
+/**
+ * Change subscribing channel permission settings parameters for UpdateChannel API
+ */
+type UpdateChannelChangeSubscribePermissionParams = {
+  /**
+   * A group-setting value defining the set of users who have permission to
+   * subscribe this channel.
+   * @since Zulip 10.0 (feature level 357)
+   * @see https://zulip.com/api/update-stream#parameter-can_subscribe_group
+   */
+  can_subscribe_group: UpdateChannelPermissionSetting
+}
+
+/**
+ * Change resolving topics permission settings parameters for UpdateChannel API
+ */
+type UpdateChannelChangeResolveTopicsPermissionParams = {
+  /**
+   * A group-setting value defining the set of users who have permission to
+   * resolve topics in this channel.
+   * @since Zulip 11.0 (feature level 402)
+   * @see https://zulip.com/api/update-stream#parameter-can_resolve_topics_group
+   */
+  can_resolve_topics_group: UpdateChannelPermissionSetting
+}
+
+type UpdateChannelChangeCreateTopicPermissionParams = {
+  /**
+   * A group-setting value defining the set of users who have permission to
+   * create topics in this channel.
+   * @since Zulip 12.0 (feature level 441)
+   * @see https://zulip.com/api/update-stream#parameter-can_create_topic_group
+   */
+  can_create_topic_group: UpdateChannelPermissionSetting
+}
+
+/**
+ * Parameters for UpdateChannel API
+ * @see https://zulip.com/api/update-stream#parameters
+ */
+export type UpdateChannelParams =
+  | UpdateChannelChangeDescriptionParams
+  | UpdateChannelChangeNameParams
+  | UpdateChannelChangePrivateParams
+  | UpdateChannelChangeWebPublicParams
+  | UpdateChannelChangeHistoryPublicParams
+  | UpdateChannelChangeDefaultChannelParams
+  | UpdateChannelChangeRetentionParams
+  | UpdateChannelUnarchiveParams
+  | UpdateChannelChangeFolderParams
+  | UpdateChannelChangeTopicsPolicyParams
+  | UpdateChannelChangeAddSubscribersPermissionParams
+  | UpdateChannelChangeRemoveSubscribersPermissionParams
+  | UpdateChannelChangeAdminPermissionParams
+  | UpdateChannelChangeRemoveAnyMessagePermissionParams
+  | UpdateChannelChangeRemoveOwnMessagePermissionParams
+  | UpdateChannelChangeMoveMessageOutsidePermissionParams
+  | UpdateChannelChangeMoveMessageInsidePermissionParams
+  | UpdateChannelChangeSendMessagePermissionParams
+  | UpdateChannelChangeSubscribePermissionParams
+  | UpdateChannelChangeResolveTopicsPermissionParams
+  | UpdateChannelChangeCreateTopicPermissionParams
 
 /**
  * Get channels.
@@ -885,6 +1224,41 @@ export async function createChannel(
 
   const resp = await client.post<CreateChannelResponse>(
     '/channels/create',
+    body,
+  )
+
+  return resp.data
+}
+
+/**
+ * Update a channel
+ * @param client Axios client initialized by generateCallApi function in api.ts
+ * @param streamId Stream ID
+ * @param params API parameters
+ * @returns The response of UpdateChannel API
+ * @see https://zulip.com/api/update-stream
+ */
+export async function updateChannel(
+  client: AxiosInstance,
+  streamId: number,
+  params: UpdateChannelParams,
+) {
+  const body = new URLSearchParams()
+
+  for (const [key, value] of Object.entries(params)) {
+    if (value === undefined || value === null) {
+      continue
+    }
+
+    if (Array.isArray(value) || typeof value === 'object') {
+      body.append(key, JSON.stringify(value))
+    } else {
+      body.append(key, String(value))
+    }
+  }
+
+  const resp = await client.patch<GeneralSuccessResponse>(
+    `/streams/${streamId}`,
     body,
   )
 

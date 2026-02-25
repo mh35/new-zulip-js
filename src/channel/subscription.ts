@@ -180,6 +180,7 @@ export type GetSubscriptionsResponseItem = {
     | 'empty_topic_only'
   /**
    * Whether the channel has recent message activity.
+   * @since Zulip 10.0 (feature level 323)
    */
   is_recently_active: boolean
   /**

@@ -1264,3 +1264,18 @@ export async function updateChannel(
 
   return resp.data
 }
+
+/**
+ * Archive a channel
+ * @param client Axios client initialized by generateCallApi function in api.ts
+ * @param streamId Stream ID
+ * @returns The response of ArchiveChannel API
+ * @see https://zulip.com/api/archive-stream
+ */
+export async function archiveChannel(client: AxiosInstance, streamId: number) {
+  const resp = await client.delete<GeneralSuccessResponse>(
+    `/streams/${streamId}`,
+  )
+
+  return resp.data
+}

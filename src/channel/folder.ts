@@ -60,6 +60,7 @@ export type GetChannelFoldersResponseItem = {
    * The order number starting from 0.
    *
    * The UI must show folders lower to higher order.
+   * @since Zulip 11.0 (feature level 414)
    */
   order: number
   /**
@@ -110,6 +111,49 @@ export type ReorderChannelFoldersParams = {
    */
   order: number[]
 }
+
+/**
+ * Change name parameters for UpdateChannelFolder API
+ */
+type UpdateChannelFolderUpdateNameParams = {
+  /**
+   * The new name of the folder
+   * @see https://zulip.com/api/update-channel-folder#parameter-name
+   */
+  name: string
+}
+
+/**
+ * Change description parameters for UpdateChannelFolder API
+ */
+type UpdateChannelFolderUpdateDescriptionParams = {
+  /**
+   * The description of the folder
+   * @see https://zulip.com/api/update-channel-folder#parameter-description
+   */
+  description: string
+}
+
+/**
+ * Change archive status parameters for UpdateChannelFolder API
+ */
+type UpdateChannelFolderChangeArchiveStatusParams = {
+  /**
+   * Whether the folder is archived or not.
+   * @see https://zulip.com/api/update-channel-folder#parameter-is_archived
+   */
+  is_archived: boolean
+}
+
+/**
+ * Request parameters for UpdateChannelFolder API
+ * @since Zulip 11.0 (feature level 389)
+ * @see https://zulip.com/api/update-channel-folder#parameters
+ */
+export type UpdateChannelFolderParams =
+  | UpdateChannelFolderUpdateNameParams
+  | UpdateChannelFolderUpdateDescriptionParams
+  | UpdateChannelFolderChangeArchiveStatusParams
 
 /**
  * Create a channel folder
@@ -185,6 +229,38 @@ export async function reorderChannelFolders(
 
   const resp = await client.patch<GeneralSuccessResponse>(
     '/channel_folders',
+    body,
+  )
+
+  return resp.data
+}
+
+/**
+ * Update a channel folder
+ * @param client Axios client initialized by generateCallApi function in api.ts
+ * @param channelFolderId Channel folder ID
+ * @param params API parameters
+ * @returns The response of UpdateChannelFolder API
+ * @since Zulip 11.0 (feature level 389)
+ * @see https://zulip.com/api/update-channel-folder
+ */
+export async function updateChannelFolder(
+  client: AxiosInstance,
+  channelFolderId: number,
+  params: UpdateChannelFolderParams,
+) {
+  const body = new URLSearchParams()
+
+  for (const [key, value] of Object.entries(params)) {
+    if (value === undefined || value === null) {
+      continue
+    }
+
+    body.append(key, String(value))
+  }
+
+  const resp = await client.patch<GeneralSuccessResponse>(
+    `/channel_folders/${channelFolderId}`,
     body,
   )
 

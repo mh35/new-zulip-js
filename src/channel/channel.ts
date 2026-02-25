@@ -1174,6 +1174,18 @@ export type AddDefaultChannelParams = {
 }
 
 /**
+ * Parameters for RemoveDefaultChannel API
+ * @see https://zulip.com/api/remove-default-stream#parameters
+ */
+export type RemoveDefaultChannelParams = {
+  /**
+   * Channel ID
+   * @see https://zulip.com/api/remove-default-stream#parameter-stream_id
+   */
+  stream_id: number
+}
+
+/**
  * Get channels.
  * @param client Axios client initialized by generateCallApi function in api.ts
  * @param params API parameters
@@ -1392,6 +1404,34 @@ export async function addDefaultChannel(
     '/default_streams',
     body,
   )
+
+  return resp.data
+}
+
+/**
+ * Remove a default channel
+ * @param client Axios client initialized by generateCallApi function in api.ts
+ * @param params API parameters
+ * @returns The response of RemoveDefaultChannel API
+ * @see https://zulip.com/api/remove-default-stream
+ */
+export async function removeDefaultChannel(
+  client: AxiosInstance,
+  params: RemoveDefaultChannelParams,
+) {
+  const body = new URLSearchParams()
+
+  for (const [key, value] of Object.entries(params)) {
+    if (value === undefined || value === null) {
+      continue
+    }
+
+    body.append(key, String(value))
+  }
+
+  const resp = await client.delete<GeneralSuccessResponse>('/default_streams', {
+    data: body,
+  })
 
   return resp.data
 }

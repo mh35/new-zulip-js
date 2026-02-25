@@ -1129,6 +1129,39 @@ export type UpdateChannelParams =
   | UpdateChannelChangeCreateTopicPermissionParams
 
 /**
+ * Parameters for GetChannelEmail API
+ * @since Zulip 8.0 (feature level 226)
+ * @see https://zulip.com/api/get-stream-email-address#parameters
+ */
+export type GetChannelEmailParams = {
+  /**
+   * Sender user ID. Following three values are allowed.
+   * The default value is ID of the Email gateway bot.
+   *
+   * - ID of the current user
+   *
+   * - ID of the Email gateway bot
+   *
+   * - ID of a bot owned by the current user
+   * @since Zulip 10.0 (feature level 335)
+   * @see https://zulip.com/api/get-stream-email-address#parameter-sender_id
+   */
+  sender_id?: number
+}
+
+/**
+ * The response of GetChannelEmail API
+ * @since Zulip 8.0 (feature level 226)
+ * @see https://zulip.com/api/get-stream-email-address#response
+ */
+export type GetChannelEmailResponse = GeneralSuccessResponse & {
+  /**
+   * The email address of the channel
+   */
+  email: string
+}
+
+/**
  * Get channels.
  * @param client Axios client initialized by generateCallApi function in api.ts
  * @param params API parameters
@@ -1275,6 +1308,48 @@ export async function updateChannel(
 export async function archiveChannel(client: AxiosInstance, streamId: number) {
   const resp = await client.delete<GeneralSuccessResponse>(
     `/streams/${streamId}`,
+  )
+
+  return resp.data
+}
+
+/**
+ * Get the email address of the channel
+ * @param client Axios client initialized by generateCallApi function in api.ts
+ * @param streamId Stream ID
+ * @param params API parameters
+ * @returns The response of GetChannelEmail API
+ * @since Zulip 8.0 (feature level 226)
+ * @see https://zulip.com/api/get-stream-email-address
+ */
+export async function getChannelEmail(
+  client: AxiosInstance,
+  streamId: number,
+  params: GetChannelEmailParams,
+) {
+  const sendParams = {} as Record<string, string>
+  for (const [key, value] of Object.entries(params)) {
+    if (value === undefined || value === null) {
+      continue
+    }
+
+    if (Array.isArray(value)) {
+      // Encode arrays as JSON strings
+      sendParams[key] = JSON.stringify(value)
+    } else if (typeof value === 'boolean') {
+      // Encode booleans as strings
+      sendParams[key] = String(value)
+    } else {
+      // Other values (strings, numbers)
+      sendParams[key] = String(value)
+    }
+  }
+
+  const resp = await client.get<GetChannelEmailResponse>(
+    `/streams/${streamId}/email_address`,
+    {
+      params: sendParams,
+    },
   )
 
   return resp.data

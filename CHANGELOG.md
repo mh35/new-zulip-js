@@ -1,5 +1,9 @@
 # Changelog
 
+## Version 1.1.0-alpha.5
+
+- Channel API functions
+
 ## Version 1.1.0-alpha.4
 
 - Navigation view API functions

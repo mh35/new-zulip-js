@@ -656,7 +656,7 @@ export type UpdateSubscriptionSettingsParams = {
  */
 export async function getSubscriptions(
   client: AxiosInstance,
-  params: GetSubscriptionsParams,
+  params: GetSubscriptionsParams = {},
 ) {
   const resp = await client.get<GetSubscriptionsResponse>(
     '/users/me/subscriptions',

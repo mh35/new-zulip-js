@@ -573,6 +573,29 @@ export type GetChannelByIdResponse = GeneralSuccessResponse & {
 }
 
 /**
+ * Parameters of GetChannelId API
+ * @see https://zulip.com/api/get-stream-id#parameters
+ */
+export type GetChannelIdParams = {
+  /**
+   * The channel name
+   * @see https://zulip.com/api/get-stream-id#parameter-stream
+   */
+  stream: string
+}
+
+/**
+ * The response of GetChannelId API
+ * @see https://zulip.com/api/get-stream-id#response
+ */
+export type GetChannelIdResponse = GeneralSuccessResponse & {
+  /**
+   * The channel ID
+   */
+  stream_id: number
+}
+
+/**
  * Get channels.
  * @param client Axios client initialized by generateCallApi function in api.ts
  * @param params API parameters
@@ -618,6 +641,24 @@ export async function getChannels(
  */
 export async function getChannelById(client: AxiosInstance, streamId: number) {
   const resp = await client.get<GetChannelByIdResponse>(`/streams/${streamId}`)
+
+  return resp.data
+}
+
+/**
+ * Get the ID of the channel named as specified.
+ * @param client Axios client initialized by generateCallApi function in api.ts
+ * @param params API parameters
+ * @returns The response of GetChannelId API
+ * @see https://zulip.com/api/get-stream-id
+ */
+export async function getChannelId(
+  client: AxiosInstance,
+  params: GetChannelIdParams,
+) {
+  const resp = await client.get<GetChannelIdResponse>('/get_stream_id', {
+    params,
+  })
 
   return resp.data
 }

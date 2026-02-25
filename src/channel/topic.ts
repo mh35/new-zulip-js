@@ -1,5 +1,6 @@
 import type { AxiosInstance } from 'axios'
 import type { GeneralSuccessResponse } from '../api'
+import type { TopicVisibilityValues } from '../constants'
 
 /**
  * Parameters of GetChannelTopics API
@@ -94,6 +95,37 @@ export type MuteTopicParams = (MuteTopicByIdParams | MuteTopicByNameParams) & {
 }
 
 /**
+ * The parameters for UpdateUserTopic API
+ * @since Zulip 7.0 (feature level 170)
+ * @see https://zulip.com/api/update-user-topic#parameters
+ */
+export type UpdateUserTopicParams = {
+  /**
+   * Stream ID
+   * @see https://zulip.com/api/update-user-topic#parameter-stream_id
+   */
+  stream_id: number
+  /**
+   * The topic name
+   * @see https://zulip.com/api/update-user-topic#parameter-topic
+   */
+  topic: string
+  /**
+   * Visibility policy
+   *
+   * 0: None. Removes the visibility policy previously set for the topic.
+   *
+   * 1: Muted. Mutes the topic in a channel.
+   *
+   * 2: Unmuted. Unmutes the topic in a muted channel.
+   *
+   * 3: Followed. Follows the topic.
+   * @see https://zulip.com/api/update-user-topic#parameter-visibility_policy
+   */
+  visibility_policy: TopicVisibilityValues
+}
+
+/**
  * Get topics in a channel
  * @param client Axios client initialized by generateCallApi function in api.ts
  * @param streamId Stream ID
@@ -151,6 +183,33 @@ export async function muteTopic(
     '/users/me/subscriptions/muted_topics',
     body,
   )
+
+  return resp.data
+}
+
+/**
+ * Update the user topic visibility policy.
+ * @param client Axios client initialized by generateCallApi function in api.ts
+ * @param params API parameters
+ * @returns The response of UpdateUserTopic API
+ * @since Zulip 7.0 (feature level 170)
+ * @see https://zulip.com/api/update-user-topic
+ */
+export async function updateUserTopic(
+  client: AxiosInstance,
+  params: UpdateUserTopicParams,
+) {
+  const body = new URLSearchParams()
+
+  for (const [key, value] of Object.entries(params)) {
+    if (value === undefined || value === null) {
+      continue
+    }
+
+    body.append(key, String(value))
+  }
+
+  const resp = await client.patch<GeneralSuccessResponse>('/user_topics')
 
   return resp.data
 }

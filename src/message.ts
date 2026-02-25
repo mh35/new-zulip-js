@@ -1887,7 +1887,7 @@ export async function addReaction(
 export async function removeReaction(
   client: AxiosInstance,
   messageId: number,
-  params: RemoveReactionParams,
+  params: RemoveReactionParams = {},
 ) {
   const body = new URLSearchParams(params)
   if (body.size === 0) {
@@ -1937,7 +1937,7 @@ export async function renderMessage(
 export async function getMessage(
   client: AxiosInstance,
   messageId: number,
-  params: GetMessageParams,
+  params: GetMessageParams = {},
 ) {
   const sendParams = {} as Record<string, string>
   for (const [key, value] of Object.entries(params)) {
@@ -1991,7 +1991,7 @@ export async function checkMessagesMatchNarrow(
 export async function getMessageEditHistory(
   client: AxiosInstance,
   messageId: number,
-  params: GetMessageHistoryParams,
+  params: GetMessageHistoryParams = {},
 ) {
   const sendParams = {} as Record<string, string>
   for (const [key, value] of Object.entries(params)) {

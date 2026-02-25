@@ -1170,7 +1170,7 @@ export type GetChannelEmailResponse = GeneralSuccessResponse & {
  */
 export async function getChannels(
   client: AxiosInstance,
-  params: GetChannelsParams,
+  params: GetChannelsParams = {},
 ) {
   const sendParams = {} as Record<string, string>
   for (const [key, value] of Object.entries(params)) {
@@ -1325,7 +1325,7 @@ export async function archiveChannel(client: AxiosInstance, streamId: number) {
 export async function getChannelEmail(
   client: AxiosInstance,
   streamId: number,
-  params: GetChannelEmailParams,
+  params: GetChannelEmailParams = {},
 ) {
   const sendParams = {} as Record<string, string>
   for (const [key, value] of Object.entries(params)) {

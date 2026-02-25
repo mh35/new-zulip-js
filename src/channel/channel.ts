@@ -596,6 +596,200 @@ export type GetChannelIdResponse = GeneralSuccessResponse & {
 }
 
 /**
+ * Request parameters of CreateChannel API
+ * @since Zulip 11.0 (feature level 417)
+ */
+export type CreateChannelParams = {
+  /**
+   * The channel name
+   * @see https://zulip.com/api/create-channel#parameter-name
+   */
+  name: string
+  /**
+   * The channel description
+   * @see https://zulip.com/api/create-channel#parameter-description
+   */
+  description?: string
+  /**
+   * The IDs of users who subscribe the new channel first.
+   * @see https://zulip.com/api/create-channel#parameter-subscribers
+   */
+  subscribers: number[]
+  /**
+   * Whether the notification bot announces the creation of the new channel.
+   * Default is false
+   * @see https://zulip.com/api/create-channel#parameter-announce
+   */
+  announce?: boolean
+  /**
+   * Whether the channel is private or not. Default is false
+   * @see https://zulip.com/api/create-channel#parameter-invite_only
+   */
+  invite_only?: boolean
+  /**
+   * Whether the messages in this channel is public to the web or not.
+   * Default is false
+   * @see https://zulip.com/api/create-channel#parameter-is_web_public
+   */
+  is_web_public?: boolean
+  /**
+   * Whether this stream is the default stream or not. Default is false
+   * @see https://zulip.com/api/create-channel#parameter-is_default_stream
+   */
+  is_default_stream?: boolean
+  /**
+   * The ID of the channel folder
+   * @see https://zulip.com/api/create-channel#parameter-folder_id
+   */
+  folder_id?: number
+  /**
+   * Whether empty name topic and named topics are enabled or not.
+   * Default is inherit
+   *
+   * inherit: Inherits from organization-level realm_topics_policy
+   *
+   * allow_empty_topic: Both empty name topic and named topics are enabled
+   *
+   * disable_empty_topic: Only named topics are enabled
+   *
+   * empty_topic_only: Only empty topic name is enabled
+   * @see https://zulip.com/api/create-channel#parameter-topics_policy
+   */
+  topics_policy?:
+    | 'inherit'
+    | 'allow_empty_topic'
+    | 'disable_empty_topic'
+    | 'empty_topic_only'
+  /**
+   * Whether the history of the channel is public to its subscribers.
+   * @see https://zulip.com/api/create-channel#parameter-history_public_to_subscribers
+   */
+  history_public_to_subscribers?: boolean
+  /**
+   * The channel-level message retention policy.
+   *
+   * If number, retain for that number of days.
+   *
+   * realm_default: Use organization-level policy.
+   *
+   * unlimited: Never delete by retention policy.
+   */
+  message_retention_days?: number | 'realm_default' | 'unlimited'
+  /**
+   * A group-setting value defining the set of users who have permission to
+   * add subscribers to this channel.
+   *
+   * - If number, the ID of the user group
+   *
+   * - If object, the permission group object
+   */
+  can_add_subscribers_group?: number | ChannelPermissionGroupObj
+  /**
+   * A group-setting value defining the set of users who have permission to
+   * create topics in this channel.
+   *
+   * - If number, the ID of the user group
+   *
+   * - If object, the permission group object
+   * @since Zulip 12.0 (feature level 441)
+   */
+  can_create_topic_group?: number | ChannelPermissionGroupObj
+  /**
+   * A group-setting value defining the set of users who have permission to
+   * delete any messages in this channel.
+   *
+   * - If number, the ID of the user group
+   *
+   * - If object, the permission group object
+   */
+  can_delete_any_message_group?: number | ChannelPermissionGroupObj
+  /**
+   * A group-setting value defining the set of users who have permission to
+   * delete messages the user sent in this channel.
+   *
+   * - If number, the ID of the user group
+   *
+   * - If object, the permission group object
+   */
+  can_delete_own_message_group?: number | ChannelPermissionGroupObj
+  /**
+   * A group-setting value defining the set of users who have permission to
+   * remove subscribers from this channel.
+   *
+   * - If number, the ID of the user group
+   *
+   * - If object, the permission group object
+   */
+  can_remove_subscribers_group?: number | ChannelPermissionGroupObj
+  /**
+   * A group-setting value defining the set of users who have permission to
+   * administer this channel.
+   *
+   * - If number, the ID of the user group
+   *
+   * - If object, the permission group object
+   */
+  can_administer_channel_group?: number | ChannelPermissionGroupObj
+  /**
+   * A group-setting value defining the set of users who have permission to
+   * move messages from this channel to another channel.
+   *
+   * - If number, the ID of the user group
+   *
+   * - If object, the permission group object
+   */
+  can_move_messages_out_of_channel_group?: number | ChannelPermissionGroupObj
+  /**
+   * A group-setting value defining the set of users who have permission to
+   * move messages from another channel to this channel.
+   *
+   * - If number, the ID of the user group
+   *
+   * - If object, the permission group object
+   */
+  can_move_messages_within_channel_group?: number | ChannelPermissionGroupObj
+  /**
+   * A group-setting value defining the set of users who have permission to
+   * send messages in this channel.
+   *
+   * - If number, the ID of the user group
+   *
+   * - If object, the permission group object
+   */
+  can_send_message_group?: number | ChannelPermissionGroupObj
+  /**
+   * A group-setting value defining the set of users who have permission to
+   * subscribe this channel.
+   *
+   * - If number, the ID of the user group
+   *
+   * - If object, the permission group object
+   */
+  can_subscribe_group?: number | ChannelPermissionGroupObj
+  /**
+   * A group-setting value defining the set of users who have permission to
+   * resolve topics in this channel.
+   *
+   * - If number, the ID of the user group
+   *
+   * - If object, the permission group object
+   */
+  can_resolve_topics_group?: number | ChannelPermissionGroupObj
+}
+
+/**
+ * The response of CreateChannel API
+ * @since Zulip 11.0 (feature level 417)
+ * @see https://zulip.com/api/create-channel#response
+ */
+export type CreateChannelResponse = GeneralSuccessResponse & {
+  /**
+   * The channel ID
+   */
+  id: number
+}
+
+/**
  * Get channels.
  * @param client Axios client initialized by generateCallApi function in api.ts
  * @param params API parameters
@@ -659,6 +853,40 @@ export async function getChannelId(
   const resp = await client.get<GetChannelIdResponse>('/get_stream_id', {
     params,
   })
+
+  return resp.data
+}
+
+/**
+ * Create a channel
+ * @param client Axios client initialized by generateCallApi function in api.ts
+ * @param params API parameters
+ * @returns The response of CreateChannel API
+ * @since Zulip 11.0 (feature level 417)
+ * @see https://zulip.com/api/create-channel
+ */
+export async function createChannel(
+  client: AxiosInstance,
+  params: CreateChannelParams,
+) {
+  const body = new URLSearchParams()
+
+  for (const [key, value] of Object.entries(params)) {
+    if (value === undefined || value === null) {
+      continue
+    }
+
+    if (Array.isArray(value) || typeof value === 'object') {
+      body.append(key, JSON.stringify(value))
+    } else {
+      body.append(key, String(value))
+    }
+  }
+
+  const resp = await client.post<CreateChannelResponse>(
+    '/channels/create',
+    body,
+  )
 
   return resp.data
 }

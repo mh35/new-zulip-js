@@ -1162,6 +1162,18 @@ export type GetChannelEmailResponse = GeneralSuccessResponse & {
 }
 
 /**
+ * Parameters for AddDefaultChannel API
+ * @see https://zulip.com/api/add-default-stream#parameters
+ */
+export type AddDefaultChannelParams = {
+  /**
+   * Channel ID
+   * @see https://zulip.com/api/add-default-stream#parameter-stream_id
+   */
+  stream_id: number
+}
+
+/**
  * Get channels.
  * @param client Axios client initialized by generateCallApi function in api.ts
  * @param params API parameters
@@ -1350,6 +1362,35 @@ export async function getChannelEmail(
     {
       params: sendParams,
     },
+  )
+
+  return resp.data
+}
+
+/**
+ * Add a default channel
+ * @param client Axios client initialized by generateCallApi function in api.ts
+ * @param params API parameters
+ * @returns The response of AddDefaultChannel API
+ * @see https://zulip.com/api/add-default-stream
+ */
+export async function addDefaultChannel(
+  client: AxiosInstance,
+  params: AddDefaultChannelParams,
+) {
+  const body = new URLSearchParams()
+
+  for (const [key, value] of Object.entries(params)) {
+    if (value === undefined || value === null) {
+      continue
+    }
+
+    body.append(key, String(value))
+  }
+
+  const resp = await client.post<GeneralSuccessResponse>(
+    '/default_streams',
+    body,
   )
 
   return resp.data

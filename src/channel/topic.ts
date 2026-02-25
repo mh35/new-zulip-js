@@ -40,6 +40,60 @@ export type GetChannelTopicsResponse = GeneralSuccessResponse & {
 }
 
 /**
+ * Stream ID parameter for MuteTopic API
+ */
+type MuteTopicByIdParams = {
+  /**
+   * Stream ID. You must specify either stream ID or name, but you must not
+   * specify both.
+   * @see https://zulip.com/api/mute-topic#parameter-stream_id
+   */
+  stream_id: number
+  /**
+   * Stream name. You must specify either stream ID or name, but you must not
+   * specify both.
+   * @see https://zulip.com/api/mute-topic#parameter-stream
+   */
+  stream: never
+}
+
+/**
+ * Stream name parameter for MuteTopic API
+ */
+type MuteTopicByNameParams = {
+  /**
+   * Stream ID. You must specify either stream ID or name, but you must not
+   * specify both.
+   * @see https://zulip.com/api/mute-topic#parameter-stream_id
+   */
+  stream_id: never
+  /**
+   * Stream name. You must specify either stream ID or name, but you must not
+   * specify both.
+   * @see https://zulip.com/api/mute-topic#parameter-stream
+   */
+  stream: string
+}
+
+/**
+ * The parameters for MuteTopic API
+ * @deprecated From Zulip 7.0 (feature level 170), use UpdateUserTopic API instead.
+ * @see https://zulip.com/api/mute-topic#parameters
+ */
+export type MuteTopicParams = (MuteTopicByIdParams | MuteTopicByNameParams) & {
+  /**
+   * The topic name to mute or unmute.
+   * @see https://zulip.com/api/mute-topic#parameter-topic
+   */
+  topic: string
+  /**
+   * To mute(add) or unmute(remove).
+   * @see https://zulip.com/api/mute-topic#parameter-op
+   */
+  op: 'add' | 'remove'
+}
+
+/**
  * Get topics in a channel
  * @param client Axios client initialized by generateCallApi function in api.ts
  * @param streamId Stream ID
@@ -66,6 +120,36 @@ export async function getChannelTopics(
     {
       params: sendParams,
     },
+  )
+
+  return resp.data
+}
+
+/**
+ * Mute or unmute a topic
+ * @param client Axios client initialized by generateCallApi function in api.ts
+ * @param params API parameters
+ * @returns The response of MuteTopic API
+ * @deprecated From Zulip 7.0 (feature level 170), use UpdateUserTopic API instead.
+ * @see https://zulip.com/api/mute-topic
+ */
+export async function muteTopic(
+  client: AxiosInstance,
+  params: MuteTopicParams,
+) {
+  const body = new URLSearchParams()
+
+  for (const [key, value] of Object.entries(params)) {
+    if (value === undefined || value === null) {
+      continue
+    }
+
+    body.append(key, String(value))
+  }
+
+  const resp = await client.patch<GeneralSuccessResponse>(
+    '/users/me/subscriptions/muted_topics',
+    body,
   )
 
   return resp.data

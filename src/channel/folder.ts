@@ -97,6 +97,21 @@ export type GetChannelFoldersResponse = GeneralSuccessResponse & {
 }
 
 /**
+ * Parameters for ReorderChannelFolders API
+ * @since Zulip 11.0 (feature level 414)
+ * @see https://zulip.com/api/patch-channel-folders#parameters
+ */
+export type ReorderChannelFoldersParams = {
+  /**
+   * The order of the IDs of channel folders. All IDs of folders including
+   * archived folders must be included.
+   *
+   * @see https://zulip.com/api/patch-channel-folders#parameter-order
+   */
+  order: number[]
+}
+
+/**
  * Create a channel folder
  * @param client Axios client initialized by generateCallApi function in api.ts
  * @param params API parameters
@@ -142,6 +157,36 @@ export async function getChannelFolders(
   const resp = await client.get<GetChannelFoldersResponse>('/channel_folders', {
     params: sendParams,
   })
+
+  return resp.data
+}
+
+/**
+ * Reorder channel folders
+ * @param client Axios client initialized by generateCallApi function in api.ts
+ * @param params API parameters
+ * @returns The response of ReorderChannelFolders API
+ * @since Zulip 11.0 (feature level 414)
+ * @see https://zulip.com/api/patch-channel-folders
+ */
+export async function reorderChannelFolders(
+  client: AxiosInstance,
+  params: ReorderChannelFoldersParams,
+) {
+  const body = new URLSearchParams()
+
+  for (const [key, value] of Object.entries(params)) {
+    if (value === undefined || value === null) {
+      continue
+    }
+
+    body.append(key, JSON.stringify(value))
+  }
+
+  const resp = await client.patch<GeneralSuccessResponse>(
+    '/channel_folders',
+    body,
+  )
 
   return resp.data
 }

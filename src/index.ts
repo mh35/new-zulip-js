@@ -8,6 +8,7 @@ import * as navigationView from './navigation-view'
 import * as reminder from './reminder'
 import * as scheduledMessage from './scheduled-message'
 import * as snippet from './snippet'
+import * as user from './user'
 
 export {
   api,
@@ -20,4 +21,5 @@ export {
   reminder,
   scheduledMessage,
   snippet,
+  user,
 }

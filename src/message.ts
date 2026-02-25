@@ -100,7 +100,14 @@ export type SendMessageParams = SendMessageDestinationParams &
  * @see https://zulip.com/api/send-message#response
  */
 export type SendMessageResponse = GeneralSuccessResponse & {
+  /**
+   * The message ID
+   */
   id: number
+  /**
+   * New topic visibility policy. Only present if the visibility policy is changed.
+   * @since Zulip 8.0 (feature level 218)
+   */
   automatic_new_visibility_policy?: TopicVisibilityValues
 }
 

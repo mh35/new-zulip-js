@@ -126,6 +126,29 @@ export type UpdateUserTopicParams = {
 }
 
 /**
+ * Parameters for DeleteTopic API
+ * @see https://zulip.com/api/delete-topic#parameters
+ */
+export type DeleteTopicParams = {
+  /**
+   * The topic name to delete
+   * @see https://zulip.com/api/delete-topic#parameter-topic_name
+   */
+  topic_name: string
+}
+
+/**
+ * The response of DeleteTopic API
+ * @see https://zulip.com/api/delete-topic#response
+ */
+export type DeleteTopicResponse = GeneralSuccessResponse & {
+  /**
+   * Whether deleting the topic is completed or not.
+   */
+  complete: boolean
+}
+
+/**
  * Get topics in a channel
  * @param client Axios client initialized by generateCallApi function in api.ts
  * @param streamId Stream ID
@@ -210,6 +233,31 @@ export async function updateUserTopic(
   }
 
   const resp = await client.patch<GeneralSuccessResponse>('/user_topics')
+
+  return resp.data
+}
+
+/**
+ * Delete a topic.
+ *
+ * If the deleting a topic is not completed, repeat calling this function.
+ * @param client Axios client initialized by generateCallApi function in api.ts
+ * @param streamId Stream ID
+ * @param params API parameters
+ * @returns The response of DeleteTopic API
+ * @see https://zulip.com/api/delete-topic
+ */
+export async function deleteTopic(
+  client: AxiosInstance,
+  streamId: number,
+  params: DeleteTopicParams,
+) {
+  const body = new URLSearchParams(params)
+
+  const resp = await client.post<DeleteTopicResponse>(
+    `/streams/${streamId}/delete_topic`,
+    body,
+  )
 
   return resp.data
 }

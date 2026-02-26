@@ -668,3 +668,18 @@ export async function deactivateSelf(client: AxiosInstance) {
 
   return resp.data
 }
+
+/**
+ * Reactivate a user
+ * @param client Axios client initialized by generateCallApi function in api.ts
+ * @param userId User ID
+ * @returns The response of ReactivateUser API
+ * @see https://zulip.com/api/reactivate-user
+ */
+export async function reactivateUser(client: AxiosInstance, userId: number) {
+  const resp = await client.post<GeneralSuccessResponse>(
+    `/users/${userId}/reactivate`,
+  )
+
+  return resp.data
+}

@@ -133,6 +133,32 @@ export type GetUserByIdResponse = GeneralSuccessResponse & {
 }
 
 /**
+ * Parameters for GetUserByEmail API
+ * @since Zulip 4.0 (feature level 39)
+ * @see https://zulip.com/api/get-user-by-email#parameters
+ */
+export type GetUserByEmailParams = {
+  /**
+   * Whether the client supports computing gravatars URLs. Default is true
+   * @see https://zulip.com/api/get-user-by-email#parameter-client_gravatar
+   */
+  client_gravatar?: boolean
+  /**
+   * Whether custom profile fields are included in the response.
+   * Default is false
+   * @see https://zulip.com/api/get-user-by-email#parameter-include_custom_profile_fields
+   */
+  include_custom_profile_fields?: boolean
+}
+
+/**
+ * The response of GetUserByEmail API
+ * @since Zulip 4.0 (feature level 39)
+ * @see https://zulip.com/api/get-user-by-email#response
+ */
+export type GetUserByEmailResponse = GetUserByIdResponse
+
+/**
  * Get user by ID
  * @param client Axios client initialized by generateCallApi function in api.ts
  * @param userId User ID
@@ -157,6 +183,38 @@ export async function getUserById(
   const resp = await client.get<GetUserByIdResponse>(`/users/${userId}`, {
     params: sendParams,
   })
+
+  return resp.data
+}
+
+/**
+ * Get user by email
+ * @param client Axios client initialized by generateCallApi function in api.ts
+ * @param email Email address
+ * @param params API parameters
+ * @returns The response of GetUserByEmail API
+ * @since Zulip 4.0 (feature level 39)
+ * @see https://zulip.com/api/get-user-by-email
+ */
+export async function getUserByEmail(
+  client: AxiosInstance,
+  email: string,
+  params: GetUserByEmailParams = {},
+) {
+  const sendParams = {} as Record<string, string>
+  for (const [key, value] of Object.entries(params)) {
+    if (value === undefined || value === null) {
+      continue
+    }
+    sendParams[key] = String(value)
+  }
+
+  const resp = await client.get<GetUserByEmailResponse>(
+    `/users/${encodeURIComponent(email)}`,
+    {
+      params: sendParams,
+    },
+  )
 
   return resp.data
 }

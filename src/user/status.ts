@@ -61,6 +61,18 @@ export type GetUserStatusResponseStatus = (
 }
 
 /**
+ * The response of GetUserStatus API
+ * @since Zulip 9.0 (feature level 262)
+ * @see https://zulip.com/api/get-user-status#response
+ */
+export type GetUserStatusResponse = GeneralSuccessResponse & {
+  /**
+   * The user status
+   */
+  status: GetUserStatusResponseStatus
+}
+
+/**
  * Update status parameters for UpdateStatus API
  */
 type UpdateStatusUpdateStatusParams = {
@@ -158,16 +170,77 @@ export type UpdateStatusParams =
       (UpdateStatusUpdateStatusParams | UpdateStatusUpdateAwayParams))
 
 /**
- * The response of GetUserStatus API
- * @since Zulip 9.0 (feature level 262)
- * @see https://zulip.com/api/get-user-status#response
+ * Update status text parameters for UpdateUserStatus API
  */
-export type GetUserStatusResponse = GeneralSuccessResponse & {
+type UpdateUserStatusUpdateStatusParams = {
   /**
-   * The user status
+   * The text content of the status message. Sending the empty string will clear the user's
+   * status.
+   * @see https://zulip.com/api/update-status-for-user#parameter-status_text
    */
-  status: GetUserStatusResponseStatus
+  status_text: string
 }
+
+/**
+ * Update emoji parameters for UpdateUserStatus API
+ */
+type UpdateUserStatusUpdateEmojiParams = {
+  /**
+   * The text content of the status message. Sending the empty string will clear the user's
+   * status.
+   * @see https://zulip.com/api/update-status-for-user#parameter-status_text
+   */
+  status_text?: string
+  /**
+   * The name for the emoji to associate with the user's status
+   * @see https://zulip.com/api/update-status-for-user#parameter-emoji_name
+   */
+  emoji_name: string
+  /**
+   * A unique identifier, defining the specific emoji codepoint requested,
+   * namespace of the reaction_type
+   * @see https://zulip.com/api/update-status-for-user#parameter-emoji_code
+   */
+  emoji_code?: string
+  /**
+   * A string indicating the type of emoji. Each emoji reaction_type has an
+   * independent namespace for values of emoji_code
+   * @see https://zulip.com/api/update-status-for-user#parameter-reaction_type
+   */
+  reaction_type?: EmojiTypes
+}
+
+/**
+ * Not updating emoji parameters for UpdateUserStatus API
+ */
+type UpdateUserStatusNoUpdateEmojiParams = {
+  /**
+   * The name for the emoji to associate with the user's status
+   * @see https://zulip.com/api/update-status-for-user#parameter-emoji_name
+   */
+  emoji_name: never
+  /**
+   * A unique identifier, defining the specific emoji codepoint requested,
+   * namespace of the reaction_type
+   * @see https://zulip.com/api/update-status-for-user#parameter-emoji_code
+   */
+  emoji_code: never
+  /**
+   * A string indicating the type of emoji. Each emoji reaction_type has an
+   * independent namespace for values of emoji_code
+   * @see https://zulip.com/api/update-status-for-user#parameter-reaction_type
+   */
+  reaction_type: never
+}
+
+/**
+ * Parameters for UpdateUserStatus API
+ * @since Zulip 11.0 (feature level 407)
+ * @see https://zulip.com/api/update-status-for-user#parameters
+ */
+export type UpdateUserStatusParams =
+  | UpdateUserStatusUpdateEmojiParams
+  | (UpdateUserStatusNoUpdateEmojiParams & UpdateUserStatusUpdateStatusParams)
 
 /**
  * Get a user status
@@ -206,6 +279,30 @@ export async function updateStatus(
 
   const resp = await client.post<GeneralSuccessResponse>(
     '/users/me/status',
+    body,
+  )
+
+  return resp.data
+}
+
+/**
+ * Update status of the user
+ * @param client Axios client initialized by generateCallApi function in api.ts
+ * @param userId User ID
+ * @param params API parameters
+ * @returns The response of UpdateUserStatus API
+ * @since Zulip 11.0 (feature level 407)
+ * @see https://zulip.com/api/update-status-for-user
+ */
+export async function updateUserStatus(
+  client: AxiosInstance,
+  userId: number,
+  params: UpdateUserStatusParams,
+) {
+  const body = new URLSearchParams(params)
+
+  const resp = await client.post<GeneralSuccessResponse>(
+    `/users/${userId}/status`,
     body,
   )
 

@@ -397,6 +397,48 @@ export type UpdateUserParams =
 export type UpdateUserByEmailParams = UpdateUserParams
 
 /**
+ * Actions with deactivating user
+ */
+export type DeactivateUserActions = {
+  /**
+   * Whether to delete the user's profile by updating their name to "Deleted user" and
+   * removing their profile picture
+   */
+  delete_profile?: boolean
+  /**
+   * Whether to delete messages in public channels
+   */
+  delete_public_channel_messages?: boolean
+  /**
+   * Whether to delete messages in private channels
+   */
+  delete_private_channel_messages?: boolean
+  /**
+   * Whether to delete direct messages
+   */
+  delete_direct_messages?: boolean
+}
+
+/**
+ * Request parameters for DeactivateUser API
+ * @see https://zulip.com/api/deactivate-user#parameters
+ */
+export type DeactivateUserParams = {
+  /**
+   * Additional actions on deleting user
+   * @since Zulip 12.0 (feature level 459)
+   * @see https://zulip.com/api/deactivate-user#parameter-actions
+   */
+  actions?: DeactivateUserActions
+  /**
+   * Account deactivation notification content
+   * @since Zulip 5.0 (feature level 135)
+   * @see https://zulip.com/api/deactivate-user#parameter-deactivation_notification_comment
+   */
+  deactivation_notification_comment?: string
+}
+
+/**
  * Get user by ID
  * @param client Axios client initialized by generateCallApi function in api.ts
  * @param userId User ID
@@ -579,6 +621,38 @@ export async function updateUserByEmail(
     `/users/${encodeURIComponent(email)}`,
     body,
   )
+
+  return resp.data
+}
+
+/**
+ * Deactivate a user
+ * @param client Axios client initialized by generateCallApi function in api.ts
+ * @param userId User ID
+ * @param params API parameters
+ * @returns The response of DeactivateUser API
+ * @see https://zulip.com/api/deactivate-user
+ */
+export async function deactivateUser(
+  client: AxiosInstance,
+  userId: number,
+  params: DeactivateUserParams = {},
+) {
+  const body = new URLSearchParams()
+  for (const [key, value] of Object.entries(params)) {
+    if (value === undefined || value === null) {
+      continue
+    }
+    if (Array.isArray(value) || typeof value === 'object') {
+      body.append(key, JSON.stringify(value))
+    } else {
+      body.append(key, String(value))
+    }
+  }
+
+  const resp = await client.delete<GeneralSuccessResponse>(`/users/${userId}`, {
+    data: body,
+  })
 
   return resp.data
 }

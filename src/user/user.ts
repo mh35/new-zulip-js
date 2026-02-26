@@ -320,6 +320,76 @@ export type CreateUserResponse = GeneralSuccessResponse & {
 }
 
 /**
+ * Profile data item for UpdateUser API
+ */
+export type UpdateUserProfileDataItem = {
+  /**
+   * Custom field ID
+   */
+  id: number
+  /**
+   * Custom field value
+   */
+  value: string | number[] | null
+}
+
+/**
+ * Updating full name parameters for UpdateUser API
+ */
+type UpdateUserUpdateFullNameParams = {
+  /**
+   * The new full name
+   * @see https://zulip.com/api/update-user#parameter-full_name
+   */
+  full_name: string
+}
+
+/**
+ * Updating role parameters for UpdateUser API
+ */
+type UpdateUserUpdateRoleParams = {
+  /**
+   * The new role
+   * @since Zulip 3.0 (feature level 8)
+   * @see https://zulip.com/api/update-user#parameter-role
+   */
+  role: UserRoleValues
+}
+
+/**
+ * Updating profile data parameters for UpdateUser API
+ */
+type UpdateUserUpdatProfileDataParams = {
+  /**
+   * Updating profile data
+   * @see https://zulip.com/api/update-user#parameter-profile_data
+   */
+  profile_data: [UpdateUserProfileDataItem, ...UpdateUserProfileDataItem[]]
+}
+
+/**
+ * Updating email address parameters for UpdateUser API
+ */
+type UpdateUserUpdateEmailParams = {
+  /**
+   * The new email address
+   * @since Zulip 10.0 (feature level 285)
+   * @see https://zulip.com/api/update-user#parameter-new_email
+   */
+  new_email: string
+}
+
+/**
+ * Parameters for UpdateUser API
+ * @see https://zulip.com/api/update-user#parameters
+ */
+export type UpdateUserParams =
+  | UpdateUserUpdateFullNameParams
+  | UpdateUserUpdateRoleParams
+  | UpdateUserUpdatProfileDataParams
+  | UpdateUserUpdateEmailParams
+
+/**
  * Get user by ID
  * @param client Axios client initialized by generateCallApi function in api.ts
  * @param userId User ID
@@ -437,5 +507,37 @@ export async function createUser(
 
   const resp = await client.post<CreateUserResponse>('/users', body)
 
+  return resp.data
+}
+
+/**
+ * Update a user
+ * @param client Axios client initialized by generateCallApi function in api.ts
+ * @param userId User ID
+ * @param params API parameters
+ * @returns The response for UpdateUser API
+ * @see https://zulip.com/api/update-user
+ */
+export async function updateUser(
+  client: AxiosInstance,
+  userId: number,
+  params: UpdateUserParams,
+) {
+  const body = new URLSearchParams()
+  for (const [key, value] of Object.entries(params)) {
+    if (value === undefined || value === null) {
+      continue
+    }
+    if (Array.isArray(value)) {
+      body.append(key, JSON.stringify(value))
+    } else {
+      body.append(key, String(value))
+    }
+  }
+
+  const resp = await client.patch<GeneralSuccessResponse>(
+    `/users/${userId}`,
+    body,
+  )
   return resp.data
 }

@@ -159,6 +159,91 @@ export type GetUserByEmailParams = {
 export type GetUserByEmailResponse = GetUserByIdResponse
 
 /**
+ * The response of GetOwnUser API
+ * @see https://zulip.com/api/get-own-user#response
+ */
+export type GetOwnUserResponse = GeneralSuccessResponse & {
+  /**
+   * URL for the user's avatar.
+   */
+  avatar_url: string
+  /**
+   * Version of the user avater.
+   * @since Zulip 3.0 (feature level 10)
+   */
+  avatar_version: number
+  /**
+   * The Zulip API email address of the user or bot.
+   */
+  email: string
+  /**
+   * Full name of the user or bot, used for all display purposes.
+   */
+  full_name: string
+  /**
+   * Whether the user is an organization administrator.
+   */
+  is_admin: boolean
+  /**
+   * Whether the user is an organization owner.
+   * @since Zulip 3.0 (feature level 8)
+   */
+  is_owner: boolean
+  /**
+   * Organization-level role of the user.
+   * @since Zulip 4.0 (feature level 59)
+   */
+  role: UserRoleValues
+  /**
+   * Whether the user is a guest user.
+   * @since Zulip 3.0 (feature level 10)
+   */
+  is_guest: boolean
+  /**
+   * Whether the user is a bot or full account.
+   */
+  is_bot: boolean
+  /**
+   * Whether the user account is active or not. If false, the user is deactivated.
+   * @since Zulip 3.0 (feature level 10)
+   */
+  is_active: boolean
+  /**
+   * The IANA identifier of the user's profile time zone
+   * @since Zulip 3.0 (feature level 10)
+   */
+  timezone: string
+  /**
+   * The time the user account was created.
+   * @since Zulip 3.0 (feature level 10)
+   */
+  date_joined: string
+  /**
+   * The integer ID of the last message received by the requesting user's account.
+   * @deprecated Use GetMessages with anchor=newest
+   */
+  max_message_id: number
+  /**
+   * User ID
+   */
+  user_id: number
+  /**
+   * The requesting user's real email address
+   */
+  delivery_email: string
+  /**
+   * Whether this user object is a stub account imported from another chat system.
+   * @since Zulip 12.0 (feature level 433)
+   */
+  is_imported_stub: boolean
+  /**
+   * Custom field data. Key is the custom field ID. If bot user, this field
+   * does not exist.
+   */
+  profile_data?: Record<string, GetUserByIdResponseUserFieldValue>
+}
+
+/**
  * Get user by ID
  * @param client Axios client initialized by generateCallApi function in api.ts
  * @param userId User ID
@@ -215,6 +300,18 @@ export async function getUserByEmail(
       params: sendParams,
     },
   )
+
+  return resp.data
+}
+
+/**
+ * Get basic data about the user/bot that requests this endpoint
+ * @param client Axios client initialized by generateCallApi function in api.ts
+ * @returns The response of GetOwnUser API
+ * @see https://zulip.com/api/get-own-user
+ */
+export async function getOwnUser(client: AxiosInstance) {
+  const resp = await client.get<GetOwnUserResponse>('/users/me')
 
   return resp.data
 }

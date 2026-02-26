@@ -390,6 +390,13 @@ export type UpdateUserParams =
   | UpdateUserUpdateEmailParams
 
 /**
+ * Parameters for UpdateUserByEmail API
+ * @since Zulip 10.0 (feature level 313)
+ * @see https://zulip.com/api/update-user-by-email#parameters
+ */
+export type UpdateUserByEmailParams = UpdateUserParams
+
+/**
  * Get user by ID
  * @param client Axios client initialized by generateCallApi function in api.ts
  * @param userId User ID
@@ -511,7 +518,7 @@ export async function createUser(
 }
 
 /**
- * Update a user
+ * Update a user by ID
  * @param client Axios client initialized by generateCallApi function in api.ts
  * @param userId User ID
  * @param params API parameters
@@ -539,5 +546,39 @@ export async function updateUser(
     `/users/${userId}`,
     body,
   )
+  return resp.data
+}
+
+/**
+ * Update a user by email address
+ * @param client Axios client initialized by generateCallApi function in api.ts
+ * @param email User email address
+ * @param params API parameters
+ * @returns The response of UpdateUserByEmail API
+ * @since Zulip 10.0 (feature level 313)
+ * @see https://zulip.com/api/update-user-by-email
+ */
+export async function updateUserByEmail(
+  client: AxiosInstance,
+  email: string,
+  params: UpdateUserByEmailParams,
+) {
+  const body = new URLSearchParams()
+  for (const [key, value] of Object.entries(params)) {
+    if (value === undefined || value === null) {
+      continue
+    }
+    if (Array.isArray(value)) {
+      body.append(key, JSON.stringify(value))
+    } else {
+      body.append(key, String(value))
+    }
+  }
+
+  const resp = await client.patch<GeneralSuccessResponse>(
+    `/users/${encodeURIComponent(email)}`,
+    body,
+  )
+
   return resp.data
 }

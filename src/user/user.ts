@@ -244,6 +244,48 @@ export type GetOwnUserResponse = GeneralSuccessResponse & {
 }
 
 /**
+ * Parameters for GetUsers API
+ * @see https://zulip.com/api/get-users#parameters
+ */
+export type GetUsersParams = {
+  /**
+   * Whether the client supports computing gravatars URLs. Default is true
+   * @see https://zulip.com/api/get-users#parameter-client_gravatar
+   */
+  client_gravatar?: boolean
+  /**
+   * Whether custom profile fields are included in the response.
+   * Default is false
+   * @since Zulip 2.1.0
+   * @see https://zulip.com/api/get-users#parameter-include_custom_profile_fields
+   */
+  include_custom_profile_fields?: boolean
+  /**
+   * Limits the results to the specified user IDs. If not specified, all users
+   * the server can access.
+   * @since Zulip 11.0 (feature level 384)
+   * @see https://zulip.com/api/get-users#parameter-user_ids
+   */
+  user_ids?: number[]
+}
+
+/**
+ * User item for GetUsers API
+ */
+export type GetUsersResponseItem = GetUserByIdResponseUser
+
+/**
+ * The response of GetUsers API
+ * @see https://zulip.com/api/get-users#response
+ */
+export type GetUsersResponse = GeneralSuccessResponse & {
+  /**
+   * Users
+   */
+  members: GetUsersResponseItem[]
+}
+
+/**
  * Get user by ID
  * @param client Axios client initialized by generateCallApi function in api.ts
  * @param userId User ID
@@ -312,6 +354,36 @@ export async function getUserByEmail(
  */
 export async function getOwnUser(client: AxiosInstance) {
   const resp = await client.get<GetOwnUserResponse>('/users/me')
+
+  return resp.data
+}
+
+/**
+ * Get users
+ * @param client Axios client initialized by generateCallApi function in api.ts
+ * @param params API parameters
+ * @returns The response of GetUsers API
+ * @see https://zulip.com/api/get-users
+ */
+export async function getUsers(
+  client: AxiosInstance,
+  params: GetUsersParams = {},
+) {
+  const sendParams = {} as Record<string, string>
+  for (const [key, value] of Object.entries(params)) {
+    if (value === undefined || value === null) {
+      continue
+    }
+    if (Array.isArray(value)) {
+      sendParams[key] = JSON.stringify(value)
+    } else {
+      sendParams[key] = String(value)
+    }
+  }
+
+  const resp = await client.get<GetUsersResponse>('/users', {
+    params: sendParams,
+  })
 
   return resp.data
 }

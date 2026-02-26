@@ -131,3 +131,32 @@ export type GetUserByIdResponse = GeneralSuccessResponse & {
    */
   user: GetUserByIdResponseUser
 }
+
+/**
+ * Get user by ID
+ * @param client Axios client initialized by generateCallApi function in api.ts
+ * @param userId User ID
+ * @param params API parameters
+ * @returns The response of GetUserById API
+ * @since Zulip 3.0 (feature level 1)
+ * @see https://zulip.com/api/get-user
+ */
+export async function getUserById(
+  client: AxiosInstance,
+  userId: number,
+  params: GetUserByIdParams = {},
+) {
+  const sendParams = {} as Record<string, string>
+  for (const [key, value] of Object.entries(params)) {
+    if (value === undefined || value === null) {
+      continue
+    }
+    sendParams[key] = String(value)
+  }
+
+  const resp = await client.get<GetUserByIdResponse>(`/users/${userId}`, {
+    params: sendParams,
+  })
+
+  return resp.data
+}

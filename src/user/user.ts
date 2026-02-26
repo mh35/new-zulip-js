@@ -286,6 +286,40 @@ export type GetUsersResponse = GeneralSuccessResponse & {
 }
 
 /**
+ * Parameters for CreateUser API
+ * @see https://zulip.com/api/create-user#parameters
+ */
+export type CreateUserParams = {
+  /**
+   * User email
+   * @see https://zulip.com/api/create-user#parameter-email
+   */
+  email: string
+  /**
+   * User password
+   * @see https://zulip.com/api/create-user#parameter-password
+   */
+  password: string
+  /**
+   * User full name
+   * @see https://zulip.com/api/create-user#parameter-full_name
+   */
+  full_name: string
+}
+
+/**
+ * The response of CreateUser API
+ * @see https://zulip.com/api/create-user
+ */
+export type CreateUserResponse = GeneralSuccessResponse & {
+  /**
+   * User ID of the new user
+   * @since Zulip 4.0 (feature level 30)
+   */
+  user_id: number
+}
+
+/**
  * Get user by ID
  * @param client Axios client initialized by generateCallApi function in api.ts
  * @param userId User ID
@@ -384,6 +418,24 @@ export async function getUsers(
   const resp = await client.get<GetUsersResponse>('/users', {
     params: sendParams,
   })
+
+  return resp.data
+}
+
+/**
+ * Create a user
+ * @param client Axios client initialized by generateCallApi function in api.ts
+ * @param params API parameters
+ * @returns The response of CreateUser API
+ * @see https://zulip.com/api/create-user
+ */
+export async function createUser(
+  client: AxiosInstance,
+  params: CreateUserParams,
+) {
+  const body = new URLSearchParams(params)
+
+  const resp = await client.post<CreateUserResponse>('/users', body)
 
   return resp.data
 }

@@ -656,3 +656,15 @@ export async function deactivateUser(
 
   return resp.data
 }
+
+/**
+ * Deactivate the current user.
+ * @param client Axios client initialized by generateCallApi function in api.ts
+ * @returns The response of DeactivateSelf API
+ * @see https://zulip.com/api/deactivate-own-user
+ */
+export async function deactivateSelf(client: AxiosInstance) {
+  const resp = await client.delete<GeneralSuccessResponse>('/users/me')
+
+  return resp.data
+}

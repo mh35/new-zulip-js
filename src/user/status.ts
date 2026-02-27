@@ -318,6 +318,18 @@ export type SetTypingStatusParams = (
 }
 
 /**
+ * Parameters for SetTypingStatusForEdit API
+ * @see https://zulip.com/api/set-typing-status-for-message-edit#parameters
+ */
+export type SetTypingStatusForEditParams = {
+  /**
+   * Started typing or stopped typing
+   * @see https://zulip.com/api/set-typing-status-for-message-edit#parameter-op
+   */
+  op: 'start' | 'stop'
+}
+
+/**
  * Get a user status
  * @param client Axios client initialized by generateCallApi function in api.ts
  * @param userId User ID
@@ -408,6 +420,30 @@ export async function setTypingStatus(
   }
 
   const resp = await client.post<GeneralSuccessResponse>('/typing', body)
+
+  return resp.data
+}
+
+/**
+ * Set typing status for editing message
+ * @param client Axios client initialized by generateCallApi function in api.ts
+ * @param messageId Message ID
+ * @param params API parameters
+ * @returns The response of SetTypingStatusForEdit API
+ * @since Zulip 10.0 (feature level 351)
+ * @see https://zulip.com/api/set-typing-status-for-message-edit
+ */
+export async function setTypingStatusForEdit(
+  client: AxiosInstance,
+  messageId: number,
+  params: SetTypingStatusForEditParams,
+) {
+  const body = new URLSearchParams(params)
+
+  const resp = await client.post<GeneralSuccessResponse>(
+    `/messages/${messageId}/typing`,
+    body,
+  )
 
   return resp.data
 }

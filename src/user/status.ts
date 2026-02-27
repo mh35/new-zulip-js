@@ -330,6 +330,47 @@ export type SetTypingStatusForEditParams = {
 }
 
 /**
+ * User presence item corresponding to client.
+ * This uses in GetUserPresence API.
+ */
+export type GetUserPresenceClientItem = {
+  /**
+   * When this update was received. If the timestamp is more than a few minutes
+   * in the past, the user is offline.
+   */
+  timestamp: number
+  /**
+   * Whether the user had recently interacted with Zulip at the time of the timestamp
+   */
+  status: 'active' | 'idle'
+}
+
+/**
+ * The presence object in GetUserPresence API
+ */
+export type GetUserPresenceObj = {
+  /**
+   * Aggregated presence status
+   */
+  aggregated: GetUserPresenceClientItem
+  /**
+   * Website presence status
+   */
+  website: GetUserPresenceClientItem
+}
+
+/**
+ * The response of GetUserPresence API
+ * @see https://zulip.com/api/get-user-presence#response
+ */
+export type GetUserPresenceResponse = GeneralSuccessResponse & {
+  /**
+   * The presence data of the user
+   */
+  presence: GetUserPresenceObj
+}
+
+/**
  * Get a user status
  * @param client Axios client initialized by generateCallApi function in api.ts
  * @param userId User ID
@@ -443,6 +484,24 @@ export async function setTypingStatusForEdit(
   const resp = await client.post<GeneralSuccessResponse>(
     `/messages/${messageId}/typing`,
     body,
+  )
+
+  return resp.data
+}
+
+/**
+ * Get user presence
+ * @param client Axios client initialized by generateCallApi function in api.ts
+ * @param userIdOrEmail ID or email address of the user
+ * @returns The response of GetUserPresence API
+ * @see https://zulip.com/api/get-user-presence
+ */
+export async function getUserPresence(
+  client: AxiosInstance,
+  userIdOrEmail: string | number,
+) {
+  const resp = await client.get<GetUserPresenceResponse>(
+    `/users/${encodeURIComponent(String(userIdOrEmail))}/presence`,
   )
 
   return resp.data

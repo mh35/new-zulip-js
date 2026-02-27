@@ -243,6 +243,81 @@ export type UpdateUserStatusParams =
   | (UpdateUserStatusNoUpdateEmojiParams & UpdateUserStatusUpdateStatusParams)
 
 /**
+ * Direct message destination parameters for SetTypingStatus API
+ */
+type SetTypingStatusDirectDestinationParams = {
+  /**
+   * Destination type. For direct message, specify direct. For stream,
+   * specify stream or channel. Default is direct
+   * @since Zulip 4.0 (feature level 58)
+   * @see https://zulip.com/api/set-typing-status#parameter-type
+   */
+  type?: 'direct'
+  /**
+   * Target user IDs
+   * @see https://zulip.com/api/set-typing-status#parameter-to
+   */
+  to: number[]
+  /**
+   * Target stream ID
+   * @since Zulip 8.0 (feature level 215)
+   * @see https://zulip.com/api/set-typing-status#parameter-stream_id
+   */
+  stream_id: never
+  /**
+   * Target topic name
+   * @since Zulip 4.0 (feature level 58)
+   * @see https://zulip.com/api/set-typing-status#parameter-topic
+   */
+  topic: never
+}
+
+/**
+ * Stream destination parameters for SetTypingStatus API
+ */
+type SetTypingStatusStreamDestinationParams = {
+  /**
+   * Destination type. For direct message, specify direct. For stream,
+   * specify stream or channel. Default is direct
+   * @since Zulip 4.0 (feature level 58)
+   * @see https://zulip.com/api/set-typing-status#parameter-type
+   */
+  type: 'stream' | 'channel'
+  /**
+   * Target user IDs
+   * @see https://zulip.com/api/set-typing-status#parameter-to
+   */
+  to: never
+  /**
+   * Target stream ID
+   * @since Zulip 8.0 (feature level 215)
+   * @see https://zulip.com/api/set-typing-status#parameter-stream_id
+   */
+  stream_id: number
+  /**
+   * Target topic name
+   * @since Zulip 4.0 (feature level 58)
+   * @see https://zulip.com/api/set-typing-status#parameter-topic
+   */
+  topic: string
+}
+
+/**
+ * Parameters for SetTypingStatus API
+ * @see https://zulip.com/api/set-typing-status#parameters
+ */
+export type SetTypingStatusParams = (
+  | SetTypingStatusDirectDestinationParams
+  | SetTypingStatusStreamDestinationParams
+) & {
+  /**
+   * Started typing or stopped typing
+   * @see https://zulip.com/api/set-typing-status#parameter-op
+   */
+  op: 'start' | 'stop'
+}
+
+/**
  * Get a user status
  * @param client Axios client initialized by generateCallApi function in api.ts
  * @param userId User ID
@@ -305,6 +380,34 @@ export async function updateUserStatus(
     `/users/${userId}/status`,
     body,
   )
+
+  return resp.data
+}
+
+/**
+ * Set typing status
+ * @param client Axios client initialized by generateCallApi function in api.ts
+ * @param params API parameters
+ * @returns The response of SetTypingStatus API
+ * @see https://zulip.com/api/set-typing-status
+ */
+export async function setTypingStatus(
+  client: AxiosInstance,
+  params: SetTypingStatusParams,
+) {
+  const body = new URLSearchParams()
+  for (const [key, value] of Object.entries(params)) {
+    if (value === undefined || value === null) {
+      continue
+    }
+    if (Array.isArray(value) || typeof value === 'object') {
+      body.append(key, JSON.stringify(value))
+    } else {
+      body.append(key, String(value))
+    }
+  }
+
+  const resp = await client.post<GeneralSuccessResponse>('/typing', body)
 
   return resp.data
 }

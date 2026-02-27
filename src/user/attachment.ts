@@ -76,3 +76,21 @@ export async function getAttachments(client: AxiosInstance) {
 
   return resp.data
 }
+
+/**
+ * Delete an attachment file
+ * @param client Axios client initialized by generateCallApi function in api.ts
+ * @param attachmentId Attachment ID
+ * @returns The response of DeleteAttachment API
+ * @see https://zulip.com/api/remove-attachment
+ */
+export async function deleteAttachment(
+  client: AxiosInstance,
+  attachmentId: number,
+) {
+  const resp = await client.delete<GeneralSuccessResponse>(
+    `/attachments/${attachmentId}`,
+  )
+
+  return resp.data
+}

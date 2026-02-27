@@ -1,6 +1,20 @@
 import type { AxiosInstance } from 'axios'
 import type { GeneralSuccessResponse } from '../api'
-import type { BotTypeValues, UserRoleValues } from '../constants'
+import type {
+  BotTypeValues,
+  UserRoleValues,
+  UserSettingsWebMarkReadScrollPolicyValues,
+  UserSettingsWebChannelDefaultViewValues,
+  UserSettingsColorSchemeValues,
+  UserSettingsDemoteInactiveStreamsValues,
+  UserSettingsUserListStyleValues,
+  UserSettingsWebStreamUnreadsCountDisplayPolicyValues,
+  UserSettingsDesktopIconCountDisplayValues,
+  UserSettingsRealmNameInEmailNotificationsPolicyValues,
+  UserSettingsAutomaticallyFollowTopicsPolicyValues,
+  UserSettingsAutomaticallyUnmuteTopicsInMutedChannelsPolicyValues,
+  UserSettingsEmailAddressVisibilityValues,
+} from '../constants'
 
 /**
  * Parameters for GetUserById API

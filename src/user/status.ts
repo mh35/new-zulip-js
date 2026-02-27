@@ -371,6 +371,77 @@ export type GetUserPresenceResponse = GeneralSuccessResponse & {
 }
 
 /**
+ * Aggregated user presence item for GetAllUserPresence API
+ */
+export type GetAllUserPresenceClientAggregatedItem = {
+  /**
+   * The client name. Starting with Zulip 7.0 (feature level 178), always website.
+   */
+  client: 'website'
+  /**
+   * Whether the user had recently interacted with Zulip at the time of the timestamp
+   */
+  status: 'active' | 'idle'
+  /**
+   * When this update was received. If the timestamp is more than a few minutes
+   * in the past, the user is offline.
+   */
+  timestamp: number
+}
+
+/**
+ * Client-specific user presence item for GetAllUserPresence API
+ */
+export type GetAllUserPresenceClientWebsiteItem = {
+  /**
+   * The client name. Starting with Zulip 7.0 (feature level 178), always website.
+   */
+  client: 'website'
+  /**
+   * Whether the user had recently interacted with Zulip at the time of the timestamp
+   */
+  status: 'active' | 'idle'
+  /**
+   * When this update was received. If the timestamp is more than a few minutes
+   * in the past, the user is offline.
+   */
+  timestamp: number
+  /**
+   * Whether the client is capable of showing mobile/push notifications to the user
+   */
+  pushable: boolean
+}
+
+/**
+ * The user item of GetAllUserPresence API
+ */
+export type GetAllUserPresenceUserItem = {
+  /**
+   * Aggregated presence data
+   */
+  aggregated: GetAllUserPresenceClientAggregatedItem
+  /**
+   * Website presence data
+   */
+  website: GetAllUserPresenceClientWebsiteItem
+}
+
+/**
+ * The response of GetAllUserPresence API
+ * @see https://zulip.com/api/get-presence#response
+ */
+export type GetAllUserPresenceResponse = GeneralSuccessResponse & {
+  /**
+   * The server timestamp
+   */
+  server_timestamp: number
+  /**
+   * Users' presence data with user email key
+   */
+  presences: Record<string, GetAllUserPresenceUserItem>
+}
+
+/**
  * Get a user status
  * @param client Axios client initialized by generateCallApi function in api.ts
  * @param userId User ID
@@ -503,6 +574,18 @@ export async function getUserPresence(
   const resp = await client.get<GetUserPresenceResponse>(
     `/users/${encodeURIComponent(String(userIdOrEmail))}/presence`,
   )
+
+  return resp.data
+}
+
+/**
+ * Get all user presence data
+ * @param client Axios client initialized by generateCallApi function in api.ts
+ * @returns The response of GetAllUserPresence API
+ * @see https://zulip.com/api/get-presence
+ */
+export async function getAllUserPresence(client: AxiosInstance) {
+  const resp = await client.get<GetAllUserPresenceResponse>('/realm/presence')
 
   return resp.data
 }

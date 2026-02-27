@@ -442,6 +442,270 @@ export type GetAllUserPresenceResponse = GeneralSuccessResponse & {
 }
 
 /**
+ * Initialize parameter for UpdatePresence API
+ */
+type UpdatePresenceForInitializeParams = {
+  /**
+   * The identifier that specifies what presence data the client already has received
+   * @since Zulip 9.0 (feature level 263)
+   * @see https://zulip.com/api/update-presence#parameter-last_update_id
+   */
+  last_update_id: -1
+  /**
+   * Limits how far back in time to fetch user presence data. Default is 14 days
+   * @since Zulip 10.0 (feature level 288)
+   * @see https://zulip.com/api/update-presence#parameter-history_limit_days
+   */
+  history_limit_days?: number
+  /**
+   * Whether to get slim presence or not
+   * @deprecated Since Zulip 9.0 (feature level 263), use last_update_id instead
+   * @see https://zulip.com/api/update-presence#parameter-slim_presence
+   */
+  slim_presence: never
+}
+
+/**
+ * Continuous parameter for UpdatePresence API
+ */
+type UpdatePresenceForUpdateParams = {
+  /**
+   * The identifier that specifies what presence data the client already has received
+   * @since Zulip 9.0 (feature level 263)
+   * @see https://zulip.com/api/update-presence#parameter-last_update_id
+   */
+  last_update_id: Exclude<number, -1>
+  /**
+   * Limits how far back in time to fetch user presence data. Default is 14 days
+   * @since Zulip 10.0 (feature level 288)
+   * @see https://zulip.com/api/update-presence#parameter-history_limit_days
+   */
+  history_limit_days: never
+  /**
+   * Whether to get slim presence or not
+   * @deprecated Since Zulip 9.0 (feature level 263), use last_update_id instead
+   * @see https://zulip.com/api/update-presence#parameter-slim_presence
+   */
+  slim_presence: never
+}
+
+/**
+ * Legacy parameters to get slim presence for UpdatePresence API
+ */
+type UpdatePresenceForUpdateLegacySlimParams = {
+  /**
+   * The identifier that specifies what presence data the client already has received
+   * @since Zulip 9.0 (feature level 263)
+   * @see https://zulip.com/api/update-presence#parameter-last_update_id
+   */
+  last_update_id: never
+  /**
+   * Limits how far back in time to fetch user presence data. Default is 14 days
+   * @since Zulip 10.0 (feature level 288)
+   * @see https://zulip.com/api/update-presence#parameter-history_limit_days
+   */
+  history_limit_days: never
+  /**
+   * Whether to get slim presence or not
+   * @deprecated Since Zulip 9.0 (feature level 263), use last_update_id instead
+   * @see https://zulip.com/api/update-presence#parameter-slim_presence
+   */
+  slim_presence: true
+}
+
+/**
+ * Legacy parameters to get full presence for UpdatePresence API
+ */
+type UpdatePresenceForUpdateLegacyFullParams = {
+  /**
+   * The identifier that specifies what presence data the client already has received
+   * @since Zulip 9.0 (feature level 263)
+   * @see https://zulip.com/api/update-presence#parameter-last_update_id
+   */
+  last_update_id: never
+  /**
+   * Limits how far back in time to fetch user presence data. Default is 14 days
+   * @since Zulip 10.0 (feature level 288)
+   * @see https://zulip.com/api/update-presence#parameter-history_limit_days
+   */
+  history_limit_days: never
+  /**
+   * Whether to get slim presence or not
+   * @deprecated Since Zulip 9.0 (feature level 263), use last_update_id instead
+   * @see https://zulip.com/api/update-presence#parameter-slim_presence
+   */
+  slim_presence?: false
+}
+
+/**
+ * Ping only parameters for UpdatePresence API
+ */
+type UpdatePresencePingOnlyBaseParams = {
+  /**
+   * Whether the client is sending a ping-only request. If true, the server
+   * does not send presences data. Default is false
+   * @see https://zulip.com/api/update-presence#parameter-ping_only
+   */
+  ping_only: true
+}
+
+/**
+ * Not ping only parameters for UpdatePresence API
+ */
+type UpdatePresenceNotPingOnlyBaseParams = {
+  /**
+   * Whether the client is sending a ping-only request. If true, the server
+   * does not send presences data. Default is false
+   * @see https://zulip.com/api/update-presence#parameter-ping_only
+   */
+  ping_only?: false
+}
+
+/**
+ * Common parameters for UpdatePresence API
+ */
+type UpdatePresenceCommonParams = {
+  /**
+   * Whether the user has interacted with the client since the previous presence
+   * request from this client. Default is false
+   * @see https://zulip.com/api/update-presence#parameter-new_user_input
+   */
+  new_user_input?: boolean
+  /**
+   * The status of the user on this client
+   * @see https://zulip.com/api/update-presence#parameter-status
+   */
+  status: 'idle' | 'active'
+}
+
+/**
+ * Ping only parameters for UpdatePresence API
+ * @see https://zulip.com/api/update-presence#parameters
+ */
+export type UpdatePresencePingOnlyParams = (
+  | UpdatePresenceForInitializeParams
+  | UpdatePresenceForUpdateParams
+  | UpdatePresenceForUpdateLegacyFullParams
+) &
+  UpdatePresencePingOnlyBaseParams &
+  UpdatePresenceCommonParams
+
+/**
+ * Slim presence parameters for UpdatePresence API
+ * @see https://zulip.com/api/update-presence#parameters
+ */
+export type UpdatePresenceSlimParams = (
+  | UpdatePresenceForInitializeParams
+  | UpdatePresenceForUpdateParams
+  | UpdatePresenceForUpdateLegacySlimParams
+) &
+  UpdatePresenceNotPingOnlyBaseParams &
+  UpdatePresenceCommonParams
+
+/**
+ * Legacy full presence parameters for UpdatePresence API
+ * @deprecated Since Zulip 9.0 (feature level 263), use modern parameters
+ * @see https://zulip.com/api/update-presence#parameters
+ */
+export type UpdatePresenceLegacyParams =
+  UpdatePresenceForUpdateLegacyFullParams &
+    UpdatePresenceNotPingOnlyBaseParams &
+    UpdatePresenceCommonParams
+
+/**
+ * Parameters for UpdatePresence API
+ * @see https://zulip.com/api/update-presence#parameters
+ */
+export type UpdatePresenceParams =
+  | UpdatePresencePingOnlyParams
+  | UpdatePresenceSlimParams
+  | UpdatePresenceLegacyParams
+
+/**
+ * Base response of UpdatePresence API
+ */
+type UpdatePresenceResponseCommon = GeneralSuccessResponse & {
+  /**
+   * The identifier for the latest user presence data returned in the presences data
+   * of the response.
+   */
+  presence_last_update_id: number
+}
+
+/**
+ * Modern user presence item for UpdatePresence API
+ */
+type UpdatePresenceResponseModernUserItem = {
+  /**
+   * The UNIX timestamp of the last time a client connected to Zulip reported
+   * that the user was actually present
+   */
+  active_timestamp: number
+  /**
+   * The UNIX timestamp of the last time the user had a client connected to Zulip,
+   * including idle clients where the user hasn't interacted with the system recently
+   */
+  idle_timestamp: number
+}
+
+/**
+ * Ping response of UpdatePresence API
+ * @see https://zulip.com/api/update-presence#response
+ */
+export type UpdatePresenceResponseWithoutPresences =
+  UpdatePresenceResponseCommon & {
+    /**
+     * The time when the server fetched the presences data included in the response
+     */
+    server_timestamp: never
+    /**
+     * Presence data. If slim style, key is the user ID, otherwise user email is the key.
+     */
+    presences: never
+  }
+
+/**
+ * Modern slim presence response of UpdatePresence API
+ * @see https://zulip.com/api/update-presence#response
+ */
+export type UpdatePresenceResponseWithModernPresence =
+  UpdatePresenceResponseCommon & {
+    /**
+     * The time when the server fetched the presences data included in the response
+     */
+    server_timestamp: number
+    /**
+     * Presence data. If slim style, key is the user ID, otherwise user email is the key.
+     */
+    presences: Record<string, UpdatePresenceResponseModernUserItem>
+  }
+
+/**
+ * Legacy full presence response of UpdatePresence API
+ * @deprecated Zulip 9.0 (feature level 263)
+ */
+export type UpdatePresenceResponseWithLegacyPresence =
+  UpdatePresenceResponseCommon & {
+    /**
+     * The time when the server fetched the presences data included in the response
+     */
+    server_timestamp: number
+    /**
+     * Presence data. If slim style, key is the user ID, otherwise user email is the key.
+     */
+    presences: Record<string, GetAllUserPresenceUserItem>
+  }
+
+/**
+ * Response of UpdatePresence API
+ * @see https://zulip.com/api/update-presence#response
+ */
+export type UpdatePresenceResponse =
+  | UpdatePresenceResponseWithoutPresences
+  | UpdatePresenceResponseWithModernPresence
+  | UpdatePresenceResponseWithLegacyPresence
+
+/**
  * Get a user status
  * @param client Axios client initialized by generateCallApi function in api.ts
  * @param userId User ID
@@ -586,6 +850,60 @@ export async function getUserPresence(
  */
 export async function getAllUserPresence(client: AxiosInstance) {
   const resp = await client.get<GetAllUserPresenceResponse>('/realm/presence')
+
+  return resp.data
+}
+
+/**
+ * Update presence with ping only
+ * @param client Axios client initialized by generateCallApi function in api.ts
+ * @param params API parameters
+ * @returns The response of UpdatePresence API
+ * @see https://zulip.com/api/update-presence
+ */
+export async function updatePresence(
+  client: AxiosInstance,
+  params: UpdatePresencePingOnlyParams,
+): Promise<UpdatePresenceResponseWithoutPresences>
+/**
+ * Update presence with getting slim presence data
+ * @param client Axios client initialized by generateCallApi function in api.ts
+ * @param params API parameters
+ * @returns The response of UpdatePresence API
+ * @see https://zulip.com/api/update-presence
+ */
+export async function updatePresence(
+  client: AxiosInstance,
+  params: UpdatePresenceSlimParams,
+): Promise<UpdatePresenceResponseWithModernPresence>
+/**
+ * Update presence with getting legacy full presence data
+ * @param client Axios client initialized by generateCallApi function in api.ts
+ * @param params API parameters
+ * @returns The response of UpdatePresence API
+ * @deprecated Since Zulip 9.0 (feature level 263), use modern presence
+ * @see https://zulip.com/api/update-presence
+ */
+export async function updatePresence(
+  client: AxiosInstance,
+  params: UpdatePresenceLegacyParams,
+): Promise<UpdatePresenceResponseWithLegacyPresence>
+export async function updatePresence(
+  client: AxiosInstance,
+  params: UpdatePresenceParams,
+) {
+  const body = new URLSearchParams()
+  for (const [key, value] of Object.entries(params)) {
+    if (value === undefined || value === null) {
+      continue
+    }
+    body.append(key, String(value))
+  }
+
+  const resp = await client.post<UpdatePresenceResponse>(
+    '/users/me/presence',
+    body,
+  )
 
   return resp.data
 }

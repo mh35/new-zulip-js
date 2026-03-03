@@ -452,6 +452,176 @@ export type DeactivateUserParams = {
   deactivation_notification_comment?: string
 }
 
+type UpdateUserSettingsTargetUsersParamsWithUserIds = {
+  /**
+   * The list of user IDs to update settings
+   */
+  user_ids: number[]
+}
+
+type UpdatUserSettingsTargetUsersParamsWithGroupIds = {
+  /**
+   * The list of group IDs to update settings
+   */
+  group_ids: number[]
+}
+
+type UpdateUserSettingsTargetUsersParams = (
+  | UpdateUserSettingsTargetUsersParamsWithUserIds
+  | UpdatUserSettingsTargetUsersParamsWithGroupIds
+) & {
+  /**
+   * Skip if the user already set the settings by himself/herself
+   */
+  skip_if_already_edited: boolean
+}
+
+type UpdateUserSettingsProtectedParamKeys =
+  | 'email'
+  | 'old_password'
+  | 'new_password'
+  | 'allow_private_data_export'
+  | 'email_address_visibility'
+  | 'enable_digest_emails'
+  | 'enable_login_emails'
+  | 'enable_marketing_emails'
+  | 'presence_enabled'
+  | 'send_private_typing_notifications'
+  | 'send_read_receipts'
+  | 'send_stream_typing_notifications'
+
+type UpdateUserSettingsParamsWithTargetUserBase = {
+  target_users: UpdateUserSettingsTargetUsersParams
+  email?: never
+  old_password?: never
+  new_password?: never
+  allow_private_data_export?: never
+  email_address_visibility?: never
+  enable_digest_emails?: never
+  enable_login_emails?: never
+  enable_marketing_emails?: never
+  presence_enabled?: never
+  send_private_typing_notifications?: never
+  send_read_receipts?: never
+  send_stream_typing_notifications?: never
+}
+
+type UpdateUserSettingsParamsWithoutTargetUserBase = {
+  target_users?: never
+}
+
+export type UpdateUserSettingsParamsWebHomeViewValues =
+  | 'recent'
+  | 'inbox'
+  | 'all_messages'
+
+export type UpdateUserSettingsParamsWebAnimateImagePreviewsValues =
+  | 'always'
+  | 'on_hover'
+  | 'never'
+
+export type UpdateUserSettingsParamsEmojiSetValues =
+  | 'google'
+  | 'twitter'
+  | 'text'
+
+export type UpdateUserSettingsParamsResolvedTopicNoticeAutoReadPolicyValues =
+  | 'always'
+  | 'except_followed'
+  | 'never'
+
+type UpdateUserSettingsEditableParams = {
+  full_name?: string
+  email?: string
+  old_password?: string
+  new_password?: string
+  twenty_four_hour_time?: boolean
+  web_mark_read_on_scroll_policy?: UserSettingsWebMarkReadScrollPolicyValues
+  web_channel_default_view?: UserSettingsWebChannelDefaultViewValues
+  starred_message_counts?: boolean
+  receives_typing_notifications?: boolean
+  web_suggest_update_timezone?: boolean
+  fluid_layout_width?: boolean
+  high_contrast_mode?: boolean
+  web_font_size_px?: number
+  web_line_height_percent?: number
+  color_scheme?: UserSettingsColorSchemeValues
+  enable_drafts_synchronization?: boolean
+  translate_emoticons?: boolean
+  display_emoji_reaction_users?: boolean
+  default_language?: string
+  web_home_view?: UpdateUserSettingsParamsWebHomeViewValues
+  web_escape_navigates_to_home_view?: boolean
+  left_side_userlist?: boolean
+  emojiset?: UpdateUserSettingsParamsEmojiSetValues
+  demote_inactive_streams?: UserSettingsDemoteInactiveStreamsValues
+  user_list_style?: UserSettingsUserListStyleValues
+  web_animate_image_previews?: UpdateUserSettingsParamsWebAnimateImagePreviewsValues
+  web_stream_unreads_count_display_policy?: UserSettingsWebStreamUnreadsCountDisplayPolicyValues
+  hide_ai_features?: boolean
+  web_inbox_show_channel_folders?: boolean
+  web_left_sidebar_show_channel_folders?: boolean
+  web_left_sidebar_unreads_count_summary?: boolean
+  timezone?: string
+  enable_stream_desktop_notifications?: boolean
+  enable_stream_email_notifications?: boolean
+  enable_stream_push_notifications?: boolean
+  enable_stream_audible_notifications?: boolean
+  notification_sound?: string
+  enable_desktop_notifications?: boolean
+  enable_sounds?: boolean
+  email_notifications_batching_period_seconds?: number
+  enable_offline_email_notifications?: boolean
+  enable_offline_push_notifications?: boolean
+  enable_online_push_notifications?: boolean
+  enable_followed_topic_desktop_notifications?: boolean
+  enable_followed_topic_email_notifications?: boolean
+  enable_followed_topic_push_notifications?: boolean
+  enable_followed_topic_audible_notifications?: boolean
+  enable_digest_emails?: boolean
+  enable_marketing_emails?: boolean
+  enable_login_emails?: boolean
+  message_content_in_email_notifications?: boolean
+  pm_content_in_desktop_notifications?: boolean
+  wildcard_mentions_notify?: boolean
+  enable_followed_topic_wildcard_mentions_notify?: boolean
+  desktop_icon_count_display?: UserSettingsDesktopIconCountDisplayValues
+  realm_name_in_email_notifications_policy?: UserSettingsRealmNameInEmailNotificationsPolicyValues
+  automatically_follow_topics_policy?: UserSettingsAutomaticallyFollowTopicsPolicyValues
+  automatically_unmute_topics_in_muted_streams_policy?: UserSettingsAutomaticallyUnmuteTopicsInMutedChannelsPolicyValues
+  automatically_follow_topics_where_mentioned?: boolean
+  resolved_topic_notice_auto_read_policy?: UpdateUserSettingsParamsResolvedTopicNoticeAutoReadPolicyValues
+  presence_enabled?: boolean
+  enter_sends?: boolean
+  send_private_typing_notifications?: boolean
+  send_stream_typing_notifications?: boolean
+  send_read_receipts?: boolean
+  allow_private_data_export?: boolean
+  email_address_visibility?: UserSettingsEmailAddressVisibilityValues
+  web_navigate_to_sent_message?: boolean
+}
+
+type UpdateUserSettingsEditableParamsForTargetUsers = Omit<
+  UpdateUserSettingsEditableParams,
+  UpdateUserSettingsProtectedParamKeys
+>
+
+type UpdateUserSettingsAtLeastOne<T extends Record<string, unknown>> = {
+  [Key in keyof T]-?: Required<Pick<T, Key>> & Partial<Omit<T, Key>>
+}[keyof T]
+
+type UpdateUserSettingsSelfEditableParams =
+  UpdateUserSettingsAtLeastOne<UpdateUserSettingsEditableParams>
+
+type UpdateUserSettingsTargetUsersEditableParams =
+  UpdateUserSettingsAtLeastOne<UpdateUserSettingsEditableParamsForTargetUsers>
+
+export type UpdateUserSettingsParams =
+  | (UpdateUserSettingsParamsWithTargetUserBase &
+      UpdateUserSettingsTargetUsersEditableParams)
+  | (UpdateUserSettingsParamsWithoutTargetUserBase &
+      UpdateUserSettingsSelfEditableParams)
+
 /**
  * Get user by ID
  * @param client Axios client initialized by generateCallApi function in api.ts

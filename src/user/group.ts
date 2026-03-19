@@ -111,6 +111,72 @@ export type GetUserGroupsResponse = GeneralSuccessResponse & {
 }
 
 /**
+ * The parameters of CreateUserGroup API
+ * @see https://zulip.com/api/create-user-group#parameters
+ */
+export type CreateUserGroupParams = {
+  /**
+   * User group name
+   * @see https://zulip.com/api/create-user-group#parameter-name
+   */
+  name: string
+  /**
+   * The description of the user group
+   * @see https://zulip.com/api/create-user-group#parameter-description
+   */
+  description: string
+  /**
+   * User IDs of the initial members
+   * @see https://zulip.com/api/create-user-group#parameter-members
+   */
+  members: number[]
+  /**
+   * IDs of the initial subgroups
+   * @since Zulip 10.0 (feature level 311)
+   * @see https://zulip.com/api/create-user-group#parameter-subgroups
+   */
+  subgroups?: number[]
+  /**
+   * A group-setting value defining the set of users who have permission to add members
+   * @since Zulip 10.0 (feature level 305)
+   */
+  can_add_members_group?: number | GroupPermissionGroupObj
+  /**
+   * A group-setting value defining the set of users who have permission to join
+   * @since Zulip 10.0 (feature level 301)
+   */
+  can_join_group?: number | GroupPermissionGroupObj
+  /**
+   * A group-setting value defining the set of users who have permission to leave
+   * @since Zulip 10.0 (feature level 308)
+   */
+  can_leave_group?: number | GroupPermissionGroupObj
+  /**
+   * A group-setting value defining the set of users who have permission to manage
+   * @since Zulip 10.0 (feature level 283)
+   */
+  can_manage_group?: number | GroupPermissionGroupObj
+  /**
+   * A group-setting value defining the set of users who have permission to mention
+   * @since Zulip 8.0 (feature level 191)
+   */
+  can_mention_group?: number | GroupPermissionGroupObj
+  /**
+   * A group-setting value defining the set of users who have permission to remove members
+   * @since Zulip 10.0 (feature level 324)
+   */
+  can_remove_members_group?: number | GroupPermissionGroupObj
+}
+
+/**
+ * The response of CreateUserGroup API
+ * @see https://zulip.com/api/create-user-group#response
+ */
+export type CreateUserGroupResponse = GeneralSuccessResponse & {
+  group_id: number
+}
+
+/**
  * Get user groups
  * @param client Axios client initialized by generateCallApi function in api.ts
  * @param params API parameters
@@ -143,5 +209,36 @@ export async function getUserGroups(
     params: sendParams,
   })
 
+  return resp.data
+}
+
+/**
+ * Create a user group
+ * @param client Axios client initialized by generateCallApi function in api.ts
+ * @param params API parameters
+ * @returns The response of CreateUserGroup API
+ * @see https://zulip.com/api/create-user-group
+ */
+export async function createUserGroup(
+  client: AxiosInstance,
+  params: CreateUserGroupParams,
+) {
+  const body = new URLSearchParams()
+  for (const [key, value] of Object.entries(params)) {
+    if (value === undefined || value === null) {
+      continue
+    }
+
+    if (Array.isArray(value) || typeof value === 'object') {
+      body.append(key, JSON.stringify(value))
+    } else {
+      body.append(key, String(value))
+    }
+  }
+
+  const resp = await client.post<CreateUserGroupResponse>(
+    '/user_groups/create',
+    body,
+  )
   return resp.data
 }

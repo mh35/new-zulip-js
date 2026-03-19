@@ -176,6 +176,58 @@ export type CreateUserGroupResponse = GeneralSuccessResponse & {
   group_id: number
 }
 
+export type UpdateUserGroupUpdatePermissionObj = {
+  new: number | GroupPermissionGroupObj
+  old?: number | GroupPermissionGroupObj
+}
+
+type UpdateUserGroupUpdateNameParams = {
+  name: string
+}
+
+type UpdateUserGroupUpdateDescriptionParams = {
+  description: string
+}
+
+type UpdateUserGroupUpdateCanAddMembersParams = {
+  can_add_members_group: UpdateUserGroupUpdatePermissionObj
+}
+
+type UpdateUserGroupUpdateCanJoinParams = {
+  can_join_group: UpdateUserGroupUpdatePermissionObj
+}
+
+type UpdateUserGroupUpdateCanLeaveParams = {
+  can_leave_group: UpdateUserGroupUpdatePermissionObj
+}
+
+type UpdateUserGroupUpdateCanManageParams = {
+  can_manage_group: UpdateUserGroupUpdatePermissionObj
+}
+
+type UpdateUserGroupUpdateCanMentionParams = {
+  can_mention_group: UpdateUserGroupUpdatePermissionObj
+}
+
+type UpdateUserGroupUpdateCanRemoveMembersParams = {
+  can_remove_members_group: UpdateUserGroupUpdatePermissionObj
+}
+
+type UpdateUserGroupReactivateParams = {
+  deactivated: false
+}
+
+export type UpdateUserGroupParams =
+  | UpdateUserGroupUpdateNameParams
+  | UpdateUserGroupUpdateDescriptionParams
+  | UpdateUserGroupUpdateCanAddMembersParams
+  | UpdateUserGroupUpdateCanJoinParams
+  | UpdateUserGroupUpdateCanLeaveParams
+  | UpdateUserGroupUpdateCanManageParams
+  | UpdateUserGroupUpdateCanMentionParams
+  | UpdateUserGroupUpdateCanRemoveMembersParams
+  | UpdateUserGroupReactivateParams
+
 /**
  * Get user groups
  * @param client Axios client initialized by generateCallApi function in api.ts

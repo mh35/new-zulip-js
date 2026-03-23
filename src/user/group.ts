@@ -173,8 +173,148 @@ export type CreateUserGroupParams = {
  * @see https://zulip.com/api/create-user-group#response
  */
 export type CreateUserGroupResponse = GeneralSuccessResponse & {
+  /**
+   * Group ID
+   */
   group_id: number
 }
+
+/**
+ * Group permission specification of UpdateUserGroup API
+ */
+export type UpdateUserGroupUpdatePermissionObj = {
+  /**
+   * New permission target
+   */
+  new: number | GroupPermissionGroupObj
+  /**
+   * Expected old permission target
+   */
+  old?: number | GroupPermissionGroupObj
+}
+
+/**
+ * Update name parameters for UpdateUserGroup API
+ */
+type UpdateUserGroupUpdateNameParams = {
+  /**
+   * New group name
+   * @see https://zulip.com/api/update-user-group#parameter-name
+   */
+  name: string
+}
+
+/**
+ * Update description parameters for UpdateUserGroup API
+ */
+type UpdateUserGroupUpdateDescriptionParams = {
+  /**
+   * New group description
+   * @see https://zulip.com/api/update-user-group#parameter-description
+   */
+  description: string
+}
+
+/**
+ * Update add members permission parameters for UpdateUserGroup API
+ */
+type UpdateUserGroupUpdateCanAddMembersParams = {
+  /**
+   * A group-setting value defining the set of users who have permission to add members
+   * @since Zulip 10.0 (feature level 305)
+   * @see https://zulip.com/api/update-user-group#parameter-can_add_members_group
+   */
+  can_add_members_group: UpdateUserGroupUpdatePermissionObj
+}
+
+/**
+ * Update join permission parameters for UpdateUserGroup API
+ */
+type UpdateUserGroupUpdateCanJoinParams = {
+  /**
+   * A group-setting value defining the set of users who have permission to join
+   * @since Zulip 10.0 (feature level 301)
+   * @see https://zulip.com/api/update-user-group#parameter-can_join_group
+   */
+  can_join_group: UpdateUserGroupUpdatePermissionObj
+}
+
+/**
+ * Update leave permission parameters for UpdateUserGroup API
+ */
+type UpdateUserGroupUpdateCanLeaveParams = {
+  /**
+   * A group-setting value defining the set of users who have permission to leave
+   * @since Zulip 10.0 (feature level 308)
+   * @see https://zulip.com/api/update-user-group#parameter-can_leave_group
+   */
+  can_leave_group: UpdateUserGroupUpdatePermissionObj
+}
+
+/**
+ * Update manage permission parameters for UpdateUserGroup API
+ */
+type UpdateUserGroupUpdateCanManageParams = {
+  /**
+   * A group-setting value defining the set of users who have permission to manage
+   * @since Zulip 10.0 (feature level 283)
+   * @see https://zulip.com/api/update-user-group#parameter-can_manage_group
+   */
+  can_manage_group: UpdateUserGroupUpdatePermissionObj
+}
+
+/**
+ * Update mention permission parameters for UpdateUserGroup API
+ */
+type UpdateUserGroupUpdateCanMentionParams = {
+  /**
+   * A group-setting value defining the set of users who have permission to mention
+   * @since Zulip 8.0 (feature level 191)
+   * @see https://zulip.com/api/update-user-group#parameter-can_mention_group
+   */
+  can_mention_group: UpdateUserGroupUpdatePermissionObj
+}
+
+/**
+ * Update remove members permission parameters for UpdateUserGroup API
+ */
+type UpdateUserGroupUpdateCanRemoveMembersParams = {
+  /**
+   * A group-setting value defining the set of users who have permission to remove members
+   * @since Zulip 10.0 (feature level 324)
+   * @see https://zulip.com/api/update-user-group#parameter-can_remove_members_group
+   */
+  can_remove_members_group: UpdateUserGroupUpdatePermissionObj
+}
+
+/**
+ * Reactivate group parameters for UpdateUserGroup API
+ */
+type UpdateUserGroupReactivateParams = {
+  /**
+   * Group deactivation status.
+   *
+   * If you want to deactivate group, use DeactivateUserGroup API instead
+   * @since Zulip 11.0 (feature level 386)
+   * @see https://zulip.com/api/update-user-group#parameter-deactivated
+   */
+  deactivated: false
+}
+
+/**
+ * Parameters for UpdateUserGroup API
+ * @see https://zulip.com/api/update-user-group#parameters
+ */
+export type UpdateUserGroupParams =
+  | UpdateUserGroupUpdateNameParams
+  | UpdateUserGroupUpdateDescriptionParams
+  | UpdateUserGroupUpdateCanAddMembersParams
+  | UpdateUserGroupUpdateCanJoinParams
+  | UpdateUserGroupUpdateCanLeaveParams
+  | UpdateUserGroupUpdateCanManageParams
+  | UpdateUserGroupUpdateCanMentionParams
+  | UpdateUserGroupUpdateCanRemoveMembersParams
+  | UpdateUserGroupReactivateParams
 
 /**
  * Get user groups
@@ -240,5 +380,39 @@ export async function createUserGroup(
     '/user_groups/create',
     body,
   )
+  return resp.data
+}
+
+/**
+ * Update a user group
+ * @param client Axios client initialized by generateCallApi function in api.ts
+ * @param groupId User group ID
+ * @param params API parameters
+ * @returns The response of UpdateUserGroup API
+ * @see https://zulip.com/api/update-user-group
+ */
+export async function updateUserGroup(
+  client: AxiosInstance,
+  groupId: number,
+  params: UpdateUserGroupParams,
+) {
+  const body = new URLSearchParams()
+  for (const [key, value] of Object.entries(params)) {
+    if (value === undefined || value === null) {
+      continue
+    }
+
+    if (Array.isArray(value) || typeof value === 'object') {
+      body.append(key, JSON.stringify(value))
+    } else {
+      body.append(key, String(value))
+    }
+  }
+
+  const resp = await client.patch<GeneralSuccessResponse>(
+    `/user_groups/${groupId}`,
+    body,
+  )
+
   return resp.data
 }

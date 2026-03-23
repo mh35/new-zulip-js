@@ -15,7 +15,7 @@ export type GetBotApiKeyResponse = GeneralSuccessResponse & {
 
 /**
  * The response of RegenerateBotApiKey API
- * @see
+ * @see https://zulip.com/api/regenerate-bot-api-key#response
  */
 export type RegenerateBotApiKeyResponse = GetBotApiKeyResponse
 

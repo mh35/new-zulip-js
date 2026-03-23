@@ -454,6 +454,31 @@ export type GetUserGroupMembersResponse = GeneralSuccessResponse & {
 }
 
 /**
+ * Parameters for GetUserGroupSubgroups API
+ * @since Zulip 6.0 (feature level 127)
+ * @see https://zulip.com/api/get-user-group-subgroups#parameters
+ */
+export type GetUserGroupSubgroupsParams = {
+  /**
+   * Whether to consider only the direct subgroup or not. Default is false
+   * @see https://zulip.com/api/get-user-group-subgroups#parameter-direct_subgroup_only
+   */
+  direct_subgroup_only?: boolean
+}
+
+/**
+ * The response of GetUserGroupSubgroups API
+ * @since Zulip 6.0 (feature level 127)
+ * @see https://zulip.com/api/get-user-group-subgroups#response
+ */
+export type GetUserGroupSubgroupsResponse = GeneralSuccessResponse & {
+  /**
+   * IDs of subgroups
+   */
+  subgroups: number[]
+}
+
+/**
  * Get user groups
  * @param client Axios client initialized by generateCallApi function in api.ts
  * @param params API parameters
@@ -711,6 +736,48 @@ export async function getUserGroupMembers(
 
   const resp = await client.get<GetUserGroupMembersResponse>(
     `/user_groups/${groupId}/members`,
+    {
+      params: sendParams,
+    },
+  )
+
+  return resp.data
+}
+
+/**
+ * Get subgroups of the group
+ * @param client Axios client initialized by generateCallApi function in api.ts
+ * @param groupId User group ID
+ * @param params API parameters
+ * @returns The response of GetUserGroupSubgroups API
+ * @since Zulip 6.0 (feature level 127)
+ * @see https://zulip.com/api/get-user-group-subgroups
+ */
+export async function getUserGroupSubgroups(
+  client: AxiosInstance,
+  groupId: number,
+  params: GetUserGroupSubgroupsParams = {},
+) {
+  const sendParams = {} as Record<string, string>
+  for (const [key, value] of Object.entries(params)) {
+    if (value === undefined || value === null) {
+      continue
+    }
+
+    if (Array.isArray(value)) {
+      // Encode arrays as JSON strings
+      sendParams[key] = JSON.stringify(value)
+    } else if (typeof value === 'boolean') {
+      // Encode booleans as strings
+      sendParams[key] = String(value)
+    } else {
+      // Other values (strings, numbers)
+      sendParams[key] = String(value)
+    }
+  }
+
+  const resp = await client.get<GetUserGroupSubgroupsResponse>(
+    `/user_groups/${groupId}/subgroups`,
     {
       params: sendParams,
     },

@@ -63,7 +63,7 @@ export type GeneralErrorResponse = {
 
 /**
  * The response of RegenerateApiKey API
- * @see https://zulip.com/api/regenerate-api-key
+ * @see https://zulip.com/api/regenerate-api-key#response
  */
 export type RegenerateApiKeyResponse = GeneralSuccessResponse & {
   /**
@@ -76,6 +76,7 @@ export type RegenerateApiKeyResponse = GeneralSuccessResponse & {
  * Regenerate API key and reset API key
  * @param client Axios client initialized by generateCallApi function
  * @returns The response of RegenerateApiKey function
+ * @see https://zulip.com/api/regenerate-api-key
  */
 export async function regenerateApiKey(client: AxiosInstance) {
   const resp = await client.post<RegenerateApiKeyResponse>(

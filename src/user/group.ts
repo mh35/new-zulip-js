@@ -373,6 +373,37 @@ export type UpdateGroupMemberParams =
   | UpdateUserGroupMemberAddSubgroupMarams
 
 /**
+ * Parameters to remove subgroups from the group for UpdateUserGroupSubgroups API
+ */
+type UpdateUserGroupSubgroupsDeleteParams = {
+  /**
+   * Subgroup IDs to remove
+   * @see https://zulip.com/api/update-user-group-subgroups#parameter-delete
+   */
+  delete: number[]
+}
+
+/**
+ * Parameters to add subgroups to the group for UpdateUserGroupSubgroups API
+ */
+type UpdateUserGroupSubgroupsAddParams = {
+  /**
+   * Subgroup IDs to add
+   * @see https://zulip.com/api/update-user-group-subgroups#parameter-add
+   */
+  add: number[]
+}
+
+/**
+ * Parameters for UpdateUserGroupSubgroups API
+ * @since Zulip 6.0 (feature level 127)
+ * @see https://zulip.com/api/update-user-group-subgroups#parameters
+ */
+export type UpdateUserGroupSubgroupsParams =
+  | UpdateUserGroupSubgroupsDeleteParams
+  | UpdateUserGroupSubgroupsAddParams
+
+/**
  * Get user groups
  * @param client Axios client initialized by generateCallApi function in api.ts
  * @param params API parameters
@@ -517,6 +548,35 @@ export async function updateUserGroupMembers(
   }
   const resp = await client.post<GeneralSuccessResponse>(
     `/user_groups/${groupId}/members`,
+    body,
+  )
+
+  return resp.data
+}
+
+/**
+ * Update subgroups of the group
+ * @param client Axios client initialized by generateCallApi function in api.ts
+ * @param groupId User group ID
+ * @param params API parameters
+ * @returns The response of UpdateUserGroupSubgroups API
+ * @since Zulip 6.0 (feature level 127)
+ * @see https://zulip.com/api/update-user-group-subgroups
+ */
+export async function updateUserGroupSubgroups(
+  client: AxiosInstance,
+  groupId: number,
+  params: UpdateUserGroupSubgroupsParams,
+) {
+  const body = new URLSearchParams()
+  for (const [key, value] of Object.entries(params)) {
+    if (value === undefined || value === null) {
+      continue
+    }
+    body.append(key, JSON.stringify(value))
+  }
+  const resp = await client.post<GeneralSuccessResponse>(
+    `/user_groups/${groupId}/subgroups`,
     body,
   )
 

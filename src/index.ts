@@ -1,3 +1,4 @@
+import * as alertWord from './alert-word'
 import * as api from './api'
 import * as auth from './auth'
 import * as channel from './channel'
@@ -11,6 +12,7 @@ import * as snippet from './snippet'
 import * as user from './user'
 
 export {
+  alertWord,
   api,
   auth,
   channel,

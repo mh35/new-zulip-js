@@ -317,6 +317,62 @@ export type UpdateUserGroupParams =
   | UpdateUserGroupReactivateParams
 
 /**
+ * Delete user parameters for UpdateGroupMembers API
+ */
+type UpdateGroupMembersDeleteUserParams = {
+  /**
+   * User IDs to delete from the target group
+   * @see https://zulip.com/api/update-user-group-members#parameter-delete
+   */
+  delete: number[]
+}
+
+/**
+ * Add user parameters for UpdateGroupMembers API
+ */
+type UpdateGroupMemberAddUserParams = {
+  /**
+   * User IDs to add to the target group
+   * @see https://zulip.com/api/update-user-group-members#parameter-add
+   */
+  add: number[]
+}
+
+/**
+ * Delete subgroup parameters for UpdateGroupMembers API
+ */
+type UpdateUserGroupMemberDeleteSubgroupParams = {
+  /**
+   * Subgroup IDs to remove from the target group
+   * @since Zulip 10.0 (feature level 311)
+   * @see https://zulip.com/api/update-user-group-members#parameter-delete_subgroups
+   */
+  delete_subgroups: number[]
+}
+
+/**
+ * Add subgroup parameters for UpdateGroupMembers API
+ */
+type UpdateUserGroupMemberAddSubgroupMarams = {
+  /**
+   * Subgroup IDs to add to the target group
+   * @since Zulip 10.0 (feature level 311)
+   * @see https://zulip.com/api/update-user-group-members#parameter-add_subgroups
+   */
+  add_subgroups: number[]
+}
+
+/**
+ * Parameters for UpdateGroupMembers API
+ * @see https://zulip.com/api/update-user-group-members#parameters
+ */
+export type UpdateGroupMemberParams =
+  | UpdateGroupMembersDeleteUserParams
+  | UpdateGroupMemberAddUserParams
+  | UpdateUserGroupMemberDeleteSubgroupParams
+  | UpdateUserGroupMemberAddSubgroupMarams
+
+/**
  * Get user groups
  * @param client Axios client initialized by generateCallApi function in api.ts
  * @param params API parameters
@@ -420,7 +476,7 @@ export async function updateUserGroup(
 /**
  * Deactivate a user group
  * @param client Axios client initialized by generateCallApi function in api.ts
- * @param groupId API parameters
+ * @param groupId User group ID
  * @returns The response of DeactivateUserGroup API
  * @since Zulip 10.0 (feature level 290)
  * @see https://zulip.com/api/deactivate-user-group
@@ -433,6 +489,34 @@ export async function deactivateUserGroup(
 
   const resp = await client.post<GeneralSuccessResponse>(
     `/user_groups/${groupId}/deactivate`,
+    body,
+  )
+
+  return resp.data
+}
+
+/**
+ * Update user group members
+ * @param client Axios client initialized by generateCallApi function in api.ts
+ * @param groupId User group ID
+ * @param params API parameters
+ * @returns The response of UpdateUserGroupMembers API
+ * @see https://zulip.com/api/update-user-group-members
+ */
+export async function updateUserGroupMembers(
+  client: AxiosInstance,
+  groupId: number,
+  params: UpdateGroupMemberParams,
+) {
+  const body = new URLSearchParams()
+  for (const [key, value] of Object.entries(params)) {
+    if (value === undefined || value === null) {
+      continue
+    }
+    body.append(key, JSON.stringify(value))
+  }
+  const resp = await client.post<GeneralSuccessResponse>(
+    `/user_groups/${groupId}/members`,
     body,
   )
 

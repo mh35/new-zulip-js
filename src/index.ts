@@ -5,6 +5,7 @@ import * as bot from './bot'
 import * as channel from './channel'
 import * as constants from './constants'
 import * as draft from './draft'
+import * as invitation from './invitation'
 import * as message from './message'
 import * as navigationView from './navigation-view'
 import * as reminder from './reminder'
@@ -20,6 +21,7 @@ export {
   channel,
   constants,
   draft,
+  invitation,
   message,
   navigationView,
   reminder,

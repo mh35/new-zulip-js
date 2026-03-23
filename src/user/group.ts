@@ -416,3 +416,25 @@ export async function updateUserGroup(
 
   return resp.data
 }
+
+/**
+ * Deactivate a user group
+ * @param client Axios client initialized by generateCallApi function in api.ts
+ * @param groupId API parameters
+ * @returns The response of DeactivateUserGroup API
+ * @since Zulip 10.0 (feature level 290)
+ * @see https://zulip.com/api/deactivate-user-group
+ */
+export async function deactivateUserGroup(
+  client: AxiosInstance,
+  groupId: number,
+) {
+  const body = new URLSearchParams()
+
+  const resp = await client.post<GeneralSuccessResponse>(
+    `/user_groups/${groupId}/deactivate`,
+    body,
+  )
+
+  return resp.data
+}

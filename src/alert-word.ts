@@ -31,6 +31,24 @@ export type AddAlertWordsParams = {
 export type AddAlertWordsResponse = GetAlertWordsResponse
 
 /**
+ * Parameters for RemoveAlertWords API
+ * @see https://zulip.com/api/remove-alert-words#parameters
+ */
+export type RemoveAlertWordsParams = {
+  /**
+   * Words to remove from the alert words list
+   * @see https://zulip.com/api/remove-alert-words#parameter-alert_words
+   */
+  alert_words: string[]
+}
+
+/**
+ * The response of RemoveAlertWords API
+ * @see https://zulip.com/api/remove-alert-words#response
+ */
+export type RemoveAlertWordsResponse = GetAlertWordsResponse
+
+/**
  * Get all alert words set by the user
  * @param client Axios client initialized by generateCallApi function in api.ts
  * @returns The response of GetAlertWords API
@@ -62,5 +80,29 @@ export async function addAlertWords(
     body,
   )
 
+  return resp.data
+}
+
+/**
+ * Remove alert words
+ * @param client Axios client initialized by generateCallApi function in api.ts
+ * @param params API parameters
+ * @returns The response of RemoveAlertWords API
+ * @see https://zulip.com/api/remove-alert-words
+ */
+export async function removeAlertWords(
+  client: AxiosInstance,
+  params: RemoveAlertWordsParams,
+) {
+  const body = new URLSearchParams({
+    alert_words: JSON.stringify(params.alert_words),
+  })
+
+  const resp = await client.delete<RemoveAlertWordsResponse>(
+    '/users/me/alert_words',
+    {
+      data: body,
+    },
+  )
   return resp.data
 }

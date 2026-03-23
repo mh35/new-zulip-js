@@ -404,6 +404,31 @@ export type UpdateUserGroupSubgroupsParams =
   | UpdateUserGroupSubgroupsAddParams
 
 /**
+ * Parameters for CheckUserGroupMembershipStatus API
+ * @since Zulip 6.0 (feature level 127)
+ * @see https://zulip.com/api/get-is-user-group-member#parameters
+ */
+export type CheckUserGroupMembershipStatusParams = {
+  /**
+   * Whether to consider only the direct members or not. Default is false
+   * @see https://zulip.com/api/get-is-user-group-member#parameter-direct_member_only
+   */
+  direct_member_only?: boolean
+}
+
+/**
+ * The response of CheckUserGroupMembershipStatus API
+ * @since Zulip 6.0 (feature level 127)
+ * @see https://zulip.com/api/get-is-user-group-member#response
+ */
+export type CheckUserGroupMembershipStatusResponse = GeneralSuccessResponse & {
+  /**
+   * Whether the user is the member of the group or not
+   */
+  is_user_group_member: boolean
+}
+
+/**
  * Get user groups
  * @param client Axios client initialized by generateCallApi function in api.ts
  * @param params API parameters
@@ -578,6 +603,50 @@ export async function updateUserGroupSubgroups(
   const resp = await client.post<GeneralSuccessResponse>(
     `/user_groups/${groupId}/subgroups`,
     body,
+  )
+
+  return resp.data
+}
+
+/**
+ * Check whether the user is the member of the user group or not
+ * @param client Axios client initialized by generateCallApi function in api.ts
+ * @param groupId User group ID
+ * @param userId User ID
+ * @param params API parameters
+ * @returns The response of CheckUserGroupMembershipStatus API
+ * @since Zulip 6.0 (feature level 127)
+ * @see https://zulip.com/api/get-is-user-group-member
+ */
+export async function checkUserGroupMembershipStatus(
+  client: AxiosInstance,
+  groupId: number,
+  userId: number,
+  params: CheckUserGroupMembershipStatusParams,
+) {
+  const sendParams = {} as Record<string, string>
+  for (const [key, value] of Object.entries(params)) {
+    if (value === undefined || value === null) {
+      continue
+    }
+
+    if (Array.isArray(value)) {
+      // Encode arrays as JSON strings
+      sendParams[key] = JSON.stringify(value)
+    } else if (typeof value === 'boolean') {
+      // Encode booleans as strings
+      sendParams[key] = String(value)
+    } else {
+      // Other values (strings, numbers)
+      sendParams[key] = String(value)
+    }
+  }
+
+  const resp = await client.get<CheckUserGroupMembershipStatusResponse>(
+    `/user_groups/${groupId}/members/${userId}`,
+    {
+      params: sendParams,
+    },
   )
 
   return resp.data

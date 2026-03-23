@@ -429,6 +429,31 @@ export type CheckUserGroupMembershipStatusResponse = GeneralSuccessResponse & {
 }
 
 /**
+ * Parameters for GetUserGroupMembers API
+ * @since Zulip 6.0 (feature level 127)
+ * @see https://zulip.com/api/get-user-group-members#parameters
+ */
+export type GetUserGroupMembersParams = {
+  /**
+   * Whether to consider only the direct members or not. Default is false
+   * @see https://zulip.com/api/get-user-group-members#parameter-direct_member_only
+   */
+  direct_member_only?: boolean
+}
+
+/**
+ * The response of GetUserGroupMembers API
+ * @since Zulip 6.0 (feature level 127)
+ * @see https://zulip.com/api/get-user-group-members#response
+ */
+export type GetUserGroupMembersResponse = GeneralSuccessResponse & {
+  /**
+   * User IDs of the group
+   */
+  members: number[]
+}
+
+/**
  * Get user groups
  * @param client Axios client initialized by generateCallApi function in api.ts
  * @param params API parameters
@@ -437,7 +462,7 @@ export type CheckUserGroupMembershipStatusResponse = GeneralSuccessResponse & {
  */
 export async function getUserGroups(
   client: AxiosInstance,
-  params: GetUserGroupsParams,
+  params: GetUserGroupsParams = {},
 ) {
   const sendParams = {} as Record<string, string>
   for (const [key, value] of Object.entries(params)) {
@@ -622,7 +647,7 @@ export async function checkUserGroupMembershipStatus(
   client: AxiosInstance,
   groupId: number,
   userId: number,
-  params: CheckUserGroupMembershipStatusParams,
+  params: CheckUserGroupMembershipStatusParams = {},
 ) {
   const sendParams = {} as Record<string, string>
   for (const [key, value] of Object.entries(params)) {
@@ -644,6 +669,48 @@ export async function checkUserGroupMembershipStatus(
 
   const resp = await client.get<CheckUserGroupMembershipStatusResponse>(
     `/user_groups/${groupId}/members/${userId}`,
+    {
+      params: sendParams,
+    },
+  )
+
+  return resp.data
+}
+
+/**
+ * Get the members of the user group
+ * @param client Axios client initialized by generateCallApi function in api.ts
+ * @param groupId User group ID
+ * @param params API parameters
+ * @returns The response of GetUserGroupMembers API
+ * @since Zulip 6.0 (feature level 127)
+ * @see https://zulip.com/api/get-user-group-members
+ */
+export async function getUserGroupMembers(
+  client: AxiosInstance,
+  groupId: number,
+  params: GetUserGroupMembersParams = {},
+) {
+  const sendParams = {} as Record<string, string>
+  for (const [key, value] of Object.entries(params)) {
+    if (value === undefined || value === null) {
+      continue
+    }
+
+    if (Array.isArray(value)) {
+      // Encode arrays as JSON strings
+      sendParams[key] = JSON.stringify(value)
+    } else if (typeof value === 'boolean') {
+      // Encode booleans as strings
+      sendParams[key] = String(value)
+    } else {
+      // Other values (strings, numbers)
+      sendParams[key] = String(value)
+    }
+  }
+
+  const resp = await client.get<GetUserGroupMembersResponse>(
+    `/user_groups/${groupId}/members`,
     {
       params: sendParams,
     },

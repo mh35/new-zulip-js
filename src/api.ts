@@ -1,4 +1,4 @@
-import axios from 'axios'
+import axios, { type AxiosInstance } from 'axios'
 
 /**
  * Create an axios instance with basic auth for API calls
@@ -59,4 +59,34 @@ export type GeneralErrorResponse = {
    * Machine-readable error string.
    */
   code: string
+}
+
+/**
+ * The response of RegenerateApiKey API
+ * @see https://zulip.com/api/regenerate-api-key#response
+ */
+export type RegenerateApiKeyResponse = GeneralSuccessResponse & {
+  /**
+   * New API key
+   */
+  api_key: string
+}
+
+/**
+ * Regenerate API key and reset API key
+ * @param client Axios client initialized by generateCallApi function
+ * @returns The response of RegenerateApiKey function
+ * @see https://zulip.com/api/regenerate-api-key
+ */
+export async function regenerateApiKey(client: AxiosInstance) {
+  const resp = await client.post<RegenerateApiKeyResponse>(
+    '/users/me/api_key/regenerate',
+    new URLSearchParams(),
+  )
+
+  const ret = resp.data
+  if (client.defaults.auth) {
+    client.defaults.auth.password = ret.api_key
+  }
+  return ret
 }

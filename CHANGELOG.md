@@ -1,5 +1,11 @@
 # Changelog
 
+## Version 1.1.0-alpha.6
+
+- User API functions
+- Regenerate API key function
+- Bot API key functions
+
 ## Version 1.1.0-alpha.5
 
 - Channel API functions

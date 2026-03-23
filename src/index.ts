@@ -1,6 +1,7 @@
 import * as alertWord from './alert-word'
 import * as api from './api'
 import * as auth from './auth'
+import * as bot from './bot'
 import * as channel from './channel'
 import * as constants from './constants'
 import * as draft from './draft'
@@ -15,6 +16,7 @@ export {
   alertWord,
   api,
   auth,
+  bot,
   channel,
   constants,
   draft,

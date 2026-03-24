@@ -38,6 +38,9 @@ type GetInvitationsResponseItemMultiUse = {
   is_multiuse: true
 }
 
+/**
+ * Invitation item of GetInvitations API
+ */
 export type GetInvitationsResponseItem = {
   /**
    * Invitation ID. This ID is unique if is_multiuse is same.
@@ -70,8 +73,76 @@ export type GetInvitationsResponseItem = {
   notify_referrer_on_join: boolean
 } & (GetInvitationsResponseItemSingleUse | GetInvitationsResponseItemMultiUse)
 
+/**
+ * The response of GetInvitations API
+ * @see https://zulip.com/api/get-invites#response
+ */
 export type GetInvitationsResponse = GeneralSuccessResponse & {
+  /**
+   * List of invitations
+   */
   invites: GetInvitationsResponseItem[]
+}
+
+/**
+ * Parameters of SendInvitations API
+ * @see https://zulip.com/api/send-invites#parameters
+ */
+export type SendInvitationParams = {
+  /**
+   * Email addresses to send invitations. If you want to send multiple targets,
+   * you must separate email addresses by commas or new lines.
+   * @see https://zulip.com/api/send-invites#parameter-invitee_emails
+   */
+  invitee_emails: string
+  /**
+   * The number of minutes after which the invitation expires.
+   * If you specify null, the invitation never expires.
+   * If you does not specify this, the default value (10 days) are used.
+   * @see https://zulip.com/api/send-invites#parameter-invite_expires_in_minutes
+   */
+  invite_expires_in_minutes?: number | null
+  /**
+   * The user role when the user is created.
+   * @see https://zulip.com/api/send-invites#parameter-invite_as
+   */
+  invite_as?: UserRoleValues
+  /**
+   * IDs of channels which the user will subscribe when the user joins.
+   * @see https://zulip.com/api/send-invites#parameter-stream_ids
+   */
+  stream_ids: number[]
+  /**
+   * IDs of groups which the user will be added when the user joins.
+   * @since Zulip 10.0 (feature level 322)
+   * @see https://zulip.com/api/send-invites#parameter-group_ids
+   */
+  group_ids?: number[]
+  /**
+   * Whether the newly created user should be subscribed to the default channels.
+   * Default is false
+   * @see https://zulip.com/api/send-invites#parameter-include_realm_default_subscriptions
+   */
+  include_realm_default_subscriptions?: boolean
+  /**
+   * Whether the referrer has opted to receive a direct message from notification bot
+   * when a user account is created using this invitation. Default is true
+   * @since Zulip 9.0 (feature level 267)
+   * @see https://zulip.com/api/send-invites#parameter-notify_referrer_on_join
+   */
+  notify_referrer_on_join?: boolean
+  /**
+   * Welcome message text.
+   *
+   * - If you specify null, the default message. This is the default behavior.
+   * - If you specify empty string, welcome message will not be sent.
+   * - If you specify not empty string, the string is used as welcome message.
+   *
+   * Only organization administrators can use this feature.
+   * @since Zulip 11.0 (feature level 416)
+   * @see https://zulip.com/api/send-invites#parameter-welcome_message_custom_text
+   */
+  welcome_message_custom_text?: string | null
 }
 
 /**
@@ -82,6 +153,41 @@ export type GetInvitationsResponse = GeneralSuccessResponse & {
  */
 export async function getInvitations(client: AxiosInstance) {
   const resp = await client.get<GetInvitationsResponse>('/invites')
+
+  return resp.data
+}
+
+/**
+ * Send invitations
+ * @param client Axios client initialized by generateCallApi function in api.ts
+ * @param params API parameters
+ * @returns The response of SendInvitation API
+ * @see https://zulip.com/api/send-invites
+ */
+export async function sendInvitation(
+  client: AxiosInstance,
+  params: SendInvitationParams,
+) {
+  const body = new URLSearchParams()
+
+  for (const [key, value] of Object.entries(params)) {
+    if (value === undefined) {
+      continue
+    } else if (value === null) {
+      body.append(key, 'null')
+      continue
+    }
+
+    if (Array.isArray(value)) {
+      body.append(key, JSON.stringify(value))
+    } else if (typeof value === 'boolean') {
+      body.append(key, String(value))
+    } else {
+      body.append(key, String(value))
+    }
+  }
+
+  const resp = await client.post<GeneralSuccessResponse>('/invites', body)
 
   return resp.data
 }

@@ -1,5 +1,9 @@
 # Changelog
 
+## Version 1.1.0-alpha.7
+
+- Invitation API functions
+
 ## Version 1.1.0-alpha.6
 
 - User API functions

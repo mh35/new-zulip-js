@@ -9,6 +9,7 @@ import * as invitation from './invitation'
 import * as linkifier from './linkifier'
 import * as message from './message'
 import * as navigationView from './navigation-view'
+import * as playground from './playground'
 import * as reminder from './reminder'
 import * as scheduledMessage from './scheduled-message'
 import * as serverSettings from './server-settings'
@@ -27,6 +28,7 @@ export {
   linkifier,
   message,
   navigationView,
+  playground,
   reminder,
   serverSettings,
   scheduledMessage,

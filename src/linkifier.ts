@@ -224,3 +224,18 @@ export async function updateLinkifier(
 
   return resp.data
 }
+
+/**
+ * Remove a linkifier
+ * @param client Axios client initialized by generateCallApi function in api.ts
+ * @param filterId Linkifier ID
+ * @returns The response of RemoveLinkifier API
+ * @see https://zulip.com/api/remove-linkifier
+ */
+export async function removeLinkifier(client: AxiosInstance, filterId: number) {
+  const resp = await client.delete<GeneralSuccessResponse>(
+    `/realm/filters/${filterId}`,
+  )
+
+  return resp.data
+}

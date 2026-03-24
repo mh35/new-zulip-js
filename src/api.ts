@@ -23,6 +23,19 @@ export function generateCallApi(
 }
 
 /**
+ * Create an axios instance without auth for API calls.
+ * This instance is useful for public API
+ * @param serverUrl Server URL
+ * @returns Axios instance to call public endpoints without authentication
+ */
+export function generateCallApiWithoutAuth(serverUrl: string) {
+  const instance = axios.create({
+    baseURL: `${serverUrl.replace(/\/+$/, '')}/api/v1/`,
+  })
+  return instance
+}
+
+/**
  * General success response
  * @see https://zulip.com/api/rest-error-handling
  */

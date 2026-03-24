@@ -58,3 +58,21 @@ export async function addCodePlayground(
 
   return resp.data
 }
+
+/**
+ * Remove a code playground
+ * @param client Axios client initialized by generateCallApi function in api.ts
+ * @param playgroundId Code playground ID
+ * @returns The response of code playground ID
+ * @since Zulip 4.0 (feature level 49)
+ * @see https://zulip.com/api/remove-code-playground
+ */
+export async function removeCodePlayground(
+  client: AxiosInstance,
+  playgroundId: number,
+) {
+  const resp = await client.delete<GeneralSuccessResponse>(
+    `/realm/playgrounds/${playgroundId}`,
+  )
+  return resp.data
+}

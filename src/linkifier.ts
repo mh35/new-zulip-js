@@ -141,6 +141,19 @@ export type UpdateLinkifierParams = {
 }
 
 /**
+ * Parameters for ReorderLinkifiers API
+ * @since Zulip 8.0 (feature level 202)
+ * @see https://zulip.com/api/reorder-linkifiers#parameters
+ */
+export type ReorderLinkifiersParams = {
+  /**
+   * The ordered list of IDs of all linkifiers
+   * @see https://zulip.com/api/reorder-linkifiers#parameter-ordered_linkifier_ids
+   */
+  ordered_linkifier_ids: number[]
+}
+
+/**
  * Get linkifiers
  * @param client Axios client initialized by generateCallApi function in api.ts
  * @returns The response of GetLinkifiers API
@@ -235,6 +248,30 @@ export async function updateLinkifier(
 export async function removeLinkifier(client: AxiosInstance, filterId: number) {
   const resp = await client.delete<GeneralSuccessResponse>(
     `/realm/filters/${filterId}`,
+  )
+
+  return resp.data
+}
+
+/**
+ * Reorder linkifiers
+ * @param client Axios client initialized by generateCallApi function in api.ts
+ * @param params API parameters
+ * @returns The response of ReorderLinkifiers API
+ * @since Zulip 8.0 (feature level 202)
+ * @see https://zulip.com/api/reorder-linkifiers
+ */
+export async function reorderLinkifiers(
+  client: AxiosInstance,
+  params: ReorderLinkifiersParams,
+) {
+  const body = new URLSearchParams({
+    ordered_linkifier_ids: JSON.stringify(params.ordered_linkifier_ids),
+  })
+
+  const resp = await client.patch<GeneralSuccessResponse>(
+    '/realm/linkifiers',
+    body,
   )
 
   return resp.data

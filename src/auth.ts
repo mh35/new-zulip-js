@@ -53,7 +53,8 @@ export async function authDev(serverUrl: string, email: string) {
  * @param serverUrl Server URL
  * @param jwt User JWT containing email field
  * @returns API key for authenticated user
- * @see https://zulip.readthedocs.io/en/stable/production/authentication-methods.html#json-web-tokens-jwt
+ * @since Zulip 7.0 (feature level 160)
+ * @see https://zulip.com/api/jwt-fetch-api-key
  */
 export async function authByJwt(serverUrl: string, jwt: string) {
   const response = await axios.post<{

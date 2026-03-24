@@ -292,3 +292,22 @@ export async function createInvitationLink(
 
   return resp.data
 }
+
+/**
+ * Resend an Email invitation
+ * @param client Axios client initialized by generateCallApi function in api.ts
+ * @param invitationId Invitation ID
+ * @returns The response of ResendEmailInvitation API
+ * @see https://zulip.com/api/resend-email-invite
+ */
+export async function resendEmailInvitation(
+  client: AxiosInstance,
+  invitationId: number,
+) {
+  const resp = await client.post(
+    `/invites/${invitationId}/resend`,
+    new URLSearchParams(),
+  )
+
+  return resp.data
+}

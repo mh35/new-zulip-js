@@ -315,7 +315,7 @@ export async function resendEmailInvitation(
 /**
  * Revoke an Email invitation
  * @param client Axios client initialized by generateCallApi function in api.ts
- * @param invitationId The response of ResendEmailInvitation API
+ * @param invitationId Invitation ID
  * @returns The response of RevokeEmailInvitation API
  * @see https://zulip.com/api/revoke-email-invite
  */
@@ -325,6 +325,24 @@ export async function revokeEmailInvitation(
 ) {
   const resp = await client.delete<GeneralSuccessResponse>(
     `/invites/${invitationId}`,
+  )
+
+  return resp.data
+}
+
+/**
+ * Revoke an invitation link
+ * @param client Axios client initialized by generateCallApi function in api.ts
+ * @param invitationId Invitation ID
+ * @returns The response of RevokeInvitationLink API
+ * @see https://zulip.com/api/revoke-invite-link
+ */
+export async function revokeInvitationLink(
+  client: AxiosInstance,
+  invitationId: number,
+) {
+  const resp = await client.delete<GeneralSuccessResponse>(
+    `/invites/multiuse/${invitationId}`,
   )
 
   return resp.data

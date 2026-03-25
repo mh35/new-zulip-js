@@ -77,3 +77,21 @@ export async function uploadEmoji(
 
   return resp.data
 }
+
+/**
+ * Deactivate a custom emoji
+ * @param client Axios client initialized by generateCallApi function in api.ts
+ * @param emojiName The name of the custom emoji to deactivate
+ * @returns The response of DeactivateEmoji API
+ * @see https://zulip.com/api/deactivate-custom-emoji
+ */
+export async function deactivateEmoji(
+  client: AxiosInstance,
+  emojiName: string,
+) {
+  const resp = await client.delete<GeneralSuccessResponse>(
+    `/realm/emoji/${emojiName}`,
+  )
+
+  return resp.data
+}

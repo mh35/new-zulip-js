@@ -54,6 +54,17 @@ export type GetExportsResponseItem = {
 }
 
 /**
+ * The response of GetExports API
+ * @see https://zulip.com/api/get-realm-exports#response
+ */
+export type GetExportsResponse = GeneralSuccessResponse & {
+  /**
+   * List of exports
+   */
+  exports: GetExportsResponseItem[]
+}
+
+/**
  * Parameters for CreateExport API
  * @see https://zulip.com/api/export-realm
  */
@@ -76,30 +87,6 @@ export type CreateExportResponse = GeneralSuccessResponse & {
    * @since Zulip 7.0 (feature level 182)
    */
   id: number
-}
-
-/**
- * The response of GetExports API
- * @see https://zulip.com/api/get-realm-exports#response
- */
-export type GetExportsResponse = GeneralSuccessResponse & {
-  /**
-   * List of exports
-   */
-  exports: GetExportsResponseItem[]
-}
-
-/**
- * Get all exports in the realm
- * @param client Axios client initialized by generateCallApi function in api.ts
- * @returns The response of GetExports API
- * @since Zulip 2.1
- * @see https://zulip.com/api/get-realm-exports
- */
-export async function getExports(client: AxiosInstance) {
-  const resp = await client.get<GetExportsResponse>('/export/realm')
-
-  return resp.data
 }
 
 /**
@@ -135,16 +122,14 @@ export type GetExportConsentStateResponse = GeneralSuccessResponse & {
 }
 
 /**
- * Get the export consent state for all users in the realm
+ * Get all exports in the realm
  * @param client Axios client initialized by generateCallApi function in api.ts
- * @returns The response of GetExportConsentState API
- * @since Zulip 10.0 (feature level 304)
- * @see https://zulip.com/api/get-realm-export-consents
+ * @returns The response of GetExports API
+ * @since Zulip 2.1
+ * @see https://zulip.com/api/get-realm-exports
  */
-export async function getExportConsentState(client: AxiosInstance) {
-  const resp = await client.get<GetExportConsentStateResponse>(
-    '/export/realm/consents',
-  )
+export async function getExports(client: AxiosInstance) {
+  const resp = await client.get<GetExportsResponse>('/export/realm')
 
   return resp.data
 }
@@ -166,6 +151,21 @@ export async function createExport(
     body.append('export_type', params.export_type)
   }
   const resp = await client.post<CreateExportResponse>('/export/realm', body)
+
+  return resp.data
+}
+
+/**
+ * Get the export consent state for all users in the realm
+ * @param client Axios client initialized by generateCallApi function in api.ts
+ * @returns The response of GetExportConsentState API
+ * @since Zulip 10.0 (feature level 304)
+ * @see https://zulip.com/api/get-realm-export-consents
+ */
+export async function getExportConsentState(client: AxiosInstance) {
+  const resp = await client.get<GetExportConsentStateResponse>(
+    '/export/realm/consents',
+  )
 
   return resp.data
 }

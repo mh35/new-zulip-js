@@ -4,6 +4,7 @@ import * as auth from './auth'
 import * as bot from './bot'
 import * as channel from './channel'
 import * as constants from './constants'
+import * as customProfileField from './custom-profile-field'
 import * as draft from './draft'
 import * as emoji from './emoji'
 import * as invitation from './invitation'
@@ -24,6 +25,7 @@ export {
   bot,
   channel,
   constants,
+  customProfileField,
   draft,
   emoji,
   invitation,

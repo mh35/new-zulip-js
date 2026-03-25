@@ -238,3 +238,38 @@ export async function getCustomProfileFields(client: AxiosInstance) {
 
   return resp.data
 }
+
+/**
+ * Parameters for ReorderCustomProfileFields API
+ * @see https://zulip.com/api/reorder-custom-profile-fields#parameters
+ */
+export type ReorderCustomProfileFieldsParams = {
+  /**
+   * The IDs of all custom profile fields, in the order you want them to appear
+   * @see https://zulip.com/api/reorder-custom-profile-fields#parameter-order
+   */
+  order: number[]
+}
+
+/**
+ * Reorder custom profile fields
+ * @param client Axios client initialized by generateCallApi function in api.ts
+ * @param params API parameters
+ * @returns The response of ReorderCustomProfileFields API
+ * @see https://zulip.com/api/reorder-custom-profile-fields
+ */
+export async function reorderCustomProfileFields(
+  client: AxiosInstance,
+  params: ReorderCustomProfileFieldsParams,
+) {
+  const body = new URLSearchParams({
+    order: JSON.stringify(params.order),
+  })
+
+  const resp = await client.patch<GeneralSuccessResponse>(
+    '/realm/profile_fields',
+    body,
+  )
+
+  return resp.data
+}

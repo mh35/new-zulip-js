@@ -90,7 +90,7 @@ export async function deactivateEmoji(
   emojiName: string,
 ) {
   const resp = await client.delete<GeneralSuccessResponse>(
-    `/realm/emoji/${emojiName}`,
+    `/realm/emoji/${encodeURIComponent(emojiName)}`,
   )
 
   return resp.data

@@ -1,5 +1,6 @@
 import type { AxiosInstance } from 'axios'
 import type { GeneralSuccessResponse } from './api'
+import type { UserSettingsEmailAddressVisibilityValues } from './constants'
 
 /**
  * Export type values
@@ -72,6 +73,53 @@ export type GetExportsResponse = GeneralSuccessResponse & {
  */
 export async function getExports(client: AxiosInstance) {
   const resp = await client.get<GetExportsResponse>('/export/realm')
+
+  return resp.data
+}
+
+/**
+ * Export consent state item
+ * @since Zulip 10.0 (feature level 304)
+ * @see https://zulip.com/api/get-realm-export-consents#response
+ */
+export type ExportConsentStateItem = {
+  /**
+   * The ID of the user
+   */
+  user_id: number
+  /**
+   * Whether the user has consented to export their private data
+   */
+  consented: boolean
+  /**
+   * The email address visibility policy for the user
+   */
+  email_address_visibility: UserSettingsEmailAddressVisibilityValues
+}
+
+/**
+ * The response of GetExportConsentState API
+ * @since Zulip 10.0 (feature level 304)
+ * @see https://zulip.com/api/get-realm-export-consents#response
+ */
+export type GetExportConsentStateResponse = GeneralSuccessResponse & {
+  /**
+   * List of export consent states for users in the realm
+   */
+  export_consents: ExportConsentStateItem[]
+}
+
+/**
+ * Get the export consent state for all users in the realm
+ * @param client Axios client initialized by generateCallApi function in api.ts
+ * @returns The response of GetExportConsentState API
+ * @since Zulip 10.0 (feature level 304)
+ * @see https://zulip.com/api/get-realm-export-consents
+ */
+export async function getExportConsentState(client: AxiosInstance) {
+  const resp = await client.get<GetExportConsentStateResponse>(
+    '/export/realm/consents',
+  )
 
   return resp.data
 }

@@ -485,3 +485,58 @@ export const USER_SETTINGS_EMAIL_ADDRESS_VISIBILITY_MODERATORS_ONLY = 5
  * @see https://zulip.com/api/update-settings#parameter-email_address_visibility
  */
 export type UserSettingsEmailAddressVisibilityValues = 1 | 2 | 3 | 4 | 5
+
+/**
+ * Short text custom field type
+ * @see https://zulip.com/api/create-custom-profile-field#parameter-field_type
+ */
+export const CUSTOM_FIELD_TYPE_SHORT_TEXT = 1
+
+/**
+ * Paragraph text custom field type
+ * @see https://zulip.com/api/create-custom-profile-field#parameter-field_type
+ */
+export const CUSTOM_FIELD_TYPE_PARAGRAPH = 2
+
+/**
+ * Dropdown custom field type
+ * @see https://zulip.com/api/create-custom-profile-field#parameter-field_type
+ */
+export const CUSTOM_FIELD_TYPE_DROPDOWN = 3
+
+/**
+ * Date picker custom field type
+ * @see https://zulip.com/api/create-custom-profile-field#parameter-field_type
+ */
+export const CUSTOM_FIELD_TYPE_DATE_PICKER = 4
+
+/**
+ * Link custom field type
+ * @see https://zulip.com/api/create-custom-profile-field#parameter-field_type
+ */
+export const CUSTOM_FIELD_TYPE_LINK = 5
+
+/**
+ * Person picker custom field type
+ * @see https://zulip.com/api/create-custom-profile-field#parameter-field_type
+ */
+export const CUSTOM_FIELD_PERSON_PICKER = 6
+
+/**
+ * External account custom field type
+ * @see https://zulip.com/api/create-custom-profile-field#parameter-field_type
+ */
+export const CUSTOM_FIELD_EXTERNAL_ACCOUNT = 7
+
+/**
+ * Pronounce custom field type
+ * @since Zulip 6.0 (feature level 151)
+ * @see https://zulip.com/api/create-custom-profile-field#parameter-field_type
+ */
+export const CUSTOM_FIELD_PRONOUNS = 8
+
+/**
+ * Custom field values
+ * @see https://zulip.com/api/create-custom-profile-field#parameter-field_type
+ */
+export type CustomFieldTypeValues = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8

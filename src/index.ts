@@ -18,6 +18,7 @@ import * as scheduledMessage from './scheduled-message'
 import * as serverSettings from './server-settings'
 import * as snippet from './snippet'
 import * as user from './user'
+import * as welcomeBotTest from './welcome-bot-test'
 
 export {
   alertWord,
@@ -40,4 +41,5 @@ export {
   scheduledMessage,
   snippet,
   user,
+  welcomeBotTest,
 }

@@ -53,6 +53,31 @@ export type GetExportsResponseItem = {
 }
 
 /**
+ * Parameters for CreateExport API
+ * @see https://zulip.com/api/export-realm
+ */
+export type CreateExportParams = {
+  /**
+   * The type of export to create.
+   * Defaults to 'public' if not specified.
+   * @since Zulip 10.0 (feature level 304)
+   */
+  export_type?: ExportTypeValues
+}
+
+/**
+ * The response of CreateExport API
+ * @see https://zulip.com/api/export-realm#response
+ */
+export type CreateExportResponse = GeneralSuccessResponse & {
+  /**
+   * The ID of the export
+   * @since Zulip 7.0 (feature level 182)
+   */
+  id: number
+}
+
+/**
  * The response of GetExports API
  * @see https://zulip.com/api/get-realm-exports#response
  */
@@ -75,25 +100,6 @@ export async function getExports(client: AxiosInstance) {
 
   return resp.data
 }
-
-/**
- * Parameters for CreateExport API
- * @see https://zulip.com/api/export-realm
- */
-export type CreateExportParams = {
-  /**
-   * The type of export to create.
-   * Defaults to 'public' if not specified.
-   * @since Zulip 10.0 (feature level 304)
-   */
-  export_type?: ExportTypeValues
-}
-
-/**
- * The response of CreateExport API
- * @see https://zulip.com/api/export-realm#response
- */
-export type CreateExportResponse = GeneralSuccessResponse
 
 /**
  * Create a new data export

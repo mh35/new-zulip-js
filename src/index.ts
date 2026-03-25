@@ -5,6 +5,7 @@ import * as bot from './bot'
 import * as channel from './channel'
 import * as constants from './constants'
 import * as draft from './draft'
+import * as emoji from './emoji'
 import * as invitation from './invitation'
 import * as linkifier from './linkifier'
 import * as message from './message'
@@ -24,6 +25,7 @@ export {
   channel,
   constants,
   draft,
+  emoji,
   invitation,
   linkifier,
   message,

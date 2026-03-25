@@ -540,3 +540,31 @@ export const CUSTOM_FIELD_PRONOUNS = 8
  * @see https://zulip.com/api/create-custom-profile-field#parameter-field_type
  */
 export type CustomFieldTypeValues = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8
+
+/**
+ * External account platform values
+ * @see https://github.com/zulip/zulip/blob/main/zerver/lib/external_accounts.py
+ */
+export type CustomFieldExternalAccountPlatforms =
+  | 'behance'
+  | 'bitbucket'
+  | 'bluesky'
+  | 'codeberg'
+  | 'discord'
+  | 'dribbble'
+  | 'facebook'
+  | 'github'
+  | 'gitlab'
+  | 'instagram'
+  | 'linkedin'
+  | 'mastodon'
+  | 'medium'
+  | 'pinterest'
+  | 'reddit'
+  | 'snapchat'
+  | 'threads'
+  | 'tiktok'
+  | 'twitch'
+  | 'x'
+  | 'youtube'
+  | 'custom'

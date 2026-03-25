@@ -53,3 +53,27 @@ export async function getEmojis(client: AxiosInstance) {
 
   return resp.data
 }
+
+/**
+ * Upload a custom emoji
+ * @param client Axios client initialized by generateCallApi function in api.ts
+ * @param emojiName The name of the custom emoji
+ * @param file The image file to upload as the custom emoji
+ * @returns The response of UploadEmoji API
+ * @see https://zulip.com/api/upload-custom-emoji
+ */
+export async function uploadEmoji(
+  client: AxiosInstance,
+  emojiName: string,
+  file: File,
+) {
+  const formData = new FormData()
+  formData.append('filename', file)
+
+  const resp = await client.post<GeneralSuccessResponse>(
+    `/realm/emoji/${encodeURIComponent(emojiName)}`,
+    formData,
+  )
+
+  return resp.data
+}

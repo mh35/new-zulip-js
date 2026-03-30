@@ -47,6 +47,19 @@ export type UnregisterApnsTokenParams = {
 }
 
 /**
+ * Parameters for RegisterFcmToken API
+ * @deprecated From Zulip 11.0 (feature level 406), use E2EE notification instead
+ * @see https://zulip.com/api/add-fcm-token#parameters
+ */
+export type RegisterFcmTokenParams = {
+  /**
+   * The token provided by the device
+   * @see https://zulip.com/api/add-fcm-token#parameter-token
+   */
+  token: string
+}
+
+/**
  * Send a test notification to the target device or all devices
  * @param client Axios client initialized by generateCallApi function in api.ts
  * @param params API parameters
@@ -113,6 +126,28 @@ export async function unregisterApnsToken(
     {
       data: body,
     },
+  )
+
+  return resp.data
+}
+
+/**
+ * Register an FCM token to receive Android push notification
+ * @param client Axios client initialized by generateCallApi function in api.ts
+ * @param params API parameters
+ * @returns The response of RegisterFcmToken API
+ * @deprecated From Zulip 11.0 (feature level 406), use E2EE notification instead
+ * @see https://zulip.com/api/add-fcm-token
+ */
+export async function registerFcmToken(
+  client: AxiosInstance,
+  params: RegisterFcmTokenParams,
+) {
+  const body = new URLSearchParams(params)
+
+  const resp = await client.post<GeneralSuccessResponse>(
+    '/users/me/android_gcm_reg_id',
+    body,
   )
 
   return resp.data

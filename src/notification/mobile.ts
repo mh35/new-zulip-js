@@ -60,6 +60,19 @@ export type RegisterFcmTokenParams = {
 }
 
 /**
+ * Parameters for UnregisterFcmToken API
+ * @deprecated From Zulip 11.0 (feature level 406), use E2EE notification instead
+ * @see https://zulip.com/api/remove-fcm-token#parameters
+ */
+export type UnregisterFcmTokenParams = {
+  /**
+   * The token provided by the device
+   * @see https://zulip.com/api/remove-fcm-token#parameter-token
+   */
+  token: string
+}
+
+/**
  * Send a test notification to the target device or all devices
  * @param client Axios client initialized by generateCallApi function in api.ts
  * @param params API parameters
@@ -148,6 +161,30 @@ export async function registerFcmToken(
   const resp = await client.post<GeneralSuccessResponse>(
     '/users/me/android_gcm_reg_id',
     body,
+  )
+
+  return resp.data
+}
+
+/**
+ * Unregister an FCM token
+ * @param client Axios client initialized by generateCallApi function in api.ts
+ * @param params API parameters
+ * @returns The response of UnregisterFcmToken API
+ * @deprecated From Zulip 11.0 (feature level 406), use E2EE notification instead
+ * @see https://zulip.com/api/remove-fcm-token
+ */
+export async function unregisterFcmToken(
+  client: AxiosInstance,
+  params: UnregisterFcmTokenParams,
+) {
+  const body = new URLSearchParams(params)
+
+  const resp = await client.delete<GeneralSuccessResponse>(
+    '/users/me/android_gcm_reg_id',
+    {
+      data: body,
+    },
   )
 
   return resp.data

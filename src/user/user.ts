@@ -1025,7 +1025,7 @@ type UpdateUserSettingsEditableParams = {
   resolved_topic_notice_auto_read_policy?: UpdateUserSettingsParamsResolvedTopicNoticeAutoReadPolicyValues
   /**
    * Display the presence status to other users when online
-   * @since https://zulip.com/api/update-settings#parameter-presence_enabled
+   * @see https://zulip.com/api/update-settings#parameter-presence_enabled
    */
   presence_enabled?: boolean
   /**
@@ -1110,6 +1110,416 @@ export type UpdateUserSettingsParams =
       UpdateUserSettingsTargetUsersEditableParams)
   | (UpdateUserSettingsParamsWithoutTargetUserBase &
       UpdateUserSettingsSelfEditableParams)
+
+/**
+ * All parameters for UpdateDefaultUserSettings API
+ */
+type UpdateDefaultUserSettingsBaseParams = {
+  /**
+   * Whether clients display the number of starred messages or not
+   * @see https://zulip.com/api/update-realm-user-settings-defaults#parameter-starred_message_counts
+   */
+  starred_message_counts?: boolean
+  /**
+   * Whether to receive typing notifications
+   * @since Zulip 9.0 (feature level 253)
+   * @see https://zulip.com/api/update-realm-user-settings-defaults#parameter-receives_typing_notifications
+   */
+  receives_typing_notifications?: boolean
+  /**
+   * Whether to suggest time zone update if the timezone setting is different
+   * from the client device time zone
+   * @since Zulip 10.0 (feature level 329)
+   * @see https://zulip.com/api/update-realm-user-settings-defaults#parameter-web_suggest_update_timezone
+   */
+  web_suggest_update_timezone?: boolean
+  /**
+   * Whether to use the maximum available screen width
+   * @see https://zulip.com/api/update-realm-user-settings-defaults#parameter-fluid_layout_width
+   */
+  fluid_layout_width?: boolean
+  /**
+   * Reserved for use to control variations in Zulip's design to help visually impaired users
+   * @see https://zulip.com/api/update-realm-user-settings-defaults#parameter-high_contrast_mode
+   */
+  high_contrast_mode?: boolean
+  /**
+   * Mark as read policy when scrolling.
+   *
+   * - 1 - Always
+   * - 2 - Only in conversation views
+   * - 3 - Never
+   * @since Zulip 7.0 (feature level 175)
+   * @see https://zulip.com/api/update-realm-user-settings-defaults#parameter-web_mark_read_on_scroll_policy
+   */
+  web_mark_read_on_scroll_policy?: UserSettingsWebMarkReadScrollPolicyValues
+  /**
+   * Default channel view
+   *
+   * - 1 - Top topic in the channel
+   * - 2 - Channel feed
+   * - 3 - List of topics
+   * - 4 - Top unread topic in channel
+   * @since Zulip 9.0 (feature level 269)
+   * @see https://zulip.com/api/update-realm-user-settings-defaults#parameter-web_channel_default_view
+   */
+  web_channel_default_view?: UserSettingsWebChannelDefaultViewValues
+  /**
+   * Primary font-size
+   * @since Zulip 9.0 (feature level 245)
+   * @see https://zulip.com/api/update-realm-user-settings-defaults#parameter-web_font_size_px
+   */
+  web_font_size_px?: number
+  /**
+   * Line height percent. For example line-height=1.2 is 120.
+   * @since Zulip 9.0 (feature level 245)
+   * @see https://zulip.com/api/update-realm-user-settings-defaults#parameter-web_line_height_percent
+   */
+  web_line_height_percent?: number
+  /**
+   * Color scheme
+   *
+   * - 1 - Automatic
+   * - 2 - Dark theme
+   * - 3 - Light theme
+   * @see https://zulip.com/api/update-settings#parameter-color_scheme
+   */
+  color_scheme?: UserSettingsColorSchemeValues
+  /**
+   * Whether synchronizing drafts is enabled
+   * @see https://zulip.com/api/update-realm-user-settings-defaults#parameter-enable_drafts_synchronization
+   */
+  enable_drafts_synchronization?: boolean
+  /**
+   * Whether to translate emoticons to emoji in messages the user sends
+   * @see https://zulip.com/api/update-realm-user-settings-defaults#parameter-translate_emoticons
+   */
+  translate_emoticons?: boolean
+  /**
+   * Whether to display the names of reacting users on a message
+   * @since Zulip 6.0 (feature level 125)
+   * @see https://zulip.com/api/update-realm-user-settings-defaults#parameter-display_emoji_reaction_users
+   */
+  display_emoji_reaction_users?: boolean
+  /**
+   * The home view
+   *
+   * - recent - Recent conversations view
+   * - inbox - Inbox view
+   * - all_messages - Combined feed view
+   * @since Zulip 8.0 (feature level 219)
+   * @see https://zulip.com/api/update-realm-user-settings-defaults#parameter-web_home_view
+   */
+  web_home_view?: UpdateUserSettingsParamsWebHomeViewValues
+  /**
+   * Whether the escape key navigates to the configured home view
+   * @since Zulip 8.0 (feature level 219)
+   * @see https://zulip.com/api/update-realm-user-settings-defaults#parameter-web_escape_navigates_to_home_view
+   */
+  web_escape_navigates_to_home_view?: boolean
+  /**
+   * Whether the users list on left sidebar in narrow windows
+   * @see https://zulip.com/api/update-realm-user-settings-defaults#parameter-left_side_userlist
+   */
+  left_side_userlist?: boolean
+  /**
+   * The user's configured emoji set
+   *
+   * - google - Google modern
+   * - twitter - Twitter
+   * - text - Plain text
+   * @see https://zulip.com/api/update-realm-user-settings-defaults#parameter-emojiset
+   */
+  emojiset?: UpdateUserSettingsParamsEmojiSetValues
+  /**
+   * Whether to hide inactive channels in the left sidebar
+   *
+   * - 1 - Automatic
+   * - 2 - Always
+   * - 3 - Never
+   * @see https://zulip.com/api/update-realm-user-settings-defaults#parameter-demote_inactive_streams
+   */
+  demote_inactive_streams?: UserSettingsDemoteInactiveStreamsValues
+  /**
+   * User list style
+   *
+   * - 1 - Compact
+   * - 2 - With status
+   * - 3 - With avatar and status
+   * @since Zulip 6.0 (feature level 141)
+   * @see https://zulip.com/api/update-realm-user-settings-defaults#parameter-user_list_style
+   */
+  user_list_style?: UserSettingsUserListStyleValues
+  /**
+   * How animated images should be played in the message feed
+   *
+   * - always - Always play animate
+   * - on_hover - Play on hover
+   * - never - Never play
+   * @since Zulip 9.0 (feature level 275)
+   * @see https://zulip.com/api/update-realm-user-settings-defaults#parameter-web_animate_image_previews
+   */
+  web_animate_image_previews?: UpdateUserSettingsParamsWebAnimateImagePreviewsValues
+  /**
+   * Which channels should be displayed with a numeric unread count in the left sidebar
+   *
+   * - 1 - All channels
+   * - 2 - Unmuted channels and topics
+   * - 3 - No channels
+   * @since Zulip 8.0 (feature level 210)
+   * @see https://zulip.com/api/update-realm-user-settings-defaults#parameter-web_stream_unreads_count_display_policy
+   */
+  web_stream_unreads_count_display_policy?: UserSettingsWebStreamUnreadsCountDisplayPolicyValues
+  /**
+   * Whether user wants AI features like topic summarization to be hidden
+   * @since Zulip 10.0 (feature level 350)
+   * @see https://zulip.com/api/update-realm-user-settings-defaults#parameter-hide_ai_features
+   */
+  hide_ai_features?: boolean
+  /**
+   * Whether channel folders are used to organize how conversations with unread messages are displayed
+   * @since Zulip 12.0 (feature level 431)
+   * @see https://zulip.com/api/update-realm-user-settings-defaults#parameter-web_inbox_show_channel_folders
+   */
+  web_inbox_show_channel_folders?: boolean
+  /**
+   * Whether channel folders are used to organize how channels are displayed
+   * @since Zulip 11.0 (feature level 411)
+   * @see https://zulip.com/api/update-realm-user-settings-defaults#parameter-web_left_sidebar_show_channel_folders
+   */
+  web_left_sidebar_show_channel_folders?: boolean
+  /**
+   * Whether left sidebar displays the unread message count summary
+   * @since Zulip 11.0 (feature level 398)
+   * @see https://zulip.com/api/update-realm-user-settings-defaults#parameter-web_left_sidebar_unreads_count_summary
+   */
+  web_left_sidebar_unreads_count_summary?: boolean
+  /**
+   * Enable visual desktop notifications for channel messages
+   * @see https://zulip.com/api/update-realm-user-settings-defaults#parameter-enable_stream_desktop_notifications
+   */
+  enable_stream_desktop_notifications?: boolean
+  /**
+   * Enable email notifications for channel messages
+   * @see https://zulip.com/api/update-realm-user-settings-defaults#parameter-enable_stream_email_notifications
+   */
+  enable_stream_email_notifications?: boolean
+  /**
+   * Enable mobile notifications for channel messages
+   * @see https://zulip.com/api/update-realm-user-settings-defaults#parameter-enable_stream_push_notifications
+   */
+  enable_stream_push_notifications?: boolean
+  /**
+   * Enable audible desktop notifications for channel messages
+   * @see https://zulip.com/api/update-realm-user-settings-defaults#parameter-enable_stream_audible_notifications
+   */
+  enable_stream_audible_notifications?: boolean
+  /**
+   * Notification sound name
+   * @see https://zulip.com/api/update-realm-user-settings-defaults#parameter-notification_sound
+   * @see https://github.com/zulip/zulip/tree/main/static/audio/notification_sounds
+   */
+  notification_sound?: string
+  /**
+   * Enable visual desktop notifications for direct messages and @-mentions
+   * @see https://zulip.com/api/update-realm-user-settings-defaults#parameter-enable_desktop_notifications
+   */
+  enable_desktop_notifications?: boolean
+  /**
+   * Enable audible desktop notifications for direct messages and @-mentions
+   * @see https://zulip.com/api/update-realm-user-settings-defaults#parameter-enable_sounds
+   */
+  enable_sounds?: boolean
+  /**
+   * Enable visual desktop notifications for messages sent to followed topics
+   * @since Zulip 8.0 (feature level 189)
+   * @see https://zulip.com/api/update-realm-user-settings-defaults#parameter-enable_followed_topic_desktop_notifications
+   */
+  enable_followed_topic_desktop_notifications?: boolean
+  /**
+   * Enable email notifications for messages sent to followed topics
+   * @since Zulip 8.0 (feature level 189)
+   * @see https://zulip.com/api/update-realm-user-settings-defaults#parameter-enable_followed_topic_email_notifications
+   */
+  enable_followed_topic_email_notifications?: boolean
+  /**
+   * Enable push notifications for messages sent to followed topics
+   * @since Zulip 8.0 (feature level 189)
+   * @see https://zulip.com/api/update-realm-user-settings-defaults#parameter-enable_followed_topic_push_notifications
+   */
+  enable_followed_topic_push_notifications?: boolean
+  /**
+   * Enable audible desktop notifications for messages sent to followed topics
+   * @since Zulip 8.0 (feature level 189)
+   * @see https://zulip.com/api/update-realm-user-settings-defaults#parameter-enable_followed_topic_audible_notifications
+   */
+  enable_followed_topic_audible_notifications?: boolean
+  /**
+   * The duration seconds for which the server waits to batch email notifications before sending
+   * @see https://zulip.com/api/update-realm-user-settings-defaults#parameter-email_notifications_batching_period_seconds
+   */
+  email_notifications_batching_period_seconds?: number
+  /**
+   * Enable email notifications for direct messages and @-mentions received when the user is offline
+   * @see https://zulip.com/api/update-realm-user-settings-defaults#parameter-enable_offline_email_notifications
+   */
+  enable_offline_email_notifications?: boolean
+  /**
+   * Enable mobile notification for direct messages and @-mentions received when the user is offline
+   * @see https://zulip.com/api/update-realm-user-settings-defaults#parameter-enable_offline_push_notifications
+   */
+  enable_offline_push_notifications?: boolean
+  /**
+   * Enable mobile notification for direct messages and @-mentions received when the user is online
+   * @see https://zulip.com/api/update-realm-user-settings-defaults#parameter-enable_online_push_notifications
+   */
+  enable_online_push_notifications?: boolean
+  /**
+   * Enable digest emails when the user is away
+   * @see https://zulip.com/api/update-realm-user-settings-defaults#parameter-enable_digest_emails
+   */
+  enable_digest_emails?: boolean
+  /**
+   * Include the message's content in email notifications for new messages
+   * @see https://zulip.com/api/update-realm-user-settings-defaults#parameter-message_content_in_email_notifications
+   */
+  message_content_in_email_notifications?: boolean
+  /**
+   * Include content of direct messages in desktop notifications
+   * @see https://zulip.com/api/update-realm-user-settings-defaults#parameter-pm_content_in_desktop_notifications
+   */
+  pm_content_in_desktop_notifications?: boolean
+  /**
+   * Whether wildcard mentions should send notifications like a personal mention
+   * @see https://zulip.com/api/update-realm-user-settings-defaults#parameter-wildcard_mentions_notify
+   */
+  wildcard_mentions_notify?: boolean
+  /**
+   * Whether wildcard mentions in messages sent to followed topics should send
+   * notifications like a personal mention
+   * @since Zulip 8.0 (feature level 189)
+   * @see https://zulip.com/api/update-realm-user-settings-defaults#parameter-enable_followed_topic_wildcard_mentions_notify
+   */
+  enable_followed_topic_wildcard_mentions_notify?: boolean
+  /**
+   * Unread count badge
+   *
+   * - 1 - All unread messages
+   * - 2 - DMs, mentions, and followed topics
+   * - 3 - DMs and mentions
+   * - 4 - None
+   * @see https://zulip.com/api/update-realm-user-settings-defaults#parameter-desktop_icon_count_display
+   */
+  desktop_icon_count_display?: UserSettingsDesktopIconCountDisplayValues
+  /**
+   * Whether to include organization name in subject of message notification emails
+   *
+   * - 1 - Automatic
+   * - 2 - Always
+   * - 3 - Never
+   * @since Zulip 7.0 (feature level 168)
+   * @see https://zulip.com/api/update-realm-user-settings-defaults#parameter-realm_name_in_email_notifications_policy
+   */
+  realm_name_in_email_notifications_policy?: UserSettingsRealmNameInEmailNotificationsPolicyValues
+  /**
+   * Which topics to follow automatically
+   *
+   * - 1 - Topics the user participates in
+   * - 2 - Topics the user sends a message to
+   * - 3 - Topics the user starts
+   * - 4 - Never
+   * @since Zulip 8.0 (feature level 214)
+   * @see https://zulip.com/api/update-realm-user-settings-defaults#parameter-automatically_follow_topics_policy
+   */
+  automatically_follow_topics_policy?: UserSettingsAutomaticallyFollowTopicsPolicyValues
+  /**
+   * Which topics to unmute automatically in muted channels
+   *
+   * - 1 - Topics the user participates in
+   * - 2 - Topics the user sends a message to
+   * - 3 - Topics the user starts
+   * - 4 - Never
+   * @since Zulip 8.0 (feature level 214)
+   * @see https://zulip.com/api/update-realm-user-settings-defaults#parameter-automatically_unmute_topics_in_muted_streams_policy
+   */
+  automatically_unmute_topics_in_muted_streams_policy?: UserSettingsAutomaticallyUnmuteTopicsInMutedChannelsPolicyValues
+  /**
+   * Whether the server will automatically mark the user as following topics where the user is mentioned
+   * @since Zulip 8.0 (feature level 235)
+   * @see https://zulip.com/api/update-realm-user-settings-defaults#parameter-automatically_follow_topics_where_mentioned
+   */
+  automatically_follow_topics_where_mentioned?: boolean
+  /**
+   * Whether the resolved-topic notices are marked as read
+   *
+   * - always - Always mark resolved-topic notices as read
+   * - except_followed - Mark resolved-topic notices as read in topics not followed by the user
+   * - never - Never mark resolved-topic notices as read
+   * @since Zulip 11.0 (feature level 385)
+   * @see https://zulip.com/api/update-realm-user-settings-defaults#parameter-resolved_topic_notice_auto_read_policy
+   */
+  resolved_topic_notice_auto_read_policy?: UpdateUserSettingsParamsResolvedTopicNoticeAutoReadPolicyValues
+  /**
+   * Display the presence status to other users when online
+   * @see https://zulip.com/api/update-realm-user-settings-defaults#parameter-presence_enabled
+   */
+  presence_enabled?: boolean
+  /**
+   * Whether pressing Enter in the compose box sends a message (or saves a message edit)
+   * @see https://zulip.com/api/update-realm-user-settings-defaults#parameter-enter_sends
+   */
+  enter_sends?: boolean
+  /**
+   * Whether to display time in 24-hour notation
+   * @since Zulip 5.0 (feature level 99)
+   * @see https://zulip.com/api/update-realm-user-settings-defaults#parameter-twenty_four_hour_time
+   */
+  twenty_four_hour_time?: boolean
+  /**
+   * Whether typing notifications be sent when composing direct messages
+   * @since Zulip 5.0 (feature level 105)
+   * @see https://zulip.com/api/update-realm-user-settings-defaults#parameter-send_private_typing_notifications
+   */
+  send_private_typing_notifications?: boolean
+  /**
+   * Whether typing notifications be sent when composing channel messages
+   * @since Zulip 5.0 (feature level 105)
+   * @see https://zulip.com/api/update-realm-user-settings-defaults#parameter-send_stream_typing_notifications
+   */
+  send_stream_typing_notifications?: boolean
+  /**
+   * Whether other users are allowed to see whether you've read messages
+   * @since Zulip 5.0 (feature level 105)
+   * @see https://zulip.com/api/update-realm-user-settings-defaults#parameter-send_read_receipts
+   */
+  send_read_receipts?: boolean
+  /**
+   * The policy other users in this organization can see their real email address
+   *
+   * - 1 - Everyone
+   * - 2 - Members only
+   * - 3 - Administrators only
+   * - 4 - Nobody
+   * - 5 - Moderators only
+   * @since Zulip 7.0 (feature level 163)
+   * @see https://zulip.com/api/update-realm-user-settings-defaults#parameter-email_address_visibility
+   */
+  email_address_visibility?: UserSettingsEmailAddressVisibilityValues
+  /**
+   * Whether the user's view should automatically go to the conversation where they sent a message
+   * @since Zulip 9.0 (feature level 268)
+   * @see https://zulip.com/api/update-realm-user-settings-defaults#parameter-web_navigate_to_sent_message
+   */
+  web_navigate_to_sent_message?: boolean
+}
+
+/**
+ * Parameters for UpdateDefaultUserSettings API
+ * @since Zulip 5.0 (feature level 96)
+ * @see https://zulip.com/api/update-realm-user-settings-defaults#parameters
+ */
+export type UpdateDefaultUserSettingsParams =
+  UpdateUserSettingsAtLeastOne<UpdateDefaultUserSettingsBaseParams>
 
 /**
  * Get user by ID
@@ -1381,6 +1791,38 @@ export async function updateUserSettings(
   }
 
   const resp = await client.patch<GeneralSuccessResponse>('/settings', body)
+
+  return resp.data
+}
+
+/**
+ * Update the default value of user settings
+ * @param client Axios client initialized by generateCallApi function in api.ts
+ * @param params API parameters
+ * @returns The response of UpdateDefaultUserSettings API
+ * @since Zulip 5.0 (feature level 96)
+ * @see https://zulip.com/api/update-realm-user-settings-defaults
+ */
+export async function updateDefaultUserSettings(
+  client: AxiosInstance,
+  params: UpdateDefaultUserSettingsParams,
+) {
+  const body = new URLSearchParams()
+  for (const [key, value] of Object.entries(params)) {
+    if (value === undefined || value === null) {
+      continue
+    }
+    if (Array.isArray(value) || typeof value === 'object') {
+      body.append(key, JSON.stringify(value))
+    } else {
+      body.append(key, String(value))
+    }
+  }
+
+  const resp = await client.patch<GeneralSuccessResponse>(
+    '/realm/user_settings_defaults',
+    body,
+  )
 
   return resp.data
 }

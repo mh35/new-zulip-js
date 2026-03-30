@@ -71,6 +71,35 @@ export type RegisterE2eeDeviceParams = {
 }
 
 /**
+ * Parameters for RegisterRemotePushDevice API
+ * @since Zulip 11.0 (feature level 406)
+ * @see https://zulip.com/api/register-remote-push-device#parameters
+ */
+export type RegisterRemotePushDeviceParams = {
+  /**
+   * The UUID of the realm to which the push device being registered belongs
+   * @see https://zulip.com/api/register-remote-push-device#parameter-realm_uuid
+   */
+  realm_uuid: string
+  /**
+   * The token_id value provided by the mobile client to RegisterE2eeDevice API
+   * @since Zulip 12.0 (feature level 468)
+   * @see  https://zulip.com/api/register-remote-push-device#parameter-token_id
+   */
+  token_id: string
+  /**
+   * The encrypted_push_registration value provided by the mobile client to RegisterE2eeDevice API
+   * @see https://zulip.com/api/register-remote-push-device#parameter-encrypted_push_registration
+   */
+  encrypted_push_registration: string
+  /**
+   * The bouncer_public_key value provided by the mobile client to RegisterE2eeDevice API
+   * @see https://zulip.com/api/register-remote-push-device#parameter-bouncer_public_key
+   */
+  bouncer_public_key: string
+}
+
+/**
  * Send E2EE test notification to the target device or all devices
  * @param client Axios client initialized by generateCallApi function in api.ts
  * @param params API parameters
@@ -118,6 +147,28 @@ export async function registerE2eeDevice(
 
   const resp = await client.post<GeneralSuccessResponse>(
     '/mobile_push/register',
+    body,
+  )
+
+  return resp.data
+}
+
+/**
+ * Register a push device to bouncer to receive E2EE push notification
+ * @param client Axios client initialized by generateCallApi function in api.ts
+ * @param params API parameters
+ * @returns The response of RegisterRemotePushDevice API
+ * @since Zulip 11.0 (feature level 406)
+ * @see https://zulip.com/api/register-remote-push-device
+ */
+export async function registerRemotePushDevice(
+  client: AxiosInstance,
+  params: RegisterRemotePushDeviceParams,
+) {
+  const body = new URLSearchParams(params)
+
+  const resp = await client.post<GeneralSuccessResponse>(
+    '/remotes/push/e2ee/register',
     body,
   )
 

@@ -5,6 +5,7 @@ import * as bot from './bot'
 import * as channel from './channel'
 import * as constants from './constants'
 import * as customProfileField from './custom-profile-field'
+import * as device from './device'
 import * as draft from './draft'
 import * as emoji from './emoji'
 import * as invitation from './invitation'
@@ -28,6 +29,7 @@ export {
   channel,
   constants,
   customProfileField,
+  device,
   draft,
   emoji,
   invitation,

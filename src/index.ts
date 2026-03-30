@@ -12,6 +12,7 @@ import * as invitation from './invitation'
 import * as linkifier from './linkifier'
 import * as message from './message'
 import * as navigationView from './navigation-view'
+import * as notification from './notification'
 import * as playground from './playground'
 import * as realmExport from './realm-export'
 import * as reminder from './reminder'
@@ -36,6 +37,7 @@ export {
   linkifier,
   message,
   navigationView,
+  notification,
   playground,
   realmExport,
   reminder,

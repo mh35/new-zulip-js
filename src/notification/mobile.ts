@@ -34,6 +34,19 @@ export type RegisterApnsTokenParams = {
 }
 
 /**
+ * Parameters for UnregisterApnsToken API
+ * @deprecated From Zulip 11.0 (feature level 406), use E2EE notification instead
+ * @see https://zulip.com/api/remove-apns-token#parameters
+ */
+export type UnregisterApnsTokenParams = {
+  /**
+   * The token provided by the device
+   * @see https://zulip.com/api/remove-apns-token#parameter-token
+   */
+  token: string
+}
+
+/**
  * Send a test notification to the target device or all devices
  * @param client Axios client initialized by generateCallApi function in api.ts
  * @param params API parameters
@@ -64,7 +77,7 @@ export async function sendTestMobileNotification(
  * @param client Axios client initialized by generateCallApi function in api.ts
  * @param params API parameters
  * @returns The response of RegisterApnsToken API
- * @deprecated From Zulip 11.0 (feature level 420), use E2EE notification instead
+ * @deprecated From Zulip 11.0 (feature level 406), use E2EE notification instead
  * @see https://zulip.com/api/add-apns-token
  */
 export async function registerApnsToken(
@@ -76,6 +89,30 @@ export async function registerApnsToken(
   const resp = await client.post<GeneralSuccessResponse>(
     '/users/me/apns_device_token',
     body,
+  )
+
+  return resp.data
+}
+
+/**
+ * Unregister an APNs token
+ * @param client Axios client initialized by generateCallApi function in api.ts
+ * @param params API parameters
+ * @returns The response of UnregisterApnsToken API
+ * @deprecated From Zulip 11.0 (feature level 406), use E2EE notification instead
+ * @see https://zulip.com/api/remove-apns-token
+ */
+export async function unregisterApnsToken(
+  client: AxiosInstance,
+  params: UnregisterApnsTokenParams,
+) {
+  const body = new URLSearchParams(params)
+
+  const resp = await client.delete<GeneralSuccessResponse>(
+    '/users/me/apns_device_token',
+    {
+      data: body,
+    },
   )
 
   return resp.data

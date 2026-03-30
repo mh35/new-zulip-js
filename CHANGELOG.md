@@ -1,5 +1,9 @@
 # Changelog
 
+## Version 1.1.0-alpha.8
+
+- Server and organization settings functions
+
 ## Version 1.1.0-alpha.7
 
 - Invitation API functions

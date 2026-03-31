@@ -29,6 +29,18 @@ export type CreateBigBlueButtonCallResponse = GeneralSuccessResponse & {
 }
 
 /**
+ * The response of ConstructorGroupsCall API
+ * @since Zulip 12.0 (feature level 460)
+ * @see https://zulip.com/api/create-constructor-groups-video-call#response
+ */
+export type CreateConstructorGroupsCallResponse = GeneralSuccessResponse & {
+  /**
+   * The URL for the Constructor Groups video call
+   */
+  url: string
+}
+
+/**
  * Create a video call URL for a BigBlueButton video call
  * @param client Axios client initialized by generateCallApi function in api.ts
  * @param params API parameters
@@ -61,6 +73,22 @@ export async function createBigBlueButtonCall(
   const resp = await client.post<CreateBigBlueButtonCallResponse>(
     '/calls/bigbluebutton/create',
     body,
+  )
+
+  return resp.data
+}
+
+/**
+ * Create a video call URL for a Constructor Groups video call
+ * @param client Axios client initialized by generateCallApi function in api.ts
+ * @returns The response of ConstructorGroupsCall API
+ * @since Zulip 12.0 (feature level 460)
+ * @see https://zulip.com/api/create-constructor-groups-video-call
+ */
+export async function createConstructorGroupsCall(client: AxiosInstance) {
+  const resp = await client.post<CreateConstructorGroupsCallResponse>(
+    '/calls/constructorgroups/create',
+    new URLSearchParams(),
   )
 
   return resp.data

@@ -1,5 +1,10 @@
 # Changelog
 
+## Version v1.1.0-alpha.9
+
+- Push notification functions
+- Video call functions
+
 ## Version 1.1.0-alpha.8
 
 - Server and organization settings functions

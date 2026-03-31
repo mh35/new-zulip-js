@@ -41,6 +41,31 @@ export type CreateConstructorGroupsCallResponse = GeneralSuccessResponse & {
 }
 
 /**
+ * Parameters for CreateNextcloudTalkCall API
+ * @since Zulip 12.0 (feature level 465)
+ * @see https://zulip.com/api/create-nextcloud-talk-video-call#parameters
+ */
+export type CreateNextcloudTalkCallParams = {
+  /**
+   * Room name for the Nextcloud Talk conversation
+   * @see https://zulip.com/api/create-nextcloud-talk-video-call#parameter-room_name
+   */
+  room_name: string
+}
+
+/**
+ * The response of CreateNextcloudTalkCall API
+ * @since Zulip 12.0 (feature level 465)
+ * @see https://zulip.com/api/create-nextcloud-talk-video-call#response
+ */
+export type CreateNextcloudTalkCallResponse = GeneralSuccessResponse & {
+  /**
+   * The URL for the Nextcloud Talk conversation
+   */
+  url: string
+}
+
+/**
  * Create a video call URL for a BigBlueButton video call
  * @param client Axios client initialized by generateCallApi function in api.ts
  * @param params API parameters
@@ -89,6 +114,28 @@ export async function createConstructorGroupsCall(client: AxiosInstance) {
   const resp = await client.post<CreateConstructorGroupsCallResponse>(
     '/calls/constructorgroups/create',
     new URLSearchParams(),
+  )
+
+  return resp.data
+}
+
+/**
+ * Create a video call URL for a Nextcloud Talk video call
+ * @param client Axios client initialized by generateCallApi function in api.ts
+ * @param params API parameters
+ * @returns The response of CreateNextcloudTalkCall API
+ * @since Zulip 12.0 (feature level 465)
+ * @see https://zulip.com/api/create-nextcloud-talk-video-call
+ */
+export async function creatNextcloudTalkCall(
+  client: AxiosInstance,
+  params: CreateNextcloudTalkCallParams,
+) {
+  const body = new URLSearchParams(params)
+
+  const resp = await client.post<CreateNextcloudTalkCallResponse>(
+    '/calls/nextcloud_talk/create',
+    body,
   )
 
   return resp.data

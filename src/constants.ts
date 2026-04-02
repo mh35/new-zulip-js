@@ -776,3 +776,125 @@ export const REALM_DIGEST_WEEKDAY_SUNDAY = 6
  * Weekly digest email weekday values
  */
 export type RealmDigestWeekdayValues = 0 | 1 | 2 | 3 | 4 | 5 | 6
+
+/**
+ * Unspecified realm organization type
+ * @since Zulip 6.0 (feature level 128)
+ */
+export const REALM_TYPE_UNSPECIFIED = 0
+
+/**
+ * Business realm organization type
+ * @since Zulip 6.0 (feature level 128)
+ */
+export const REALM_TYPE_BUSINESS = 10
+
+/**
+ * Open-source project realm organization type
+ * @since Zulip 6.0 (feature level 128)
+ */
+export const REALM_TYPE_OPEN_SOURCE = 20
+
+/**
+ * Non-profit education realm organization type
+ * @since Zulip 6.0 (feature level 128)
+ */
+export const REALM_TYPE_NONPROFIT_EDUCATION = 30
+
+/**
+ * Profit education realm organization type
+ * @since Zulip 6.0 (feature level 128)
+ */
+export const REALM_TYPE_PROFIT_EDUCATION = 35
+
+/**
+ * Research realm organization type
+ * @since Zulip 6.0 (feature level 128)
+ */
+export const REALM_TYPE_RESEARCH = 40
+
+/**
+ * Event or conference realm organization type
+ * @since Zulip 6.0 (feature level 128)
+ */
+export const REALM_TYPE_EVENT_CONF = 50
+
+/**
+ * Registered non-profit realm organization type
+ * @since Zulip 6.0 (feature level 128)
+ */
+export const REALM_TYPE_REGISTERED_NONPROFIT = 60
+
+/**
+ * Government realm organization type
+ * @since Zulip 6.0 (feature level 128)
+ */
+export const REALM_TYPE_GOVERNMENT = 70
+
+/**
+ * Political group organization type
+ * @since Zulip 6.0 (feature level 128)
+ */
+export const REALM_TYPE_POLITICAL_GROUP = 80
+
+/**
+ * Community organization type
+ * @since Zulip 6.0 (feature level 128)
+ */
+export const REALM_TYPE_COMMUNITY = 90
+
+/**
+ * Personal organization type
+ * @since Zulip 6.0 (feature level 128)
+ */
+export const REALM_TYPE_PERSONAL = 100
+
+/**
+ * Other organization type
+ * @since Zulip 6.0 (feature level 128)
+ */
+export const REALM_TYPE_OTHER = 1000
+
+/**
+ * Realm organization type values
+ * @since Zulip 6.0 (feature level 128)
+ */
+export type RealmTypeValues =
+  | 0
+  | 10
+  | 20
+  | 30
+  | 35
+  | 40
+  | 50
+  | 60
+  | 70
+  | 80
+  | 90
+  | 100
+  | 1000
+
+/**
+ * Self-hosted organization
+ */
+export const REALM_PLAN_SELF_HOSTED = 1
+
+/**
+ * Zulip Cloud free plan
+ */
+export const REALM_PLAN_LIMITED = 2
+
+/**
+ * Zulip Cloud Standard plan
+ */
+export const REALM_PLAN_STANDARD = 3
+
+/**
+ * Zulip Cloud Standard plan, sponsored for free
+ */
+export const REALM_PLAN_STANDARD_FREE = 4
+
+/**
+ * Realm plan type values
+ */
+export type RealmPlanTypeValues = 1 | 2 | 3 | 4

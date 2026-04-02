@@ -8,6 +8,7 @@ import * as customProfileField from './custom-profile-field'
 import * as device from './device'
 import * as draft from './draft'
 import * as emoji from './emoji'
+import * as eventQueue from './event-queue'
 import * as invitation from './invitation'
 import * as linkifier from './linkifier'
 import * as message from './message'
@@ -34,6 +35,7 @@ export {
   device,
   draft,
   emoji,
+  eventQueue,
   invitation,
   linkifier,
   message,

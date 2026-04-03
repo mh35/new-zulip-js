@@ -635,7 +635,7 @@ type UpdatePresenceResponseCommon = GeneralSuccessResponse & {
 /**
  * Modern user presence item for UpdatePresence API
  */
-type UpdatePresenceResponseModernUserItem = {
+export type UpdatePresenceResponseModernUserItem = {
   /**
    * The UNIX timestamp of the last time a client connected to Zulip reported
    * that the user was actually present

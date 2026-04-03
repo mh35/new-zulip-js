@@ -1606,15 +1606,62 @@ export type RegisterEventQueueResponse = GeneralSuccessResponse & {
    * @since Zulip 7.0 (feature level 164)
    */
   server_presence_ping_interval_seconds?: number
+  /**
+   * How old a presence timestamp for a given user can be before the user
+   * should be displayed as offline by clients displaying Zulip presence data.
+   * Exists only if fetch_event_types includes realm
+   * @since Zulip 7.0 (feature level 164)
+   */
   server_presence_offline_threshold_seconds?: number
+  /**
+   * The time interval in milliseconds that the client should wait for additional
+   * typing start events from the server before removing an active typing indicator.
+   * Exists only if fetch_event_types includes realm
+   * @since Zulip 8.0 (feature level 204)
+   */
   server_typing_started_expiry_period_milliseconds?: number
+  /**
+   * The time interval in milliseconds that the client should wait when a user stops
+   * interacting with the compose UI before sending a stop notification to the server.
+   * Exists only if fetch_event_types includes realm
+   * @since Zulip 8.0 (feature level 204)
+   */
   server_typing_stopped_wait_period_milliseconds?: number
+  /**
+   * The time interval in milliseconds that the client should use to send
+   * regular start notifications to the server to indicate that the user is
+   * still actively interacting with the compose UI.
+   * Exists only if fetch_event_types includes realm
+   * @since Zulip 8.0 (feature level 204)
+   */
   server_typing_started_wait_period_milliseconds?: number
+  /**
+   * All undelivered scheduled messages.
+   * Exists only if fetch_event_types includes scheduled_messages
+   * @since Zulip 7.0 (feature level 179)
+   */
   scheduled_messages?: GetScheduleMessagesResponseItem[]
   // It should be reminder items
   // see https://github.com/zulip/zulip/blob/main/zerver/lib/events.py#L349
+  /**
+   * All undelivered reminders scheduled by the user.
+   * Exists only if fetch_event_types includes reminders
+   * @since Zulip 11.0 (feature level 399)
+   */
   reminders?: GetRemindersResponseItem[]
-  muted_topics?: (string | number)[][]
+  /**
+   * Array of tuples, where each tuple describes a muted topic.
+   * The first element is the channel name, the second element is
+   * the UNIX timestamp when muted.
+   * Exists only if fetch_event_types includes muted_topics
+   * @deprecated From Zulip 6.0 (feature level 134), use user_topics instead
+   */
+  muted_topics?: [string, number][]
+  /**
+   * Muted users information.
+   * Exists only if fetch_event_types includes muted_users
+   * @since Zulip 4.0 (feature level 48)
+   */
   muted_users?: EventMutedUserItem[]
   presences?:
     | Record<string, UpdatePresenceResponseModernUserItem>

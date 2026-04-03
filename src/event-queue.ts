@@ -1550,13 +1550,61 @@ export type RegisterEventQueueResponse = GeneralSuccessResponse & {
    * @since Zulip 11.0 (feature level 415)
    */
   max_reminder_note_length: number
+  /**
+   * The maximum allowed length for a channel name, in Unicode code points.
+   * Exists only if fetch_event_types includes realm
+   * @since Zulip 4.0 (feature level 53)
+   */
   max_stream_name_length?: number
+  /**
+   * The maximum allowed length for a channel description, in Unicode code points.
+   * Exists only if fetch_event_types includes realm
+   * @since Zulip 4.0 (feature level 53)
+   */
   max_stream_description_length?: number
+  /**
+   * The maximum allowed length for a channel folder name, in Unicode code points.
+   * Exists only if fetch_event_types includes realm
+   * @since Zulip 11.0 (feature level 410)
+   */
   max_channel_folder_name_length?: number
+  /**
+   * The maximum allowed length for a channel folder description, in Unicode code points.
+   * Exists only if fetch_event_types includes realm
+   * @since Zulip 11.0 (feature level 410)
+   */
   max_channel_folder_description_length?: number
+  /**
+   * The maximum allowed length for a topic, in Unicode code points.
+   * Exists only if fetch_event_types includes realm
+   * @since Zulip 4.0 (feature level 53)
+   */
   max_topic_length?: number
+  /**
+   * The maximum allowed length for a message, in Unicode code points.
+   * Exists only if fetch_event_types includes realm
+   * @since Zulip 4.0 (feature level 53)
+   */
   max_message_length?: number
+  /**
+   * The minimum permitted number of days before full data deletion
+   * of a deactivated organization. If null, deletes immediately.
+   * Exists only if fetch_event_types includes realm
+   * @since Zulip 10.0 (feature level 332)
+   */
   server_min_deactivated_realm_deletion_days?: number | null
+  /**
+   * The maximum permitted number of days before full data deletion
+   * of a deactivated organization. If null, will be retained indefinitely.
+   * Exists only if fetch_event_types includes realm
+   * @since Zulip 10.0 (feature level 332)
+   */
+  server_max_deactivated_realm_deletion_days?: number | null
+  /**
+   * The time interval the client should use for sending presence requests to the server.
+   * Exists only if fetch_event_types includes realm
+   * @since Zulip 7.0 (feature level 164)
+   */
   server_presence_ping_interval_seconds?: number
   server_presence_offline_threshold_seconds?: number
   server_typing_started_expiry_period_milliseconds?: number

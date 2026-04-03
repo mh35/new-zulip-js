@@ -1651,28 +1651,67 @@ export type RegisterEventQueueResponse = GeneralSuccessResponse & {
   reminders?: GetRemindersResponseItem[]
   /**
    * Array of tuples, where each tuple describes a muted topic.
-   * The first element is the channel name, the second element is
-   * the UNIX timestamp when muted.
+   * The first element is the channel name, the second element is the topic name,
+   * and the third element is the UNIX timestamp when muted.
    * Exists only if fetch_event_types includes muted_topics
    * @deprecated From Zulip 6.0 (feature level 134), use user_topics instead
    */
-  muted_topics?: [string, number][]
+  muted_topics?: [string, string, number][]
   /**
    * Muted users information.
    * Exists only if fetch_event_types includes muted_users
    * @since Zulip 4.0 (feature level 48)
    */
   muted_users?: EventMutedUserItem[]
+  /**
+   * The presence details of a user in the Zulip organization.
+   * The format depends on slim_presence.
+   * Exists only if fetch_event_types includes presence
+   */
   presences?:
     | Record<string, UpdatePresenceResponseModernUserItem>
     | Record<string, GetAllUserPresenceUserItem>
+  /**
+   * The latest presence data fetched by the server and included in
+   * the response in presences.
+   * Exists only if fetch_event_types includes presence
+   * @since Zulip 9.0 (feature level 263)
+   */
   presence_last_update_id?: number
+  /**
+   * The time when the server fetched the presences data.
+   * Exists only if fetch_event_types includes presence
+   * @since Zulip 5.0 (feature level 70)
+   */
   server_timestamp?: number
+  /**
+   * Domains within which users can join the organization without and invitation.
+   * Exists only if fetch_event_types includes realm_domains
+   */
   realm_domains?: EventRealmDomainItem
+  /**
+   * Custom emojis that has been uploaded in this organization.
+   * Exists only if fetch_event_types includes realm_emoji
+   */
   realm_emoji?: Record<string, GetEmojisResponseItem>
   // It should be GetLinkifiersItem
+  /**
+   * Ordered linkifiers.
+   * Exists only if fetch_event_types includes realm_linkifiers
+   * @since Zulip 4.0 (feature level 54)
+   */
   realm_linkifiers?: GetLinkifiersItem[]
+  /**
+   * Legacy property for linkifiers. If exists, this is always empty.
+   * Exists only if fetch_event_types includes realm_filters
+   * @deprecated From Zulip 4.0 (feature level 54), use realm_linkifiers instead
+   */
   realm_filters?: (string | number)[][]
+  /**
+   * Code playgrounds.
+   * Exists only if fetch_event_types includes realm_playgrounds
+   * @since Zulip 4.0 (feature level 49)
+   */
   realm_playgrounds?: EventPlaygroundItem[]
   realm_user_groups?: GetUserGroupsResponseGroup[]
   realm_bots?: EventRealmBotItem[]

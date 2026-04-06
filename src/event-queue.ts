@@ -2832,10 +2832,23 @@ export type RegisterEventQueueResponse = GeneralSuccessResponse & {
 }
 
 /**
+ * Parameters for DeleteEventQueue API
+ * @see https://zulip.com/api/delete-queue#parameters
+ */
+export type DeleteEventQueueParams = {
+  /**
+   * The ID of an event queue that was previously registered via RegisterEventQueue API
+   * @see https://zulip.com/api/delete-queue#parameter-queue_id
+   */
+  queue_id: string
+}
+
+/**
  * Register a Zulip event queue
  * @param client Axios client initialized by generateCallApi function in api.ts
  * @param params API parameters
  * @returns The response of RegisterEventQueue API
+ * @see https://zulip.com/api/register-queue
  */
 export async function registerEventQueue(
   client: AxiosInstance,
@@ -2854,6 +2867,26 @@ export async function registerEventQueue(
   }
 
   const resp = await client.post<RegisterEventQueueResponse>('/register', body)
+
+  return resp.data
+}
+
+/**
+ * Delete a previously registered queue.
+ * @param client Axios client initialized by generateCallApi function in api.ts
+ * @param params API parameters
+ * @returns The response of DeleteEventQueue API
+ * @see https://zulip.com/api/delete-queue
+ */
+export async function deleteEventQueue(
+  client: AxiosInstance,
+  params: DeleteEventQueueParams,
+) {
+  const body = new URLSearchParams(params)
+
+  const resp = await client.delete<GeneralSuccessResponse>('/events', {
+    data: body,
+  })
 
   return resp.data
 }

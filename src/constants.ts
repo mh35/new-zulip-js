@@ -568,3 +568,333 @@ export type CustomFieldExternalAccountPlatforms =
   | 'x'
   | 'youtube'
   | 'custom'
+
+/**
+ * Zulip native outgoing webhook post format
+ * @see https://zulip.com/api/get-events#realm_bot-add
+ */
+export const BOT_SERVICE_OUTGOING_WEBHOOK_FORMAT_NATIVE = 1
+
+/**
+ * Slack compatible outgoing webhook post format
+ * @see https://zulip.com/api/get-events#realm_bot-add
+ */
+export const BOT_SERVICE_OUTGOING_WEBHOOK_FORMAT_SLACK = 2
+
+/**
+ * Outgoing webhook post formats
+ * @see https://zulip.com/api/get-events#realm_bot-add
+ */
+export type BotServiceOutgoingWebhookFormats = 1 | 2
+
+/**
+ * Only members can create streams specified type
+ * @deprecated Zulip 9.0 (feature level 264)
+ */
+export const CREATE_STREAM_POLICY_MEMEBERS_ONLY = 1
+
+/**
+ * Only administrators can create streams specified type
+ * @deprecated Zulip 10.0 (feature level 280)
+ */
+export const CREATE_STREAM_POLICY_ADMINS_ONLY = 2
+
+/**
+ * Only full members can create streams specified type
+ * @deprecated Zulip 9.0 (feature level 264)
+ */
+export const CREATE_STREAM_POLICY_FULL_MEMBERS_ONLY = 3
+
+/**
+ * Only administrators and moderators can create streams specified type
+ * @deprecated Zulip 10.0 (feature level 280)
+ */
+export const CREATE_STREAM_POLICY_ADMINS_MODERATORS_ONLY = 4
+
+/**
+ * Nobody can create streams specified type
+ * @since Zulip 5.0 (feature level 103)
+ * @deprecated Zulip 10.0 (feature level 280)
+ */
+export const CREATE_STREAM_POLICY_NOBODY = 6
+
+/**
+ * Only owners can create streams specific type
+ * @since Zulip 5.0 (feature level 103)
+ * @deprecated Zulip 10.0 (feature level 280)
+ */
+export const CREATED_STREAM_POLICY_OWNERS_ONLY = 7
+
+/**
+ * Create stream policy values
+ * @deprecated Zulip 9.0 (feature level 264)
+ */
+export type CreateStreamPolicyValues = 1 | 2 | 3 | 4
+
+/**
+ * Create web-public streaam policy values
+ * @since Zulip 5.0 (feature level 103)
+ * @deprecated Zulip 10.0 (feature level 280)
+ */
+export type CreateWebPublicStreamPolicyValues = 2 | 4 | 6 | 7
+
+/**
+ * Any users can use wildcard mention in large channels
+ * @since Zulip 4.0 (feature level 33)
+ * @deprecated Zulip 10.0 (feature level 352)
+ */
+export const WILDCARD_MENTION_ANY_USERS = 1
+
+/**
+ * Only members can use wildcard mention in large channels
+ * @since Zulip 4.0 (feature level 33)
+ * @deprecated Zulip 10.0 (feature level 352)
+ */
+export const WILDCARD_MENTION_MEMBERS_ONLY = 2
+
+/**
+ * Only full members can use wildcard mention in large channels
+ * @since Zulip 4.0 (feature level 33)
+ * @deprecated Zulip 10.0 (feature level 352)
+ */
+export const WILDCARD_MENTION_FULL_MEMBERS_ONLY = 3
+
+/**
+ * Only administrators can use wildcard mention in large channels
+ * @since Zulip 4.0 (feature level 33)
+ * @deprecated Zulip 10.0 (feature level 352)
+ */
+export const WILDCARD_MENTION_ONLY_ADMINS = 5
+
+/**
+ * Nobody can use wildcard mention in large channels
+ * @since Zulip 4.0 (feature level 33)
+ * @deprecated Zulip 10.0 (feature level 352)
+ */
+export const WILDCARD_MENTION_NOBODY = 6
+
+/**
+ * Only administrators and moderators can use wildcard mention in large channels
+ * @since Zulip 4.0 (feature level 62)
+ * @deprecated Zulip 10.0 (feature level 352)
+ */
+export const WILDCARD_MENTION_ADMIN_MODERATORS_ONLY = 7
+
+/**
+ * Wildcard mention policy values
+ * @since Zulip 4.0 (feature level 33)
+ * @deprecated Zulip 10.0 (feature level 352)
+ */
+export type WildcardMentionPolicyValues = 1 | 2 | 3 | 5 | 6 | 7
+
+/**
+ * Media preview size
+ * @since Zulip 12.0 (feature level 469)
+ */
+export type MediaPreviewSizeSettingValues = 100 | 150 | 200
+
+/**
+ * No video call provider
+ * @since Zulip 3.0 (feature level 1)
+ */
+export const VIDEO_CHAT_PROVIDER_NONE = 0
+
+/**
+ * Jitsi Meet
+ */
+export const VIDEO_CHAT_PROVIDER_JITSI_MEET = 1
+
+/**
+ * Zoom using User OAuth integration
+ */
+export const VIDEO_CHAT_PROVIDER_ZOOM_OAUTH = 3
+
+/**
+ * BigBlueButton
+ */
+export const VIDEO_CHAT_PROVIDER_BIG_BLUE_BUTTON = 4
+
+/**
+ * Zoom using Server to Server OAuth integration
+ * @since Zulip 10.0 (feature level 353)
+ */
+export const VIDEO_CHAT_PROVIDER_ZOOM_SERVER_TO_SERVER_OAUTH = 5
+
+/**
+ * Constructor Groups
+ * @since Zulip 12.0 (feature level 460)
+ */
+export const VIDEO_CHAT_PROVIDER_CONSTRUCTOR_GROUPS = 6
+
+/**
+ * Nextcloud Talk
+ * @since Zulip 12.0 (feature level 465)
+ */
+export const VIDEO_CHAT_PROVIDER_NEXTCLOUD_TALK = 7
+
+/**
+ * Video chat provider values
+ */
+export type VideoChatProviderValues = 0 | 1 | 3 | 4 | 5 | 6 | 7
+
+/**
+ * Sends weekly digest email on Monday
+ */
+export const REALM_DIGEST_WEEKDAY_MONDAY = 0
+
+/**
+ * Sends weekly digest email on Tuesday
+ */
+export const REALM_DIGEST_WEEKDAY_TUESDAY = 1
+
+/**
+ * Sends weekly digest email on Wednesday
+ */
+export const REALM_DIGEST_WEEKDAY_WEDNESDAY = 2
+
+/**
+ * Sends weekly digest email on Thursday
+ */
+export const REALM_DIGEST_WEEKDAY_THURSDAY = 3
+
+/**
+ * Sends weekly digest email on Friday
+ */
+export const REALM_DIGEST_WEEKDAY_FRIDAY = 4
+
+/**
+ * Sends weekly digest email on Saturday
+ */
+export const REALM_DIGEST_WEEEKDAY_SATURDAY = 5
+
+/**
+ * Sends weekly digest email on Sunday
+ */
+export const REALM_DIGEST_WEEKDAY_SUNDAY = 6
+
+/**
+ * Weekly digest email weekday values
+ */
+export type RealmDigestWeekdayValues = 0 | 1 | 2 | 3 | 4 | 5 | 6
+
+/**
+ * Unspecified realm organization type
+ * @since Zulip 6.0 (feature level 128)
+ */
+export const REALM_TYPE_UNSPECIFIED = 0
+
+/**
+ * Business realm organization type
+ * @since Zulip 6.0 (feature level 128)
+ */
+export const REALM_TYPE_BUSINESS = 10
+
+/**
+ * Open-source project realm organization type
+ * @since Zulip 6.0 (feature level 128)
+ */
+export const REALM_TYPE_OPEN_SOURCE = 20
+
+/**
+ * Non-profit education realm organization type
+ * @since Zulip 6.0 (feature level 128)
+ */
+export const REALM_TYPE_NONPROFIT_EDUCATION = 30
+
+/**
+ * Profit education realm organization type
+ * @since Zulip 6.0 (feature level 128)
+ */
+export const REALM_TYPE_PROFIT_EDUCATION = 35
+
+/**
+ * Research realm organization type
+ * @since Zulip 6.0 (feature level 128)
+ */
+export const REALM_TYPE_RESEARCH = 40
+
+/**
+ * Event or conference realm organization type
+ * @since Zulip 6.0 (feature level 128)
+ */
+export const REALM_TYPE_EVENT_CONF = 50
+
+/**
+ * Registered non-profit realm organization type
+ * @since Zulip 6.0 (feature level 128)
+ */
+export const REALM_TYPE_REGISTERED_NONPROFIT = 60
+
+/**
+ * Government realm organization type
+ * @since Zulip 6.0 (feature level 128)
+ */
+export const REALM_TYPE_GOVERNMENT = 70
+
+/**
+ * Political group organization type
+ * @since Zulip 6.0 (feature level 128)
+ */
+export const REALM_TYPE_POLITICAL_GROUP = 80
+
+/**
+ * Community organization type
+ * @since Zulip 6.0 (feature level 128)
+ */
+export const REALM_TYPE_COMMUNITY = 90
+
+/**
+ * Personal organization type
+ * @since Zulip 6.0 (feature level 128)
+ */
+export const REALM_TYPE_PERSONAL = 100
+
+/**
+ * Other organization type
+ * @since Zulip 6.0 (feature level 128)
+ */
+export const REALM_TYPE_OTHER = 1000
+
+/**
+ * Realm organization type values
+ * @since Zulip 6.0 (feature level 128)
+ */
+export type RealmTypeValues =
+  | 0
+  | 10
+  | 20
+  | 30
+  | 35
+  | 40
+  | 50
+  | 60
+  | 70
+  | 80
+  | 90
+  | 100
+  | 1000
+
+/**
+ * Self-hosted organization
+ */
+export const REALM_PLAN_SELF_HOSTED = 1
+
+/**
+ * Zulip Cloud free plan
+ */
+export const REALM_PLAN_LIMITED = 2
+
+/**
+ * Zulip Cloud Standard plan
+ */
+export const REALM_PLAN_STANDARD = 3
+
+/**
+ * Zulip Cloud Standard plan, sponsored for free
+ */
+export const REALM_PLAN_STANDARD_FREE = 4
+
+/**
+ * Realm plan type values
+ */
+export type RealmPlanTypeValues = 1 | 2 | 3 | 4

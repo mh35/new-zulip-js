@@ -1713,55 +1713,279 @@ export type RegisterEventQueueResponse = GeneralSuccessResponse & {
    * @since Zulip 4.0 (feature level 49)
    */
   realm_playgrounds?: EventPlaygroundItem[]
+  /**
+   * User groups. If you don't have capabilities include_deactivated_groups,
+   * deactivated groups does not appear.
+   * Exists only if fetch_event_types includes realm_user_groups
+   */
   realm_user_groups?: GetUserGroupsResponseGroup[]
+  /**
+   * Bots the current user can administer.
+   * Exists only if fetch_event_types includes realm_bot
+   */
   realm_bots?: EventRealmBotItem[]
+  /**
+   * Embedded bots.
+   * Exists only if fetch_event_types includes realm_embedded_bots
+   */
   realm_embedded_bots?: EventRealmEmbeddedBotItem[]
+  /**
+   * Incoming webhook integrations.
+   * Exists only if fetch_event_types includes realm_incoming_webhook_bots
+   */
   realm_incoming_webhook_bots?: EventRealmIncomingWebhookBotItem[]
+  /**
+   * All direct message and group direct message conversations that
+   * the user has received (or sent) messages in, organized by conversation.
+   * "Recent" means "the 1000 most recent direct messages the user received".
+   * Exists only if fetch_event_types includes recent_private_conversations
+   */
   recent_private_conversations?: EventRecentPrivateConversationItem[]
+  /**
+   * Current user's navigation views.
+   * Exists only if fetch_event_types includes navigation_views
+   * @since Zulip 11.0 (feature level 390)
+   */
   navigation_views?: GetNavigationViewsResponseItem[]
+  /**
+   * All of the current user's saved snippets.
+   * Exists only if fetch_event_types includes saved_snippets
+   * @since Zulip 10.0 (feature level 297)
+   */
   saved_snippets?: GetSnippetsResponseItem[]
+  /**
+   * Channels the user subscribes to.
+   * Exists only if fetch_event_types includes subscription
+   */
   subscriptions?: GetSubscriptionsResponseItem[]
+  /**
+   * Channels the user does not subscribe to, but previously subscribed to.
+   * Exists only if fetch_event_types includes subscription
+   */
   unsubscribed?: GetSubscriptionsResponseItem[]
+  /**
+   * Channels which the user can see, but has never been subscribed to.
+   * Exists only if fetch_event_types includes subscription
+   */
   never_subscribed?: EventNeverSubscribedStreamItem[]
+  /**
+   * Channel folders. Spectators can see only folders with one or more public web channels.
+   * Exists only if fetch_event_types includes channel_folders
+   * @since Zulip 11.0 (feature level 389)
+   */
   channel_folders?: GetChannelFoldersResponseItem[]
+  /**
+   * A set of data structures describing the conversations containing the 50000
+   * most recent unread messages the user has received.
+   * Exists only if fetch_event_types includes both message and update_message_flags
+   */
   unread_msgs?: EventUnreadMsgs[]
+  /**
+   * IDs of all messages which have been starred by the user.
+   * Exists only if fetch_event_types includes starred_messages
+   */
   starred_messages?: number[]
+  /**
+   * Channels that are visible to the user.
+   * Exists only if fetch_event_types includes stream
+   */
   streams?: GetChannelsChannel[]
+  /**
+   * IDs of all the default channels.
+   * Exists only if fetch_event_types includes default_streams
+   */
   realm_default_streams?: number[]
+  /**
+   * Default channel groups.
+   * Exists only if fetch_event_types includes default_stream_groups
+   */
   realm_default_stream_groups?: EventDefaultStreamGroupItem[]
+  /**
+   * Stop words used by the Zulip server's full-text search implementation
+   * Exists only if fetch_event_types includes stop_words
+   */
   stop_words?: string[]
+  /**
+   * The status of all users.
+   * Exists only if fetch_event_types includes user_status
+   */
   user_status?: Record<string, GetUserStatusResponseStatus>
+  /**
+   * The user's personal settings.
+   * Exists only if fetch_event_types includes user_settings
+   * @since Zulip 5.0 (feature level 89)
+   */
   user_settings?: EventUserSettings
+  /**
+   * Status of topics of the user.
+   * Exists only if fetch_event_types includes user_topic
+   * @since Zulip 6.0 (feature level 134)
+   */
   user_topics?: EventUserTopic[]
+  /**
+   * Whether the user has a Zoom token and has thus completed OAuth flow
+   * for the Zoom integration.
+   * Exists only if fetch_event_types includes video_calls
+   */
   has_zoom_token?: boolean
+  /**
+   * GIPHY's client-side SDKs needs this API key to use the GIPHY API.
+   * Exists only if fetch_event_types includes giphy
+   * @since Zulip 4.0 (feature level 47)
+   */
   giphy_api_key?: string
+  /**
+   * Tenor API key.
+   * Exists only if fetch_event_types includes tenor
+   * @since Zulip 12.0 (feature level 442)
+   */
   tenor_api_key?: string
+  /**
+   * The user's logged-in devices registered using RegisterDevice API.
+   * Exists only if fetch_event_types includes device
+   * @since Zulip 12.0 (feature level 468)
+   */
   devices?: Record<string, EventDeviceItem>
+  /**
+   * Whether the user is configured to receive typing notifications from other users.
+   * @since Zulip 9.0 (feature level 253)
+   */
   receives_typing_notifications: boolean
+  /**
+   * What typesof message edit history are accessible to users via message edit history.
+   * Exists only if fetch_event_types includes realm
+   *
+   * - all - All edit history
+   * - moves - Only moves
+   * - none - No edit history
+   * @since Zulip 10.0 (feature level 358)
+   */
   realm_message_edit_history_visibility_policy?: 'all' | 'moves' | 'none'
+  /**
+   * Whether this organization is configured to allow users to access message edit history.
+   * Exists only if fetch_event_types includes realm
+   * @deprecated From Zulip 10.0 (feature level 358), use
+   * realm_message_edit_history_visibility_policy instead
+   */
   realm_allow_edit_history?: boolean
+  /**
+   * Users who have permission to add custom emoji in the organization.
+   * Exists only if fetch_event_types includes realm
+   * @since Zulip 10.0 (feature level 307)
+   */
   realm_can_add_custom_emoji_group?: number | ChannelPermissionGroupObj
+  /**
+   * Users who have permission to add subscribers to channels in the organization.
+   * Exists only if fetch_event_types includes realm
+   * @since Zulip 10.0 (feature level 341)
+   */
   realm_can_add_subscribers_group?: number | ChannelPermissionGroupObj
+  /**
+   * Users who have permission to delete any message in the organization.
+   * Exists only if fetch_event_types includes realm
+   * @since Zulip 10.0 (feature level 281)
+   */
   realm_can_delete_any_message_group?: number | ChannelPermissionGroupObj
+  /**
+   * Users who have permission to delete messages that they have sent in the organization.
+   * Exists only if fetch_event_types includes realm
+   * @since Zulip 10.0 (feature level 291)
+   */
   realm_can_delete_own_message_group?: number | ChannelPermissionGroupObj
+  /**
+   * Users who have permission to change per-channel can_delete_any_message_group
+   * and can_delete_own_message_group permission settings.
+   * Exists only if fetch_event_types includes realm
+   * @since Zulip 11.0 (feature level 407)
+   */
   realm_can_set_delete_message_policy_group?: number | ChannelPermissionGroupObj
+  /**
+   * Users who have permission to change per-channel topics_policy setting.
+   * Exists only if fetch_event_types includes realm
+   * @since Zulip 11.0 (feature level 392)
+   */
   realm_can_set_topics_policy_group?: number | ChannelPermissionGroupObj
+  /**
+   * Users who have permission to send email invitations for inviting other users.
+   * Exists only if fetch_event_types includes realm
+   * @since Zulip 10.0 (feature level 321)
+   */
   realm_can_invite_users_group?: number | ChannelPermissionGroupObj
+  /**
+   * Users who have permission to use wildcard mentions in large channels.
+   * Exists only if fetch_event_types includes realm
+   * @since Zulip 10.0 (feature level 352)
+   */
   realm_can_mention_many_users_group?: number | ChannelPermissionGroupObj
+  /**
+   * Users who have permission to move messages from one channel to another.
+   * Exists only if fetch_event_types includes realm
+   * @since Zulip 10.0 (feature level 310)
+   */
   realm_can_move_messages_between_channels_group?:
     | number
     | ChannelPermissionGroupObj
+  /**
+   * Users who have permission to move messages from one topic to another within a channel.
+   * Exists only if fetch_event_types includes realm
+   * @since Zulip 10.0 (feature level 316)
+   */
   realm_can_move_messages_between_topics_group?:
     | number
     | ChannelPermissionGroupObj
+  /**
+   * Users who have permission to create user groups.
+   * Exists only if fetch_event_types includes realm
+   * @since Zulip 10.0 (feature level 299)
+   */
   realm_can_create_groups?: number | ChannelPermissionGroupObj
+  /**
+   * Users who have permission to create all types of bot users.
+   * Exists only if fetch_event_types includes realm
+   * @since Zulip 10.0 (feature level 344)
+   */
   realm_can_create_bots_group?: number | ChannelPermissionGroupObj
+  /**
+   * Users who have permission to create bot users that can only send messages.
+   * Exists only if fetch_event_types includes realm
+   * @since Zulip 10.0 (feature level 344)
+   */
   realm_can_create_write_only_bots_group?: number | ChannelPermissionGroupObj
+  /**
+   * Users who have permission to administer all existing groups.
+   * Exists only if fetch_event_types includes realm
+   * @since Zulip 10.0 (feature level 299)
+   */
   realm_can_manage_all_groups?: number | ChannelPermissionGroupObj
+  /**
+   * Users who have permission to manage plans and billing.
+   * Exists only if fetch_event_types includes realm
+   * @since Zulip 10.0 (feature level 363)
+   */
   realm_can_manage_billing_group?: number | ChannelPermissionGroupObj
+  /**
+   * Users who have permission to create public channels.
+   * Exists only if fetch_event_types includes realm
+   * @since Zulip 9.0 (feature level 264)
+   */
   realm_can_create_public_channel_group?: number | ChannelPermissionGroupObj
+  /**
+   * Users who have permission to create private channels.
+   * Exists only if fetch_event_types includes realm
+   * @since Zulip 9.0 (feature level 266)
+   */
   realm_can_create_private_channel_group?: number | ChannelPermissionGroupObj
+  /**
+   * Users who have permission to create web-public channels.
+   * Exists only if fetch_event_types includes realm
+   * @since Zulip 10.0 (feature level 280)
+   */
   realm_can_create_web_public_channel_group?: number | ChannelPermissionGroupObj
+  /**
+   * Users who have permission to resolve topics.
+   * Exists only if fetch_event_types includes realm
+   * @since Zulip 10.0 (feature level 367)
+   */
   realm_can_resolve_topics_group?: number | ChannelPermissionGroupObj
   /**
    * Users who have permission to create public channels in the organization.
@@ -1793,135 +2017,750 @@ export type RegisterEventQueueResponse = GeneralSuccessResponse & {
    * realm_can_mention_many_users_group instead
    */
   realm_wildcard_mention_policy?: WildcardMentionPolicyValues
+  /**
+   * The organization language for automated messages and invitation emails.
+   * Exists only if fetch_event_type includes realm
+   */
   realm_default_language?: string
+  /**
+   * This organization's configured custom message for Welcome Bot in Zulip Markdown format.
+   * Exists only if fetch_event_type includes realm
+   * @since Zulip 11.0 (feature level 416)
+   */
   realm_welcome_message_custom_text?: string
+  /**
+   * The description of the organization.
+   * Exists only if fetch_event_type includes realm
+   */
   realm_description?: boolean
+  /**
+   * Whether the organization has enabled weekly digest emails.
+   * Exists only if fetch_event_type includes realm
+   */
   realm_digest_emails_enabled?: boolean
+  /**
+   * Whether the organization disallows disposable email addresses.
+   * Exists only if fetch_event_type includes realm
+   */
   realm_disallow_disposable_email_addresses?: boolean
+  /**
+   * Whether the organization disallows users to change their own email address.
+   * Exists only if fetch_event_type includes realm
+   */
   realm_email_changes_disabled?: boolean
+  /**
+   * Whether an invitation is required to join this organization.
+   * Exists only if fetch_event_type includes realm
+   */
   realm_invite_required?: boolean
+  /**
+   * Users who are allowed to create reusable invitation links.
+   * Exists only if fetch_event_types includes realm
+   * @since Zulip 8.0 (feature level 209)
+   */
   realm_create_multiuse_invite_group?: number | ChannelPermissionGroupObj
+  /**
+   * The organization's policy for the size of image and video thumbnails in messages.
+   * Exists only if fetch_event_types includes realm
+   *
+   * - 100 - 100% height (the default)
+   * - 150 - 150% height
+   * - 200 - 200% height
+   * @since Zulip 12.0 (feature level 469)
+   */
   realm_media_preview_size?: MediaPreviewSizeSettingValues
+  /**
+   * Whether this organization has been configured to enable previews of linked images.
+   * Exists only if fetch_event_types includes realm
+   */
   realm_inline_image_preview?: boolean
+  /**
+   * Whether this organization has been configured to enable previews of linked websites.
+   * Exists only if fetch_event_types includes realm
+   */
   realm_inline_url_embed_preview?: boolean
+  /**
+   * Default policy for sending channel messages to the empty "general chat" topic.
+   * Exists only if fetch_event_types includes realm
+   *
+   * - allow_empty_topic - Channel messages can be sent to the empty topic
+   * - disable_empty_topic - Channel messages cannot be sent to the empty topic
+   * @since Zulip 11.0 (feature level 392)
+   */
   realm_topics_policy?: 'allow_empty_topic' | 'disable_empty_topic'
   /**
    * Whether topics are required or not
+   * Exists only if fetch_event_types includes realm
    * @deprecated From Zulip 11.0 (feature level 392), use realm_topics_policy instead
    */
   realm_mandatory_topics?: boolean
+  /**
+   * The default message retention policy for this organization.
+   * -1 means the messages will be retained forever for this realm, by default.
+   * Exists only if fetch_event_types includes realm
+   */
   realm_message_retention_days?: number
+  /**
+   * The name of the organization.
+   * Exists only if fetch_event_types includes realm
+   */
   realm_name?: string
+  /**
+   * Whether this realm is configured to disallow sending mobile push notifications
+   * with message content through the legacy mobile push notifications APIs.
+   * Exists only if fetch_event_types includes realm
+   * @since Zulip 11.0 (feature level 409)
+   */
   realm_require_e2ee_push_notifications?: boolean
+  /**
+   * Whether the organization is configured to require users to have unique full names.
+   * Exists only if fetch_event_types includes realm
+   * @since Zulip 9.0 (feature level 246)
+   */
   realm_require_unique_names?: boolean
+  /**
+   * Whether the realm disallows users to change their name via the Zulip UI.
+   * Exists only if fetch_event_types includes realm
+   */
   realm_name_changes_disabled?: boolean
+  /**
+   * Whether the realm disallows users to change their avatar via the Zulip UI.
+   * Exists only if fetch_event_types includes realm
+   */
   realm_avatar_changes_disabled?: boolean
+  /**
+   * Whether new users joining this organization are required to have an email
+   * address in one of the realm_domains.
+   * Exists only if fetch_event_types includes realm
+   */
   realm_emails_restricted_to_domains?: boolean
+  /**
+   * Whether channel event messages are sent.
+   * Exists only if fetch_event_types includes realm
+   * @since Zulip 12.0 (feature level 434)
+   */
   realm_send_channel_events_messages?: boolean
+  /**
+   * Whether or not this organization is configured to send the standard Zulip welcome emails.
+   * Exists only if fetch_event_types includes realm
+   */
   realm_send_welcome_emails?: boolean
+  /**
+   * Whether notification emails in this organization are allowed to contain
+   * Zulip the message content, or simply indicate that a new message was sent.
+   * Exists only if fetch_event_types includes realm
+   */
   realm_message_content_allowed_in_email_notifications?: boolean
+  /**
+   * Whether web-public channels and related anonymous access APIs/features are enabled.
+   * Exists only if fetch_event_types includes realm
+   * @since Zulip 5.0 (feature level 109)
+   */
   realm_enable_spectator_access?: boolean
+  /**
+   * Whether the organization has given permission to be advertised in the Zulip
+   * communities directory.
+   * Exists only if fetch_event_types includes realm
+   * @since Zulip 6.0 (feature level 129)
+   */
   realm_want_advertise_in_communities_directory?: boolean
+  /**
+   * The configured video call provider.
+   * Exists only if fetch_event_types includes realm
+   *
+   * - 0 - None
+   * - 1 - Jitsi Meet
+   * - 3 - Zoom (User OAuth integration)
+   * - 4 - BigBlueButton
+   * - 5 - Zoom (Server to Server OAuth integration)
+   * - 6 - Constructor Groups
+   * - 7 - Nextcloud Talk
+   */
   realm_video_chat_provider?: VideoChatProviderValues
+  /**
+   * The URL of the custom Jitsi Meet server. The default value is null.
+   * null means that the organization is using the should use the server-level configuration.
+   * Exists only if fetch_event_types includes realm
+   * @since Zulip 8.0 (feature level 212)
+   */
   realm_jitsi_server_url?: string | null
+  /**
+   * Maximum rating of the GIFs that will be retrieved by the GIPHY and Tenor integrations.
+   * Exists only if fetch_event_types includes realm
+   * @since Zulip 4.0 (feature level 55)
+   */
   realm_gif_rating_policy?: number
+  /**
+   * Members whose accounts have been created at least this many days
+   * ago will be treated as full members.
+   * Exists only if fetch_event_types includes realm
+   */
   realm_waiting_period_threshold?: number
+  /**
+   * The day of the week when the organization will send its weekly digest email
+   * to inactive users. Monday is 0 and Sunday is 6.
+   * Exists only if fetch_event_types includes realm
+   */
   realm_digest_weekday?: RealmDigestWeekdayValues
+  /**
+   * Users who have permission to start a new direct message conversation involving
+   * other non-bot users.
+   * Exists only if fetch_event_types includes realm
+   * @since Zulip 9.0 (feature level 270)
+   */
   realm_direct_message_initiator_group?: number | ChannelPermissionGroupObj
+  /**
+   * Users who have permission to fully use direct messages.
+   * Exists only if fetch_event_types includes realm
+   * @since Zulip 9.0 (feature level 270)
+   */
   realm_direct_message_permission_group?: number | ChannelPermissionGroupObj
+  /**
+   * The default pygments language code to be used for code blocks. Empty string
+   * means no default language.
+   * Exists only if fetch_event_types includes realm
+   */
   realm_default_code_block_language?: string
+  /**
+   * Messages sent more than this many seconds ago cannot be deleted.
+   * null means messages can be deleted regardless of how long ago they were sent.
+   * Exists only if fetch_event_types includes realm
+   */
   realm_message_content_delete_limit_seconds?: number | null
+  /**
+   * Authentication methods.
+   * Exists only if fetch_event_types includes realm
+   */
   realm_authentication_methods?: Record<string, EventRealmAuthMethodItem>
+  /**
+   * Whether this organization's message edit policy allows editing the content of messages.
+   * Exists only if fetch_event_types includes realm
+   */
   realm_allow_message_editing?: boolean
+  /**
+   * Messages sent more than this many seconds ago cannot be edited.
+   * null means messages can be edited regardless of how long ago they were sent.
+   * Exists only if fetch_event_types includes realm
+   */
   realm_message_content_edit_limit_seconds?: number | null
+  /**
+   * Messages sent more than this many seconds ago cannot be moved within a
+   * channel to another topic by users who have permission to do so.
+   * This does not affect moderators and administrators.
+   * null means message topics can be edited regardless of how long ago they were sent.
+   * Exists only if fetch_event_types includes realm
+   * @since Zulip 7.0 (feature level 162)
+   */
   realm_move_messages_within_stream_limit_seconds?: number | null
+  /**
+   * Messages sent more than this many seconds ago cannot be moved between channels
+   * by users who have permission to do so.
+   * This does not affect moderators and administrators.
+   * null means message can be moved regardless of how long ago they were sent.
+   * Exists only if fetch_event_types includes realm
+   * @since Zulip 7.0 (feature level 162)
+   */
   realm_move_messages_between_streams_limit_seconds?: number | null
+  /**
+   * Whether read receipts is enabled or not.
+   * Exists only if fetch_event_types includes realm
+   * @since Zulip 6.0 (feature level 137)
+   */
   realm_enable_read_receipts?: boolean
+  /**
+   * The URL of the organization's profile icon.
+   * Exists only if fetch_event_types includes realm
+   */
   realm_icon_url?: string
+  /**
+   * Whether the organization's profile icon was uploaded by
+   * a user or is the default.
+   * Exists only if fetch_event_types includes realm
+   *
+   * - G - Gravatar (the default)
+   * - U - uploaded by an organization administrator
+   */
   realm_icon_source?: 'G' | 'U'
+  /**
+   * Users who will be considered as workplace users for billing.
+   * Exists only if fetch_event_types includes realm
+   * @since Zulip 12.0 (feature level 477)
+   */
   realm_workplace_users_group?: number | ChannelPermissionGroupObj
+  /**
+   * The maximum file size allowed for the organization's icon.
+   * Exists only if fetch_event_types includes realm
+   * @since Zulip 5.0 (feature level 72)
+   */
   max_icon_file_size_mib?: number
+  /**
+   * The URL of the organization's wide logo.
+   * Exists only if fetch_event_types includes realm
+   */
   realm_logo_url?: string
+  /**
+   * Whether the organization's profile wide logo was uploaded by a user or is the default.
+   * Exists only if fetch_event_types includes realm
+   *
+   * - D - default Zulip logo
+   * - U - uploaded by an organization administrator
+   */
   realm_logo_source?: 'D' | 'U'
+  /**
+   * The URL of the organization's dark theme wide-format logo.
+   * Exists only if fetch_event_types includes realm
+   */
   realm_night_logo_url?: string
+  /**
+   * Whether the organization's profile dark theme wide logo was uploaded
+   * by a user or is the default.
+   * Exists only if fetch_event_types includes realm
+   *
+   * - D - default Zulip logo
+   * - U - uploaded by an organization administrator
+   */
   realm_night_logo_source?: 'D' | 'U'
+  /**
+   * The maximum file size allowed for the uploaded organization logos.
+   * Exists only if fetch_event_types includes realm
+   * @since Zulip 5.0 (feature level 72)
+   */
   max_logo_file_size_mib?: number
+  /**
+   * The fake email domain that will be used for new bots.
+   * Exists only if fetch_event_types includes realm
+   */
   realm_bot_domain?: string
+  /**
+   * The URL for the organization.
+   * Exists only if fetch_event_types includes realm
+   * @deprecated From Zulip 9.0 (feature level 257), use realm_url instead
+   */
   realm_uri?: string
+  /**
+   * The URL for the organization.
+   * Exists only if fetch_event_types includes realm
+   * @since Zulip 9.0 (feature level 257)
+   */
   realm_url?: string
+  /**
+   * A unique identifier for the organization.
+   * Exists only if fetch_event_types includes realm
+   * @since Zulip 12.0 (feature level 466)
+   */
   realm_uuid?: string
+  /**
+   * Supported video call providers.
+   * Exists only if fetch_event_types includes realm
+   */
   realm_available_video_chat_providers?: Record<
     string,
     EventVideoChatProviderItem
   >
+  /**
+   * Whether online presence of other users is hidden.
+   * Exists only if fetch_event_types includes realm
+   */
   realm_presence_disabled?: boolean
+  /**
+   * Whether this Zulip server is configured to allow organizations to enable digest emails.
+   * Exists only if fetch_event_types includes realm
+   */
   settings_send_digest_emails?: boolean
+  /**
+   * Whether the organization has enabled Zulip's default email and password authentication feature.
+   * Exists only if fetch_event_types includes realm
+   */
   realm_email_auth_enabled?: boolean
+  /**
+   * Whether the organization allows any sort of password-based authentication.
+   * Exists only if fetch_event_types includes realm
+   */
   realm_password_auth_enabled?: boolean
+  /**
+   * Whether push notifications are enabled.
+   * Exists only if fetch_event_types includes realm
+   */
   realm_push_notifications_enabled?: boolean
+  /**
+   * If the server expects the realm's push notifications access to end at a definite
+   * time in the future, UNIX timestamp at which this is expected to happen.
+   * Exists only if fetch_event_types includes realm
+   * @since Zulip 8.0 (feature level 231)
+   */
   realm_push_notifications_enabled_end_timestamp?: number | null
+  /**
+   * The total quota for uploaded files in this organization. If null, no limit.
+   * Exists only if fetch_event_types includes realm
+   * @since Zulip 5.0 (feature level 72)
+   */
   realm_upload_quota_mib?: number | null
+  /**
+   * The organization type.
+   * Exists only if fetch_event_types includes realm
+   *
+   * - 0 - Unspecified
+   * - 10 - Business
+   * - 20 - Open-source project
+   * - 30 - Non-profit education
+   * - 35 - Profit education
+   * - 40 - Research
+   * - 50 - Event or conference
+   * - 60 - Registered non-profit
+   * - 70 - Government
+   * - 80 - Political group
+   * - 90 - Community
+   * - 100 - Personal
+   * - 1000 - Other
+   * @since Zulip 6.0 (feature level 128)
+   */
   realm_org_type?: RealmTypeValues
+  /**
+   * Whether the organization's security model allows owners to access all private content.
+   * Exists only if fetch_event_types includes realm
+   * @since Zulip 12.0 (feature level 438)
+   */
   realm_owner_full_content_access?: boolean
+  /**
+   * The plan type of the organization.
+   * Exists only if fetch_event_types includes realm
+   *
+   * - 1 - Self-hosted organization
+   * - 2 - Zulip Cloud free plan
+   * - 3 - Zulip Cloud Standard plan
+   * - 4 - Zulip Cloud Standard plan, sponsored for free
+   */
   realm_plan_type?: RealmPlanTypeValues
+  /**
+   * Whether clients should show a warning when a user is composing a DM to a guest user.
+   * Exists only if fetch_event_types includes realm
+   * @since Zulip 10.0 (feature level 348)
+   */
   realm_enable_guest_user_dm_warning?: boolean
+  /**
+   * Whether clients should display "(guest)" after the names of guest users.
+   * Exists only if fetch_event_types includes realm
+   * @since Zulip 8.0 (feature level 216)
+   */
   realm_enable_guest_user_indicator?: boolean
+  /**
+   * Users who are allowed to access all users.
+   * Exists only if fetch_event_types includes realm
+   * @since Zulip 8.0 (feature level 225)
+   */
   realm_can_access_all_users_group?: number | ChannelPermissionGroupObj
+  /**
+   * Users who are allowed to use AI summarization.
+   * Exists only if fetch_event_types includes realm
+   * @since Zulip 10.0 (feature level 350)
+   */
   realm_can_summarize_topics_group?: number | ChannelPermissionGroupObj
+  /**
+   * Whether the organization is not using a limited plan.
+   * Exists only if fetch_event_types includes realm
+   */
   zulip_plan_is_not_limited?: boolean
+  /**
+   * Text to use when displaying UI for wide organization logos,
+   * a feature that is currently not available on the Zulip Cloud Free plan.
+   * Exists only if fetch_event_types includes realm
+   */
   upgrade_text_for_wide_organization_logo?: string
+  /**
+   * Default external account types.
+   * Exists only if fetch_event_types includes realm
+   * @since Zulip 2.1.0
+   */
   realm_default_external_accounts?: Record<
     string,
     EventDefaultExternalAccountItem
   >
+  /**
+   * The avatar data source type for new users.
+   * Exists only if fetch_event_types includes realm
+   *
+   * - G - Hosted by Gravatar
+   * - J - Generated using Jdenticon
+   * @since Zulip 12.0 (feature level 456)
+   */
   realm_default_avatar_source?: 'G' | 'J'
+  /**
+   * The base URL to be used to create Jitsi video calls.
+   * Exists only if fetch_event_types includes realm
+   * @deprecated From Zulip 8.0 (feature level 212), use realm_jitsi_server_url and
+   * server_jitsi_server_url instead
+   */
   jitsi_server_url?: string
+  /**
+   * Whether this Zulip server is a development environment.
+   * Exists only if fetch_event_types includes realm
+   */
   development_environment?: boolean
+  /**
+   * A timestamp indicating when the process hosting this event queue was started.
+   * Exists only if fetch_event_types includes realm
+   */
   server_generation?: number
+  /**
+   * Minimum required length for passwords.
+   * Exists only if fetch_event_types includes realm
+   */
   password_min_length?: number
+  /**
+   * Maximum required length for passwords.
+   * Exists only if fetch_event_types includes realm
+   * @since Zulip 10.0 (feature level 338)
+   */
   password_max_length?: number
+  /**
+   * Minimum zxcvbn minimum guesses.
+   * Exists only if fetch_event_types includes realm
+   */
   password_min_guesses?: number
+  /**
+   * Valid rating configurations.
+   * Exists only if fetch_event_types includes realm
+   * @since Zulip 12.0 (feature level 453)
+   */
   gif_rating_policy_options?: Record<string, EventGifRatingPolicyItem>
+  /**
+   * The maximum file size that can be uploaded.
+   * Exists only if fetch_event_types includes realm
+   */
   max_file_upload_size_mib?: number
+  /**
+   * The maximum avatar size that can be uploaded.
+   * Exists only if fetch_event_types includes realm
+   */
   max_avatar_file_size_mib?: number
+  /**
+   * Whether the server is configured with support for inline image previews.
+   * Exists only if fetch_event_types includes realm
+   */
   server_inline_image_preview?: boolean
+  /**
+   * Whether the server is configured with support for inline URL previews.
+   * Exists only if fetch_event_types includes realm
+   */
   server_inline_url_embed_preview?: boolean
+  /**
+   * The image formats that uploaded images will be thumbnailed into.
+   * Exists only if fetch_event_types includes realm
+   * @since Zulip 9.0 (feature level 273)
+   */
   server_thumbnail_formats?: EventServerThumbnailFormatItem[]
+  /**
+   * Whether the server disallows avatar changes.
+   * Exists only if fetch_event_types includes realm
+   */
   server_avatar_changes_disabled?: boolean
+  /**
+   * Whether the server disallows name changes.
+   * Exists only if fetch_event_types includes realm
+   */
   server_name_changes_disabled?: boolean
+  /**
+   * Whether the server is running an old version based on the Zulip server release lifecycle.
+   * Exists only if fetch_event_types includes realm
+   */
   server_needs_upgrade?: boolean
+  /**
+   * Whether web-public channel is enabled or not.
+   * Exists only if fetch_event_types includes realm
+   * @since Zulip 5.0 (feature level 110)
+   */
   server_web_public_streams_enabled?: boolean
+  /**
+   * The URL to a JSON file that describes which emoji names map to which emoji codes,
+   * for all Unicode emoji this Zulip server accepts.
+   * Exists only if fetch_event_types includes realm
+   * @since Zulip 6.0 (feature level 140)
+   */
   server_emoji_data_url?: string
+  /**
+   * The URL of the Jitsi server that the Zulip server is configured to use by default.
+   * Exists only if fetch_event_types includes realm
+   * @since Zulip 8.0 (feature level 212)
+   */
   server_jitsi_server_url?: string | null
+  /**
+   * Whether topic summarization is enabled in the server or not.
+   * Exists only if fetch_event_types includes realm
+   * @since Zulip 10.0 (feature level 350)
+   */
   server_can_summarize_topics?: boolean
+  /**
+   * Recommended client-side HTTP request timeout for GET /events calls.
+   * Exists only if fetch_event_types includes realm
+   * @since Zulip 5.0 (feature level 74)
+   */
   event_queue_longpoll_timeout_seconds?: number
+  /**
+   * Billing information of the organization.
+   * Exists only if fetch_event_types includes realm_billing
+   * @since Zulip 10.0 (feature level 363)
+   */
   realm_billing?: EventRealmBillingInfo
+  /**
+   * The ID of the private channel to which messages flagged by users for moderation are sent.
+   * -1 means moderation requests are disabled.
+   * Exists only if fetch_event_types includes realm
+   * @since Zulip 10.0 (feature level 331)
+   */
   realm_moderation_request_channel_id?: number
+  /**
+   * The ID of the channel to which automated messages announcing the creation
+   * of new channels are sent.
+   * -1 means such automated messages are disabled.
+   * Exists only if fetch_event_types includes realm
+   * @since Zulip 9.0 (feature level 241)
+   */
   realm_new_stream_announcements_stream_id?: number
+  /**
+   * The ID of the channel to which automated messages announcing that new users
+   * have joined the organization are sent.
+   * -1 means such automated messages are disabled.
+   * Exists only if fetch_event_types includes realm
+   * @since Zulip 9.0 (feature level 241)
+   */
   realm_signup_announcements_stream_id?: number
+  /**
+   * The ID of the channel to which automated messages announcing new features
+   * or other end-user updates about the Zulip software are sent.
+   * -1 means such automated messages are disabled.
+   * Exists only if fetch_event_types includes realm
+   * @since Zulip 9.0 (feature level 242)
+   */
   realm_zulip_update_announcements_stream_id?: number
+  /**
+   * How the client should display the empty string topic.
+   * Exists only if fetch_event_types includes realm
+   * @since Zulip 10.0 (feature level 334)
+   */
   realm_empty_topic_display_name?: string
+  /**
+   * The default values of settings for new users.
+   * Exists only if fetch_event_types includes realm_user_settings_defaults
+   * @since Zulip 5.0 (feature level 95)
+   */
   realm_user_settings_defaults?: EventUserSettings
+  /**
+   * Users whose account has not been deactivated.
+   * Exists only if fetch_event_types includes realm_user
+   */
   realm_users?: GetUserByIdResponseUser[]
+  /**
+   * Users whose account has been deactivated.
+   * Exists only if fetch_event_types includes realm_user
+   */
   realm_non_active_users?: GetUserByIdResponseUser[]
+  /**
+   * The avatar data source type for the current user.
+   * Exists only if fetch_event_types includes realm_user
+   *
+   * - G - Hosted by Gravatar
+   * - J - Generated using Jdenticon
+   * - U - Uploaded by user
+   */
   avatar_source?: 'G' | 'J' | 'U'
+  /**
+   * The avatar URL for the current user at 500x500 resolution.
+   * Exists only if fetch_event_types includes realm_user
+   */
   avatar_url_medium?: string
+  /**
+   * The URL of the avatar for the current user at 100x100 resolution.
+   * Exists only if fetch_event_types includes realm_user
+   */
   avatar_url?: string
+  /**
+   * Whether the current user is allowed to create at least one type of channel.
+   * Exists only if fetch_event_types includes realm_user
+   * @deprecated From Zulip 5.0 (feature level 102), use can_create_public_streams
+   * and can_create_private_streams instead.
+   */
   can_create_streams?: boolean
+  /**
+   * Whether the current user is allowed to create public channels.
+   * Exists only if fetch_event_types includes realm_user
+   * @since Zulip 5.0 (feature level 102)
+   */
   can_create_public_streams?: boolean
+  /**
+   * Whether the current user is allowed to create private channels.
+   * Exists only if fetch_event_types includes realm_user
+   * @since Zulip 5.0 (feature level 102)
+   */
   can_create_private_streams?: boolean
+  /**
+   * Whether the current user is allowed to create web-public channels.
+   * Exists only if fetch_event_types includes realm_user
+   * @since Zulip 5.0 (feature level 103)
+   */
   can_create_web_public_streams?: boolean
+  /**
+   * Whether the current user is allowed to subscribe other users to channels.
+   * Exists only if fetch_event_types includes realm_user
+   */
   can_subscribe_other_users?: boolean
+  /**
+   * Whether the current user is allowed to invite others.
+   * Exists only if fetch_event_types includes realm_user
+   * @since Zulip 4.0 (feature level 51)
+   */
   can_invite_others_to_realm?: boolean
+  /**
+   * Whether the current user is at least an organization administrator.
+   * Exists only if fetch_event_types includes realm_user
+   */
   is_admin?: boolean
+  /**
+   * Whether the current user is an organization owner.
+   * Exists only if fetch_event_types includes realm_user
+   * @since Zulip 3.0 (feature level 11)
+   */
   is_owner?: boolean
+  /**
+   * Whether the current user is at least an organization moderator.
+   * Exists only if fetch_event_types includes realm_user
+   * @since Zulip 4.0 (feature level 60)
+   */
   is_moderator?: boolean
+  /**
+   * Whether the current user is a guest user.
+   * Exists only if fetch_event_types includes realm_user
+   */
   is_guest?: boolean
+  /**
+   * The unique ID for the current user.
+   * Exists only if fetch_event_types includes realm_user
+   */
   user_id?: number
+  /**
+   * The Zulip API email address for the current user.
+   * Exists only if fetch_event_types includes realm_user
+   */
   email?: string
+  /**
+   * The user's email address.
+   * Exists only if fetch_event_types includes realm_user
+   */
   delivery_email?: string
+  /**
+   * The full name of the current user.
+   * Exists only if fetch_event_types includes realm_user
+   */
   full_name?: string
+  /**
+   * Cross-realm bots.
+   * Exists only if fetch_event_types includes realm_user
+   */
   cross_realm_bots?: EventCrossRealmBotItem[]
+  /**
+   * Supported report types for the message report feature.
+   * Exists only if fetch_event_types includes realm
+   * @since Zulip 12.0 (feature level 435)
+   */
   server_report_message_types?: EventServerReportTypeItem[]
 }
 

@@ -1,4 +1,8 @@
-import type { BotServiceOutgoingWebhookFormats } from './constants'
+import type { GetSubscriptionsResponseItem } from './channel/subscription'
+import type {
+  BotServiceOutgoingWebhookFormats,
+  UserRoleValues,
+} from './constants'
 
 /**
  * Common type of the event
@@ -8,6 +12,14 @@ export type EventItemCommon = {
    * The ID of the event
    */
   id: number
+  /**
+   * The event's type
+   */
+  type: string
+  /**
+   * The operation of the event
+   */
+  op?: string
 }
 
 /**
@@ -170,13 +182,241 @@ export type EventDefaultStreamGroupItem = {
  * Event sent to a user's clients when that user's set of configured alert words have changed
  * @see https://zulip.com/api/get-events#alert_words
  */
-export type AlertWordsEventItem = EventItemCommon & {
+export type AlertWordsEvent = EventItemCommon & {
   /**
    * The event's type
    */
   type: 'alert_words'
   /**
+   * The operation of the event
+   */
+  op: never
+  /**
    * Alert words (or phrases) configured by the user
    */
   alert_words: string[]
+}
+
+/**
+ * Common fields for the person in user_settings-update event
+ */
+export type UpdateUserSettingsPersonCommon = {
+  /**
+   * The ID of the user affected by this change
+   */
+  user_id: number
+}
+
+/**
+ * Person full name update
+ */
+export type UpdateUserSettingsPersonFullName =
+  UpdateUserSettingsPersonCommon & {
+    /**
+     * The new full name for the user
+     */
+    full_name: string
+  }
+
+/**
+ * Person avater update
+ */
+export type UpdateUserSettingsPersonAvatar = UpdateUserSettingsPersonCommon & {
+  /**
+   * The URL of the new avatar for the user
+   */
+  avatar_url: string
+  /**
+   * The new avatar data source type for the user
+   *
+   * - G - Hosted by Gravatar
+   * - J - Generated using Jdenticon
+   * - U - Uploaded by user
+   */
+  avatar_source: 'G' | 'J' | 'U'
+  /**
+   * The new medium-size avatar URL for user
+   */
+  avatar_url_medium: string
+  /**
+   * The version number for the user's avatar
+   */
+  avatar_version: number
+}
+
+/**
+ * Timezone update
+ */
+export type UpdateUserSettingsPersonTimezone =
+  UpdateUserSettingsPersonCommon & {
+    /**
+     * The Zulip API email of the user
+     * @deprecated It is redundant with the user_id
+     */
+    email: string
+    /**
+     * The IANA identifier of the new profile time zone for the user
+     */
+    timezone: string
+  }
+
+/**
+ * Bot owner update
+ */
+export type UpdateUserSettingsPersonOwner = UpdateUserSettingsPersonCommon & {
+  /**
+   * The user ID of the new bot owner
+   */
+  bot_owner_id: number
+}
+
+/**
+ * Role update
+ */
+export type UpdateUserSettingsPersonRole = UpdateUserSettingsPersonCommon & {
+  /**
+   * The new role of the user.
+   */
+  role: UserRoleValues
+}
+
+/**
+ * Delivery email address update
+ */
+export type UpdateUserSettingsPersonDeliveryEmail =
+  UpdateUserSettingsPersonCommon & {
+    /**
+     * The new delivery email of the user. null indicates you cannot access their real email.
+     */
+    delivery_email: string | null
+  }
+
+/**
+ * Custom field data for custom field value update
+ */
+export type UpdateUserSettingPersonCustomFieldValue = {
+  /**
+   * The ID of the custom profile field
+   */
+  id: number
+  /**
+   * User's personal value for this custom profile field, or null if unset
+   */
+  value: string | null
+  /**
+   * The value rendered in HTML. Will only be present for custom profile field
+   * types that support Markdown rendering
+   */
+  rendered_value?: string
+}
+
+/**
+ * Custom field data update
+ */
+export type UpdateUserSettingsPersonCustomField =
+  UpdateUserSettingsPersonCommon & {
+    /**
+     * Custom profile data change
+     */
+    custom_profile_field: UpdateUserSettingPersonCustomFieldValue
+  }
+
+/**
+ * Email update
+ */
+export type UpdateUserSettingsPersonEmail = UpdateUserSettingsPersonCommon & {
+  /**
+   * The new value of email for the user.
+   */
+  new_email: string
+}
+
+/**
+ * Deactivated or reactivated
+ * @since Zulip 8.0 (feature level 222)
+ */
+export type UpdateUserSettingsPersonActivateStatus =
+  UpdateUserSettingsPersonCommon & {
+    /**
+     * Whether the user account has been deactivated
+     */
+    is_active: boolean
+  }
+
+/**
+ * Import stub status update
+ * @since Zulip 12.0 (feature level 433)
+ */
+export type UpdateUserSettingsPersonImportStatus =
+  UpdateUserSettingsPersonCommon & {
+    /**
+     * Whether the user account is stub or not. This value is always false.
+     */
+    is_imported_stub: false
+  }
+
+/**
+ * User created by API first login
+ * @since Zulip 12.0 (feature level 475)
+ */
+export type UpdateUserSettingsPersonJoinDate =
+  UpdateUserSettingsPersonCommon & {
+    /**
+     * The time when the user logged in to their account for the first time
+     */
+    date_joined: string
+  }
+
+/**
+ * Person field types for user_settings-update event
+ */
+export type UpdateUserSettingsPerson =
+  | UpdateUserSettingsPersonFullName
+  | UpdateUserSettingsPersonAvatar
+  | UpdateUserSettingsPersonTimezone
+  | UpdateUserSettingsPersonOwner
+  | UpdateUserSettingsPersonRole
+  | UpdateUserSettingsPersonDeliveryEmail
+  | UpdateUserSettingsPersonCustomField
+  | UpdateUserSettingsPersonEmail
+  | UpdateUserSettingsPersonActivateStatus
+  | UpdateUserSettingsPersonImportStatus
+  | UpdateUserSettingsPersonJoinDate
+
+/**
+ * Update user settings event
+ * @see https://zulip.com/api/get-events#realm_user-update
+ */
+export type UpdateUserSettingsEvent = EventItemCommon & {
+  /**
+   * The event's type
+   */
+  type: 'user_settings'
+  /**
+   * The operation of the event
+   */
+  op: 'update'
+  /**
+   * Update user settings event target and content
+   */
+  person: UpdateUserSettingsPerson
+}
+
+/**
+ * Add subscribed channels event
+ * @see https://zulip.com/api/get-events#subscription-add
+ */
+export type AddSubscriptionEvent = EventItemCommon & {
+  /**
+   * The event's type
+   */
+  type: 'subscription'
+  /**
+   * The operation of the event
+   */
+  op: 'add'
+  /**
+   * Subscribed channels information
+   */
+  subscriptions: GetSubscriptionsResponseItem[]
 }

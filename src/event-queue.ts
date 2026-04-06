@@ -1464,6 +1464,61 @@ export type EventServerReportTypeItem = {
 }
 
 /**
+ * Supported permission settings item
+ */
+export type EventServerSupportedPermissionSettingsItem = {
+  /**
+   * Whether the setting can only be set to a system user group
+   */
+  require_system_group: boolean
+  /**
+   * Whether the setting can be set to role:internet system group
+   */
+  allow_internet_group: boolean
+  /**
+   * Whether the setting can be set to role:nobody system group
+   */
+  allow_nobody_group: boolean
+  /**
+   * Whether the setting can be set to role:everyone system group
+   */
+  allow_everyone_group: boolean
+  /**
+   * Name of the default system group for the setting
+   * @since Zulip 12.0 (feature level 427)
+   */
+  default_group_name: string
+  /**
+   * Name of the default group for the setting for system groups
+   */
+  default_for_system_groups: string | null
+  /**
+   * Names of system groups to which the setting can be set to
+   * @since Zulip 8.0 (feature level 225)
+   */
+  allowed_system_groups: string[]
+}
+
+/**
+ * Metadata detailing the valid values for permission settings that use group-setting values
+ * @since Zulip 8.0 (feature level 221)
+ */
+export type EventServerSupportedPermissionSettings = {
+  /**
+   * Configuration for realm level group permission settings
+   */
+  realm: EventServerSupportedPermissionSettingsItem
+  /**
+   * Configuration for channel level group permission settings
+   */
+  stream: EventServerSupportedPermissionSettingsItem
+  /**
+   * Configuration for group level group permission settings
+   */
+  group: EventServerSupportedPermissionSettingsItem
+}
+
+/**
  * The response of RegisterEventQueue API
  * @see https://zulip.com/api/register-queue#response
  */
@@ -2762,6 +2817,18 @@ export type RegisterEventQueueResponse = GeneralSuccessResponse & {
    * @since Zulip 12.0 (feature level 435)
    */
   server_report_message_types?: EventServerReportTypeItem[]
+  /**
+   * Metadata detailing the valid values for permission settings that use group-setting values.
+   * Exists only if fetch_event_types includes realm
+   * @since Zulip 8.0 (feature level 221)
+   */
+  server_supported_permission_settings?: EventServerSupportedPermissionSettings
+  /**
+   * Maximum number of new subscribers for which the server will respect
+   * the send_new_subscription_messages parameter when adding subscribers to a channel.
+   * @since Zulip 11.0 (feature level 397)
+   */
+  max_bulk_new_subscription_messages: number
 }
 
 /**

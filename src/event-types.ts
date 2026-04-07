@@ -1,4 +1,5 @@
 import type { GetChannelsChannel } from './channel/channel'
+import type { ChannelPermissionGroupObj } from './channel/common'
 import type { GetChannelFoldersResponseItem } from './channel/folder'
 import type { GetSubscriptionsResponseItem } from './channel/subscription'
 import type {
@@ -441,7 +442,13 @@ export type AddSubscriptionEvent = EventItemCommon & {
  * @since Zulip 5.0 (feature level 89)
  */
 export type UserSettingsUpdateEvent = EventItemCommon & {
+  /**
+   * The event's type
+   */
   type: 'user_settings'
+  /**
+   * The operation of the event
+   */
   op: 'update'
   /**
    * Name of the changed setting
@@ -463,7 +470,13 @@ export type UserSettingsUpdateEvent = EventItemCommon & {
  * @see https://zulip.com/api/get-events#realm_user-add
  */
 export type RealmUserAddEvent = EventItemCommon & {
+  /**
+   * The event's type
+   */
   type: 'realm_user'
+  /**
+   * The operation of the event
+   */
   op: 'add'
   /**
    * A dictionary containing basic data on the new Zulip user
@@ -472,26 +485,37 @@ export type RealmUserAddEvent = EventItemCommon & {
 }
 
 /**
+ * Person in realm user remove event
+ */
+export type RealmUserRemoveEventPerson = {
+  /**
+   * The ID of the deactivated user
+   */
+  user_id: number
+  /**
+   * The full name of the user
+   * @deprecated Will be removed in a future release
+   */
+  full_name?: string
+}
+
+/**
  * Realm user remove event
  * @see https://zulip.com/api/get-events#realm_user-remove
  */
 export type RealmUserRemoveEvent = EventItemCommon & {
+  /**
+   * The event's type
+   */
   type: 'realm_user'
+  /**
+   * The operation of the event
+   */
   op: 'remove'
   /**
    * Object containing details of the removed user
    */
-  person: {
-    /**
-     * The ID of the deactivated user
-     */
-    user_id: number
-    /**
-     * The full name of the user
-     * @deprecated Will be removed in a future release
-     */
-    full_name?: string
-  }
+  person: RealmUserRemoveEventPerson
 }
 
 /**
@@ -499,7 +523,13 @@ export type RealmUserRemoveEvent = EventItemCommon & {
  * @see https://zulip.com/api/get-events#subscription-remove
  */
 export type RemoveSubscriptionEvent = EventItemCommon & {
+  /**
+   * The event's type
+   */
   type: 'subscription'
+  /**
+   * The operation of the event
+   */
   op: 'remove'
   /**
    * A list of dictionaries describing the unsubscribed channels
@@ -512,7 +542,13 @@ export type RemoveSubscriptionEvent = EventItemCommon & {
  * @see https://zulip.com/api/get-events#subscription-update
  */
 export type UpdateSubscriptionEvent = EventItemCommon & {
+  /**
+   * The event's type
+   */
   type: 'subscription'
+  /**
+   * The operation of the event
+   */
   op: 'update'
   /**
    * The ID of the channel whose subscription details have changed
@@ -533,7 +569,13 @@ export type UpdateSubscriptionEvent = EventItemCommon & {
  * @see https://zulip.com/api/get-events#subscription-peer_add
  */
 export type SubscriptionPeerAddEvent = EventItemCommon & {
+  /**
+   * The event's type
+   */
   type: 'subscription'
+  /**
+   * The operation of the event
+   */
   op: 'peer_add'
   /**
    * The IDs of channels that have new or updated subscriber data
@@ -552,7 +594,13 @@ export type SubscriptionPeerAddEvent = EventItemCommon & {
  * @see https://zulip.com/api/get-events#subscription-peer_remove
  */
 export type SubscriptionPeerRemoveEvent = EventItemCommon & {
+  /**
+   * The event's type
+   */
   type: 'subscription'
+  /**
+   * The operation of the event
+   */
   op: 'peer_remove'
   /**
    * The IDs of the channels from which the users have been unsubscribed
@@ -571,7 +619,13 @@ export type SubscriptionPeerRemoveEvent = EventItemCommon & {
  * @see https://zulip.com/api/get-events#message
  */
 export type MessageEvent = EventItemCommon & {
+  /**
+   * The event's type
+   */
   type: 'message'
+  /**
+   * The operation of the event
+   */
   op: never
   /**
    * Object containing details of the message
@@ -593,7 +647,13 @@ export type MessageEvent = EventItemCommon & {
  * @see https://zulip.com/api/get-events#has_zoom_token
  */
 export type HasZoomTokenEvent = EventItemCommon & {
+  /**
+   * The event's type
+   */
   type: 'has_zoom_token'
+  /**
+   * The operation of the event
+   */
   op: never
   /**
    * Whether the user has a zoom token or not
@@ -606,7 +666,13 @@ export type HasZoomTokenEvent = EventItemCommon & {
  * @see https://zulip.com/api/get-events#invites_changed
  */
 export type InvitesChangedEvent = EventItemCommon & {
+  /**
+   * The event's type
+   */
   type: 'invites_changed'
+  /**
+   * The operation of the event
+   */
   op: never
 }
 
@@ -648,46 +714,96 @@ export type EventPresenceModernItem = {
 }
 
 /**
- * Presence event
- * @see https://zulip.com/api/get-events#presence
+ * Fields in presence event which supports simplified_presence_events
  */
-export type PresenceEvent = EventItemCommon & {
-  type: 'presence'
-  op: never
+type PresenceEventModern = {
   /**
    * Only present for clients supporting `simplified_presence_events`.
    * A dictionary mapping user IDs to modern presence data.
    * @since Zulip 11.0 (feature level 419)
    */
-  presences?: Record<string, EventPresenceModernItem>
+  presences: Record<string, EventPresenceModernItem>
   /**
    * Not present for clients supporting `simplified_presence_events`.
    * The ID of the user whose presence changed.
    */
-  user_id?: number
+  user_id: never
   /**
    * Not present for clients supporting `simplified_presence_events`.
    * The Zulip API email of the user whose presence changed.
    */
-  email?: string
+  email: never
   /**
    * Not present for clients supporting `simplified_presence_events`.
    * The UNIX timestamp of when the server processed the presence update.
    */
-  server_timestamp?: number
+  server_timestamp: never
   /**
    * Not present for clients supporting `simplified_presence_events`.
    * A dictionary mapping client names to legacy presence data.
    */
-  presence?: Record<string, EventPresenceClientItem>
+  presence: never
 }
+
+/**
+ * Fields in presence event which does not support simplified_presence_events
+ */
+type PresenceEventLegacy = {
+  /**
+   * Only present for clients supporting `simplified_presence_events`.
+   * A dictionary mapping user IDs to modern presence data.
+   * @since Zulip 11.0 (feature level 419)
+   */
+  presences: never
+  /**
+   * Not present for clients supporting `simplified_presence_events`.
+   * The ID of the user whose presence changed.
+   */
+  user_id: number
+  /**
+   * Not present for clients supporting `simplified_presence_events`.
+   * The Zulip API email of the user whose presence changed.
+   */
+  email: string
+  /**
+   * Not present for clients supporting `simplified_presence_events`.
+   * The UNIX timestamp of when the server processed the presence update.
+   */
+  server_timestamp: number
+  /**
+   * Not present for clients supporting `simplified_presence_events`.
+   * A dictionary mapping client names to legacy presence data.
+   */
+  presence: Record<string, EventPresenceClientItem>
+}
+
+/**
+ * Presence event
+ * @see https://zulip.com/api/get-events#presence
+ */
+export type PresenceEvent = EventItemCommon & {
+  /**
+   * The event's type
+   */
+  type: 'presence'
+  /**
+   * The operation of the event
+   */
+  op: never
+} & (PresenceEventModern | PresenceEventLegacy)
 
 /**
  * Stream create event
  * @see https://zulip.com/api/get-events#stream-create
  */
 export type StreamCreateEvent = EventItemCommon & {
+  /**
+   * The event's type
+   */
   type: 'stream'
+  /**
+   * The operation of the event
+   */
   op: 'create'
   /**
    * Array of objects containing details about the newly added channels
@@ -700,7 +816,13 @@ export type StreamCreateEvent = EventItemCommon & {
  * @see https://zulip.com/api/get-events#stream-delete
  */
 export type StreamDeleteEvent = EventItemCommon & {
+  /**
+   * The event's type
+   */
   type: 'stream'
+  /**
+   * The operation of the event
+   */
   op: 'delete'
   /**
    * Array of objects containing IDs of the deleted channels
@@ -719,7 +841,13 @@ export type StreamDeleteEvent = EventItemCommon & {
  * @see https://zulip.com/api/get-events#stream-update
  */
 export type StreamUpdateEvent = EventItemCommon & {
+  /**
+   * The event's type
+   */
   type: 'stream'
+  /**
+   * The operation of the event
+   */
   op: 'update'
   /**
    * The ID of the channel whose details have changed
@@ -736,7 +864,7 @@ export type StreamUpdateEvent = EventItemCommon & {
   /**
    * The new value of the changed property
    */
-  value: boolean | number | string | null
+  value: boolean | number | string | ChannelPermissionGroupObj | null
   /**
    * Only present if the changed property was `description`.
    * The short description of the channel rendered in HTML.
@@ -750,8 +878,32 @@ export type StreamUpdateEvent = EventItemCommon & {
   /**
    * Only present if the changed property was `invite_only`.
    * Whether the channel is web-public.
+   * @since Zulip 5.0 (feature level 71)
    */
   is_web_public?: boolean
+}
+
+/**
+ * User in reaction events
+ * @deprecated From Zulip 3.0 (feature level 2), use user_id field instead
+ */
+export type EventReactionUser = {
+  /**
+   * Full name of the user
+   */
+  email: string
+  /**
+   * Zulip API email of the user
+   */
+  full_name: string
+  /**
+   * ID of the user
+   */
+  user_id: number
+  /**
+   * Whether the user is a mirror dummy
+   */
+  is_mirror_dummy: boolean
 }
 
 /**
@@ -777,13 +929,9 @@ export type EventReactionCommon = {
   user_id: number
   /**
    * Dictionary with data on the user who added or removed the reaction
-   * @deprecated Use `user_id` instead
+   * @deprecated From Zulip 3.0 (feature level 2), use `user_id` instead
    */
-  user?: {
-    email: string
-    full_name: string
-    user_id: number
-  }
+  user: EventReactionUser
   /**
    * The ID of the message to which the reaction relates
    */
@@ -796,7 +944,13 @@ export type EventReactionCommon = {
  */
 export type ReactionAddEvent = EventItemCommon &
   EventReactionCommon & {
+    /**
+     * The event's type
+     */
     type: 'reaction'
+    /**
+     * The operation of the event
+     */
     op: 'add'
   }
 
@@ -806,28 +960,64 @@ export type ReactionAddEvent = EventItemCommon &
  */
 export type ReactionRemoveEvent = EventItemCommon &
   EventReactionCommon & {
+    /**
+     * The event's type
+     */
     type: 'reaction'
+    /**
+     * The operation of the event
+     */
     op: 'remove'
   }
+
+/**
+ * Attachment item for attachment event
+ */
+export type AttachmentEventAttachment = {
+  /**
+   * The ID for the attachment
+   */
+  id: number
+  /**
+   * Name of the uploaded file
+   */
+  name: string
+  /**
+   * A representation of the path of the file within the repository of user-uploaded files
+   */
+  path_id: string
+  /**
+   * Size of the file in bytes
+   */
+  size: number
+  /**
+   * Time when the attachment was uploaded as a UNIX timestamp
+   */
+  create_time: number
+  /**
+   * IDs of messages that reference this uploaded file
+   * @since Zulip 12.0 (feature level 472)
+   */
+  message_ids: number[]
+}
 
 /**
  * Attachment add event
  * @see https://zulip.com/api/get-events#attachment-add
  */
 export type AttachmentAddEvent = EventItemCommon & {
+  /**
+   * The event's type
+   */
   type: 'attachment'
+  /**
+   * The operation of the event
+   */
   op: 'add'
   /**
-   * Dictionary containing details of the uploaded file
+   * Details of the uploaded file
    */
-  attachment: {
-    id: number
-    name: string
-    path_id: string
-    size: number
-    create_time: number
-    message_ids: number[]
-  }
+  attachment: AttachmentEventAttachment
   /**
    * The total size of all files uploaded by users in the organization, in bytes
    */
@@ -839,12 +1029,18 @@ export type AttachmentAddEvent = EventItemCommon & {
  * @see https://zulip.com/api/get-events#attachment-update
  */
 export type AttachmentUpdateEvent = EventItemCommon & {
+  /**
+   * The event's type
+   */
   type: 'attachment'
+  /**
+   * The operation of the event
+   */
   op: 'update'
   /**
-   * Dictionary containing details of the updated file
+   * Details of the uploaded file
    */
-  attachment: AttachmentAddEvent['attachment']
+  attachment: AttachmentEventAttachment
   /**
    * The total size of all files uploaded by users in the organization, in bytes
    */
@@ -856,7 +1052,13 @@ export type AttachmentUpdateEvent = EventItemCommon & {
  * @see https://zulip.com/api/get-events#attachment-remove
  */
 export type AttachmentRemoveEvent = EventItemCommon & {
+  /**
+   * The event's type
+   */
   type: 'attachment'
+  /**
+   * The operation of the event
+   */
   op: 'remove'
   /**
    * Dictionary containing the ID of the deleted attachment
@@ -874,7 +1076,13 @@ export type AttachmentRemoveEvent = EventItemCommon & {
  * @since Zulip 12.0 (feature level 468)
  */
 export type DeviceAddEvent = EventItemCommon & {
+  /**
+   * The event's type
+   */
   type: 'device'
+  /**
+   * The operation of the event
+   */
   op: 'add'
   /**
    * The ID of the new registered device
@@ -888,7 +1096,13 @@ export type DeviceAddEvent = EventItemCommon & {
  * @since Zulip 12.0 (feature level 470)
  */
 export type DeviceRemoveEvent = EventItemCommon & {
+  /**
+   * The event's type
+   */
   type: 'device'
+  /**
+   * The operation of the event
+   */
   op: 'remove'
   /**
    * The ID of the device which deregistered
@@ -902,7 +1116,13 @@ export type DeviceRemoveEvent = EventItemCommon & {
  * @since Zulip 12.0 (feature level 468)
  */
 export type DeviceUpdateEvent = EventItemCommon & {
+  /**
+   * The event's type
+   */
   type: 'device'
+  /**
+   * The operation of the event
+   */
   op: 'update'
   /**
    * The ID of the registered device whose metadata changed
@@ -935,7 +1155,13 @@ export type DeviceUpdateEvent = EventItemCommon & {
  * @see https://zulip.com/api/get-events#submessage
  */
 export type SubmessageEvent = EventItemCommon & {
+  /**
+   * The event's type
+   */
   type: 'submessage'
+  /**
+   * The operation of the event
+   */
   op: never
   /**
    * The type of the submessage
@@ -964,7 +1190,13 @@ export type SubmessageEvent = EventItemCommon & {
  * @see https://zulip.com/api/get-events#user_status
  */
 export type UserStatusEvent = EventItemCommon & {
+  /**
+   * The event's type
+   */
   type: 'user_status'
+  /**
+   * The operation of the event
+   */
   op: never
   /**
    * The ID of the user whose status changed
@@ -972,28 +1204,28 @@ export type UserStatusEvent = EventItemCommon & {
   user_id: number
   /**
    * Whether the user has marked themselves away
-   * @deprecated Since Zulip 6.0 (feature level 148)
+   * @deprecated From Zulip 6.0 (feature level 148), use presence event instead
    */
-  away?: boolean
+  away: boolean
   /**
    * The text content of the status message
    */
-  status_text?: string
+  status_text: string
   /**
    * The emoji name for the user's status
    * @since Zulip 5.0 (feature level 86)
    */
-  emoji_name?: string
+  emoji_name: string
   /**
    * The emoji code for the user's status
    * @since Zulip 5.0 (feature level 86)
    */
-  emoji_code?: string
+  emoji_code: string
   /**
    * The emoji type for the user's status
    * @since Zulip 5.0 (feature level 86)
    */
-  reaction_type?: EmojiTypes
+  reaction_type: EmojiTypes
 }
 
 /**
@@ -1001,7 +1233,13 @@ export type UserStatusEvent = EventItemCommon & {
  * @see https://zulip.com/api/get-events#custom_profile_fields
  */
 export type CustomProfileFieldsEvent = EventItemCommon & {
+  /**
+   * The event's type
+   */
   type: 'custom_profile_fields'
+  /**
+   * The operation of the event
+   */
   op: never
   /**
    * An array of dictionaries containing details of custom profile fields
@@ -1014,7 +1252,13 @@ export type CustomProfileFieldsEvent = EventItemCommon & {
  * @see https://zulip.com/api/get-events#default_stream_groups
  */
 export type DefaultStreamGroupsEvent = EventItemCommon & {
+  /**
+   * The event's type
+   */
   type: 'default_stream_groups'
+  /**
+   * The operation of the event
+   */
   op: never
   /**
    * An array of dictionaries containing details about default channel groups
@@ -1027,7 +1271,13 @@ export type DefaultStreamGroupsEvent = EventItemCommon & {
  * @see https://zulip.com/api/get-events#default_streams
  */
 export type DefaultStreamsEvent = EventItemCommon & {
+  /**
+   * The event's type
+   */
   type: 'default_streams'
+  /**
+   * The operation of the event
+   */
   op: never
   /**
    * An array of IDs of all the default channels
@@ -1036,44 +1286,106 @@ export type DefaultStreamsEvent = EventItemCommon & {
 }
 
 /**
- * Delete message event
- * @see https://zulip.com/api/get-events#delete_message
+ * Fields for delete_message event which supports bulk_message_deletion
  */
-export type DeleteMessageEvent = EventItemCommon & {
-  type: 'delete_message'
-  op: never
+type DeleteMessageEventBulk = {
   /**
    * Only present for clients supporting `bulk_message_deletion`.
-   * Array containing the IDs of the deleted messages.
+   * The IDs of the deleted messages.
    */
-  message_ids?: number[]
+  message_ids: number[]
   /**
    * Only present for clients not supporting `bulk_message_deletion`.
    * The ID of the deleted message.
    */
-  message_id?: number
+  message_id: never
+}
+
+/**
+ * Fields for delete_message event which does not support bulk_message_deletion
+ */
+type DeleteMessageEventSingle = {
+  /**
+   * Only present for clients supporting `bulk_message_deletion`.
+   * The IDs of the deleted messages.
+   */
+  message_ids: never
+  /**
+   * Only present for clients not supporting `bulk_message_deletion`.
+   * The ID of the deleted message.
+   */
+  message_id: number
+}
+
+/**
+ * Fields for delete_message event for channel message
+ */
+type DeleteMessageEventStream = {
   /**
    * The type of the deleted message
    */
-  message_type: 'private' | 'stream'
+  message_type: 'stream'
   /**
    * Only present if `message_type` is `"stream"`.
    * The ID of the channel to which the message was sent.
    */
-  stream_id?: number
+  stream_id: number
   /**
    * Only present if `message_type` is `"stream"`.
    * The topic to which the message was sent.
    */
-  topic?: string
+  topic: string
 }
 
 /**
+ * Fields for delete_message event for private message
+ */
+type DeleteMessageEventPrivate = {
+  /**
+   * The type of the deleted message
+   */
+  message_type: 'private'
+  /**
+   * Only present if `message_type` is `"stream"`.
+   * The ID of the channel to which the message was sent.
+   */
+  stream_id: never
+  /**
+   * Only present if `message_type` is `"stream"`.
+   * The topic to which the message was sent.
+   */
+  topic: never
+}
+
+/**
+ * Delete message event
+ * @see https://zulip.com/api/get-events#delete_message
+ */
+export type DeleteMessageEvent = EventItemCommon & {
+  /**
+   * The event's type
+   */
+  type: 'delete_message'
+  /**
+   * The operation of the event
+   */
+  op: never
+} & (DeleteMessageEventBulk | DeleteMessageEventSingle) &
+  (DeleteMessageEventStream | DeleteMessageEventPrivate)
+
+/**
  * Muted topics event
+ * @deprecated From Zulip 6.0 (feature level 134), use user_topic event instead
  * @see https://zulip.com/api/get-events#muted_topics
  */
 export type MutedTopicsEvent = EventItemCommon & {
+  /**
+   * The event's type
+   */
   type: 'muted_topics'
+  /**
+   * The operation of the event
+   */
   op: never
   /**
    * Array of tuples [stream_name, topic_name, timestamp] describing muted topics
@@ -1084,10 +1396,16 @@ export type MutedTopicsEvent = EventItemCommon & {
 /**
  * User topic event
  * @see https://zulip.com/api/get-events#user_topic
- * @since Zulip 7.0 (feature level 170)
+ * @since Zulip 6.0 (feature level 134)
  */
 export type UserTopicEvent = EventItemCommon & {
+  /**
+   * The event's type
+   */
   type: 'user_topic'
+  /**
+   * The operation of the event
+   */
   op: never
   /**
    * The ID of the channel to which the topic belongs
@@ -1113,7 +1431,13 @@ export type UserTopicEvent = EventItemCommon & {
  * @since Zulip 4.0 (feature level 48)
  */
 export type MutedUsersEvent = EventItemCommon & {
+  /**
+   * The event's type
+   */
   type: 'muted_users'
+  /**
+   * The operation of the event
+   */
   op: never
   /**
    * A list of dictionaries describing muted users
@@ -1126,7 +1450,13 @@ export type MutedUsersEvent = EventItemCommon & {
  * @see https://zulip.com/api/get-events#heartbeat
  */
 export type HeartbeatEvent = EventItemCommon & {
+  /**
+   * The event's type
+   */
   type: 'heartbeat'
+  /**
+   * The operation of the event
+   */
   op: never
 }
 
@@ -1136,7 +1466,13 @@ export type HeartbeatEvent = EventItemCommon & {
  * @since Zulip 8.0 (feature level 233)
  */
 export type OnboardingStepsEvent = EventItemCommon & {
+  /**
+   * The event's type
+   */
   type: 'onboarding_steps'
+  /**
+   * The operation of the event
+   */
   op: never
   /**
    * An array of dictionaries containing details about onboarding steps
@@ -1163,7 +1499,13 @@ export type EventTopicLinkItem = {
  * @see https://zulip.com/api/get-events#update_message
  */
 export type UpdateMessageEvent = EventItemCommon & {
+  /**
+   * The event's type
+   */
   type: 'update_message'
+  /**
+   * The operation of the event
+   */
   op: never
   /**
    * The ID of the user who edited the message. null for rendering-only updates.
@@ -1171,6 +1513,7 @@ export type UpdateMessageEvent = EventItemCommon & {
   user_id: number | null
   /**
    * Whether the event only updates the rendered content of the message
+   * @since Zulip 5.0 (feature level 114)
    */
   rendering_only: boolean
   /**
@@ -1265,100 +1608,159 @@ export type EventTypingUserItem = {
 }
 
 /**
- * Typing start event
- * @see https://zulip.com/api/get-events#typing-start
+ * Fields for typing event for direct message
  */
-export type TypingStartEvent = EventItemCommon & {
-  type: 'typing'
-  op: 'start'
+type TypingEventDirect = {
   /**
    * Type of message being composed: `"stream"` or `"direct"`
    * @since Zulip 4.0 (feature level 58)
    */
-  message_type: 'direct' | 'stream'
-  /**
-   * Object describing the user who is typing the message
-   */
-  sender: EventTypingUserItem
+  message_type: 'direct'
   /**
    * Only present if `message_type` is `"direct"`.
    * Array of dictionaries describing the recipients.
    */
-  recipients?: EventTypingUserItem[]
+  recipients: EventTypingUserItem[]
   /**
    * Only present if `message_type` is `"stream"`.
    * @since Zulip 4.0 (feature level 58)
    */
-  stream_id?: number
+  stream_id: never
   /**
    * Only present if `message_type` is `"stream"`.
    * @since Zulip 4.0 (feature level 58)
    */
-  topic?: string
+  topic: never
 }
+
+/**
+ * Fields for typing event for channel message
+ */
+type TypingEventStream = {
+  /**
+   * Type of message being composed: `"stream"` or `"direct"`
+   * @since Zulip 4.0 (feature level 58)
+   */
+  message_type: 'stream'
+  /**
+   * Only present if `message_type` is `"direct"`.
+   * Array of dictionaries describing the recipients.
+   */
+  recipients: never
+  /**
+   * Only present if `message_type` is `"stream"`.
+   * @since Zulip 4.0 (feature level 58)
+   */
+  stream_id: number
+  /**
+   * Only present if `message_type` is `"stream"`.
+   * @since Zulip 4.0 (feature level 58)
+   */
+  topic: string
+}
+
+/**
+ * Typing start event
+ * @see https://zulip.com/api/get-events#typing-start
+ */
+export type TypingStartEvent = EventItemCommon & {
+  /**
+   * The event's type
+   */
+  type: 'typing'
+  /**
+   * The operation of the event
+   */
+  op: 'start'
+  /**
+   * Object describing the user who is typing the message
+   */
+  sender: EventTypingUserItem
+} & (TypingEventDirect | TypingEventStream)
 
 /**
  * Typing stop event
  * @see https://zulip.com/api/get-events#typing-stop
  */
 export type TypingStopEvent = EventItemCommon & {
-  type: 'typing'
-  op: 'stop'
   /**
-   * Type of message being composed: `"stream"` or `"direct"`
-   * @since Zulip 4.0 (feature level 58)
+   * The event's type
    */
-  message_type: 'direct' | 'stream'
+  type: 'typing'
+  /**
+   * The operation of the event
+   */
+  op: 'stop'
   /**
    * Object describing the user who was typing the message
    */
   sender: EventTypingUserItem
+} & (TypingEventDirect | TypingEventStream)
+
+/**
+ * Recipient info for edit message typing events for channel message
+ */
+type EventTypingEditMessageRecipientStream = {
   /**
-   * Only present if `message_type` is `"direct"`.
-   * Array of dictionaries describing the recipients.
+   * The type of message: `"stream"` or `"direct"`
    */
-  recipients?: EventTypingUserItem[]
+  type: 'stream'
   /**
-   * Only present if `message_type` is `"stream"`.
-   * @since Zulip 4.0 (feature level 58)
+   * Only present for stream messages. The channel ID.
    */
-  stream_id?: number
+  stream_id: number
   /**
-   * Only present if `message_type` is `"stream"`.
-   * @since Zulip 4.0 (feature level 58)
+   * Only present for stream messages. The topic name.
    */
-  topic?: string
+  topic: string
+  /**
+   * Only present for direct messages. The user IDs of the recipients.
+   */
+  user_ids: never
+}
+
+/**
+ * Recipient info for edit message typing events for direct message
+ */
+type EventTypingEditMessageRecipientDirect = {
+  /**
+   * The type of message: `"stream"` or `"direct"`
+   */
+  type: 'direct'
+  /**
+   * Only present for stream messages. The channel ID.
+   */
+  stream_id: never
+  /**
+   * Only present for stream messages. The topic name.
+   */
+  topic: never
+  /**
+   * Only present for direct messages. The user IDs of the recipients.
+   */
+  user_ids: number[]
 }
 
 /**
  * Recipient info for edit message typing events
  */
-export type EventTypingEditMessageRecipient = {
-  /**
-   * The type of message: `"stream"` or `"direct"`
-   */
-  type: 'stream' | 'direct'
-  /**
-   * Only present for stream messages. The channel ID.
-   */
-  stream_id?: number
-  /**
-   * Only present for stream messages. The topic name.
-   */
-  topic?: string
-  /**
-   * Only present for direct messages. The user IDs of the recipients.
-   */
-  user_ids?: number[]
-}
+export type EventTypingEditMessageRecipient =
+  | EventTypingEditMessageRecipientStream
+  | EventTypingEditMessageRecipientDirect
 
 /**
  * Typing edit message start event
  * @see https://zulip.com/api/get-events#typing_edit_message-start
- * @since Zulip 11.0 (feature level 399)
+ * @since Zulip 10.0 (feature level 351)
  */
 export type TypingEditMessageStartEvent = EventItemCommon & {
+  /**
+   * The event's type
+   */
   type: 'typing_edit_message'
+  /**
+   * The operation of the event
+   */
   op: 'start'
   /**
    * The ID of the user who is typing the edit of the message
@@ -1377,10 +1779,16 @@ export type TypingEditMessageStartEvent = EventItemCommon & {
 /**
  * Typing edit message stop event
  * @see https://zulip.com/api/get-events#typing_edit_message-stop
- * @since Zulip 11.0 (feature level 399)
+ * @since Zulip 10.0 (feature level 351)
  */
 export type TypingEditMessageStopEvent = EventItemCommon & {
+  /**
+   * The event's type
+   */
   type: 'typing_edit_message'
+  /**
+   * The operation of the event
+   */
   op: 'stop'
   /**
    * The ID of the user who sent the message
@@ -1401,19 +1809,25 @@ export type TypingEditMessageStopEvent = EventItemCommon & {
  * @see https://zulip.com/api/get-events#update_message_flags-add
  */
 export type UpdateMessageFlagsAddEvent = EventItemCommon & {
+  /**
+   * The event's type
+   */
   type: 'update_message_flags'
+  /**
+   * The operation of the event
+   */
   op: 'add'
   /**
    * Old name for the `op` field
-   * @deprecated Since Zulip 4.0 (feature level 32)
+   * @deprecated From Zulip 4.0 (feature level 32), use op field instead
    */
-  operation?: 'add'
+  operation: 'add'
   /**
    * The message flag that was added
    */
-  flag: string
+  flag: MessageFlags
   /**
-   * Array containing the IDs of all messages to which the flag was added
+   * IDs of all messages to which the flag was added
    */
   messages: number[]
   /**
@@ -1423,14 +1837,101 @@ export type UpdateMessageFlagsAddEvent = EventItemCommon & {
 }
 
 /**
+ * Message details in update_message_flags remove event for private message
+ */
+type EventUpdateMessageFlagsRemoveMessageDetailPrivate = {
+  /**
+   * The type of this message. Either "stream" or "private".
+   */
+  type: 'private'
+  /**
+   * Present only if type is private.
+   * The user IDs of every recipient of this direct message, excluding yourself.
+   */
+  user_ids: number[]
+  /**
+   * Present only if type is "stream".
+   * The ID of the channel where the message was sent.
+   */
+  stream_id: never
+  /**
+   * Present only if type is "stream".
+   * Name of the topic where the message was sent.
+   */
+  topic: never
+}
+
+/**
+ * Message details in update_message_flags remove event for channel message
+ */
+type EventUpdateMessageFlagsRemoveMessageDetailStream = {
+  /**
+   * The type of this message. Either "stream" or "private".
+   */
+  type: 'stream'
+  /**
+   * Present only if type is private.
+   * The user IDs of every recipient of this direct message, excluding yourself.
+   */
+  user_ids: never
+  /**
+   * Present only if type is "stream".
+   * The ID of the channel where the message was sent.
+   */
+  stream_id: number
+  /**
+   * Present only if type is "stream".
+   * Name of the topic where the message was sent.
+   */
+  topic: string
+}
+
+/**
  * Message details in update_message_flags remove event
  */
 export type EventUpdateMessageFlagsRemoveMessageDetail = {
-  type: 'private' | 'stream'
+  /**
+   * A flag which indicates whether the message contains a mention of the user.
+   * Present only if the message mentions the current user.
+   */
   mentioned?: boolean
-  user_ids?: number[]
-  stream_id?: number
-  topic?: string
+  /**
+   * @deprecated
+   */
+  unmuted_stream_msg: boolean
+} & (
+  | EventUpdateMessageFlagsRemoveMessageDetailPrivate
+  | EventUpdateMessageFlagsRemoveMessageDetailStream
+)
+
+/**
+ * Fields for update_message_flags remove event for read flag
+ */
+type UpdateMessageFlagRemoveEventRead = {
+  /**
+   * The message flag to be removed
+   */
+  flag: 'read'
+  /**
+   * Only present if the specified `flag` is `"read"`.
+   * A set of data structures describing the messages.
+   */
+  message_details: Record<string, EventUpdateMessageFlagsRemoveMessageDetail>
+}
+
+/**
+ * Fields for update_message_flags remove event for other than read flag
+ */
+type UpdateMessageFlagRemoveEventNotRead = {
+  /**
+   * The message flag to be removed
+   */
+  flag: Exclude<MessageFlags, 'read'>
+  /**
+   * Only present if the specified `flag` is `"read"`.
+   * A set of data structures describing the messages.
+   */
+  message_details: never
 }
 
 /**
@@ -1438,17 +1939,19 @@ export type EventUpdateMessageFlagsRemoveMessageDetail = {
  * @see https://zulip.com/api/get-events#update_message_flags-remove
  */
 export type UpdateMessageFlagsRemoveEvent = EventItemCommon & {
+  /**
+   * The event's type
+   */
   type: 'update_message_flags'
+  /**
+   * The operation of the event
+   */
   op: 'remove'
   /**
    * Old name for the `op` field
-   * @deprecated Since Zulip 4.0 (feature level 32)
+   * @deprecated From Zulip 4.0 (feature level 32), use op field instead
    */
-  operation?: 'remove'
-  /**
-   * The message flag to be removed
-   */
-  flag: string
+  operation: 'remove'
   /**
    * Array containing the IDs of the messages from which the flag was removed
    */
@@ -1458,26 +1961,25 @@ export type UpdateMessageFlagsRemoveEvent = EventItemCommon & {
    * @deprecated
    */
   all: false
-  /**
-   * Only present if the specified `flag` is `"read"`.
-   * A set of data structures describing the messages.
-   */
-  message_details?: Record<string, EventUpdateMessageFlagsRemoveMessageDetail>
-}
+} & (UpdateMessageFlagRemoveEventRead | UpdateMessageFlagRemoveEventNotRead)
 
 /**
  * User group permission group value type
  */
-export type EventUserGroupPermissionGroup =
-  | number
-  | { direct_members: number[]; direct_subgroups: number[] }
+export type EventUserGroupPermissionGroup = number | ChannelPermissionGroupObj
 
 /**
  * User group add event
  * @see https://zulip.com/api/get-events#user_group-add
  */
 export type UserGroupAddEvent = EventItemCommon & {
+  /**
+   * The event's type
+   */
   type: 'user_group'
+  /**
+   * The operation of the event
+   */
   op: 'add'
   /**
    * Object containing the user group's attributes
@@ -1486,11 +1988,72 @@ export type UserGroupAddEvent = EventItemCommon & {
 }
 
 /**
+ * Data for user group update event
+ */
+export type UserGroupUpdateEventData = {
+  /**
+   * The new name of the user group. Only present if the group's name changed
+   */
+  name?: string
+  /**
+   * The new description of the group. Only present if the description changed
+   */
+  description?: string
+  /**
+   * Users who have permission to add members to this group. Only present if
+   * this user group permission setting changed
+   * @since Zulip 10.0 (feature level 305)
+   */
+  can_add_members_group?: EventUserGroupPermissionGroup
+  /**
+   * Users who have permission to join this group. Only present if
+   * this user group permission setting changed
+   * @since Zulip 10.0 (feature level 301)
+   */
+  can_join_group?: EventUserGroupPermissionGroup
+  /**
+   * Users who have permission to leave this group. Only present if
+   * this user group permission setting changed
+   * @since Zulip 10.0 (feature level 308)
+   */
+  can_leave_group?: EventUserGroupPermissionGroup
+  /**
+   * Users who have permission to manage this group. Only present if
+   * this user group permission setting changed
+   * @since Zulip 10.0 (feature level 283)
+   */
+  can_manage_group?: EventUserGroupPermissionGroup
+  /**
+   * Users who have permission to mention this user group. Only present if
+   * this user group permission setting changed
+   * @since Zulip 8.0 (feature level 191)
+   */
+  can_mention_group?: EventUserGroupPermissionGroup
+  /**
+   * Users who have permission to remove members from this group. Only present if
+   * this user group permission setting changed
+   * @since Zulip 10.0 (feature level 324)
+   */
+  can_remove_members_group?: EventUserGroupPermissionGroup
+  /**
+   * Whether the user group is deactivated
+   * @since Zulip 10.0 (feature level 290)
+   */
+  deactivated?: boolean
+}
+
+/**
  * User group update event
  * @see https://zulip.com/api/get-events#user_group-update
  */
 export type UserGroupUpdateEvent = EventItemCommon & {
+  /**
+   * The event's type
+   */
   type: 'user_group'
+  /**
+   * The operation of the event
+   */
   op: 'update'
   /**
    * The ID of the user group whose details have changed
@@ -1499,17 +2062,7 @@ export type UserGroupUpdateEvent = EventItemCommon & {
   /**
    * Dictionary containing the changed details of the user group
    */
-  data: {
-    name?: string
-    description?: string
-    can_add_members_group?: EventUserGroupPermissionGroup
-    can_join_group?: EventUserGroupPermissionGroup
-    can_leave_group?: EventUserGroupPermissionGroup
-    can_manage_group?: EventUserGroupPermissionGroup
-    can_mention_group?: EventUserGroupPermissionGroup
-    can_remove_members_group?: EventUserGroupPermissionGroup
-    deactivated?: boolean
-  }
+  data: UserGroupUpdateEventData
 }
 
 /**
@@ -1517,7 +2070,13 @@ export type UserGroupUpdateEvent = EventItemCommon & {
  * @see https://zulip.com/api/get-events#user_group-add_members
  */
 export type UserGroupAddMembersEvent = EventItemCommon & {
+  /**
+   * The event's type
+   */
   type: 'user_group'
+  /**
+   * The operation of the event
+   */
   op: 'add_members'
   /**
    * The ID of the user group with new members
@@ -1534,7 +2093,13 @@ export type UserGroupAddMembersEvent = EventItemCommon & {
  * @see https://zulip.com/api/get-events#user_group-remove_members
  */
 export type UserGroupRemoveMembersEvent = EventItemCommon & {
+  /**
+   * The event's type
+   */
   type: 'user_group'
+  /**
+   * The operation of the event
+   */
   op: 'remove_members'
   /**
    * The ID of the user group whose details have changed
@@ -1552,14 +2117,20 @@ export type UserGroupRemoveMembersEvent = EventItemCommon & {
  * @since Zulip 6.0 (feature level 127)
  */
 export type UserGroupAddSubgroupsEvent = EventItemCommon & {
+  /**
+   * The event's type
+   */
   type: 'user_group'
+  /**
+   * The operation of the event
+   */
   op: 'add_subgroups'
   /**
    * The ID of the user group whose details have changed
    */
   group_id: number
   /**
-   * Array containing the IDs of the subgroups that have been added
+   * IDs of the subgroups that have been added
    */
   direct_subgroup_ids: number[]
 }
@@ -1570,14 +2141,20 @@ export type UserGroupAddSubgroupsEvent = EventItemCommon & {
  * @since Zulip 6.0 (feature level 127)
  */
 export type UserGroupRemoveSubgroupsEvent = EventItemCommon & {
+  /**
+   * The event's type
+   */
   type: 'user_group'
+  /**
+   * The operation of the event
+   */
   op: 'remove_subgroups'
   /**
    * The ID of the user group whose details have changed
    */
   group_id: number
   /**
-   * Array containing the IDs of the subgroups that have been removed
+   * IDs of the subgroups that have been removed
    */
   direct_subgroup_ids: number[]
 }
@@ -1587,7 +2164,13 @@ export type UserGroupRemoveSubgroupsEvent = EventItemCommon & {
  * @see https://zulip.com/api/get-events#user_group-remove
  */
 export type UserGroupRemoveEvent = EventItemCommon & {
+  /**
+   * The event's type
+   */
   type: 'user_group'
+  /**
+   * The operation of the event
+   */
   op: 'remove'
   /**
    * The ID of the group which has been deleted
@@ -1601,7 +2184,13 @@ export type UserGroupRemoveEvent = EventItemCommon & {
  * @since Zulip 4.0 (feature level 54)
  */
 export type RealmLinkifiersEvent = EventItemCommon & {
+  /**
+   * The event's type
+   */
   type: 'realm_linkifiers'
+  /**
+   * The operation of the event
+   */
   op: never
   /**
    * An ordered array of dictionaries containing details about linkifiers
@@ -1615,11 +2204,16 @@ export type RealmLinkifiersEvent = EventItemCommon & {
  * @deprecated Use `realm_linkifiers` instead
  */
 export type RealmFiltersEvent = EventItemCommon & {
+  /**
+   * The event's type
+   */
   type: 'realm_filters'
+  /**
+   * The operation of the event
+   */
   op: never
   /**
    * An array of tuples [pattern, url_format, id]
-   * @deprecated
    */
   realm_filters: [string, string, number][]
 }
@@ -1629,10 +2223,16 @@ export type RealmFiltersEvent = EventItemCommon & {
  * @see https://zulip.com/api/get-events#realm_playgrounds
  */
 export type RealmPlaygroundsEvent = EventItemCommon & {
+  /**
+   * The event's type
+   */
   type: 'realm_playgrounds'
+  /**
+   * The operation of the event
+   */
   op: never
   /**
-   * An array of dictionaries containing data about code playgrounds
+   * Data about code playgrounds
    */
   realm_playgrounds: EventPlaygroundItem[]
 }
@@ -1642,7 +2242,13 @@ export type RealmPlaygroundsEvent = EventItemCommon & {
  * @see https://zulip.com/api/get-events#realm_emoji-update
  */
 export type RealmEmojiUpdateEvent = EventItemCommon & {
+  /**
+   * The event's type
+   */
   type: 'realm_emoji'
+  /**
+   * The operation of the event
+   */
   op: 'update'
   /**
    * An object in which each key is an emoji ID and the value describes the emoji
@@ -1655,10 +2261,16 @@ export type RealmEmojiUpdateEvent = EventItemCommon & {
  * @see https://zulip.com/api/get-events#realm_domains-add
  */
 export type RealmDomainsAddEvent = EventItemCommon & {
+  /**
+   * The event's type
+   */
   type: 'realm_domains'
+  /**
+   * The operation of the event
+   */
   op: 'add'
   /**
-   * Object containing details of the newly added domain
+   * Details of the newly added domain
    */
   realm_domain: EventRealmDomainItem
 }
@@ -1668,7 +2280,13 @@ export type RealmDomainsAddEvent = EventItemCommon & {
  * @see https://zulip.com/api/get-events#realm_domains-change
  */
 export type RealmDomainsChangeEvent = EventItemCommon & {
+  /**
+   * The event's type
+   */
   type: 'realm_domains'
+  /**
+   * The operation of the event
+   */
   op: 'change'
   /**
    * Object containing details of the edited domain
@@ -1681,7 +2299,13 @@ export type RealmDomainsChangeEvent = EventItemCommon & {
  * @see https://zulip.com/api/get-events#realm_domains-remove
  */
 export type RealmDomainsRemoveEvent = EventItemCommon & {
+  /**
+   * The event's type
+   */
   type: 'realm_domains'
+  /**
+   * The operation of the event
+   */
   op: 'remove'
   /**
    * The domain that was removed
@@ -1694,7 +2318,13 @@ export type RealmDomainsRemoveEvent = EventItemCommon & {
  * @see https://zulip.com/api/get-events#realm_export
  */
 export type RealmExportEvent = EventItemCommon & {
+  /**
+   * The event's type
+   */
   type: 'realm_export'
+  /**
+   * The operation of the event
+   */
   op: never
   /**
    * An array of dictionaries containing details about data exports
@@ -1704,10 +2334,17 @@ export type RealmExportEvent = EventItemCommon & {
 
 /**
  * Realm export consent event
+ * @since Zulip 10.0 (feature level 312)
  * @see https://zulip.com/api/get-events#realm_export_consent
  */
 export type RealmExportConsentEvent = EventItemCommon & {
+  /**
+   * The event's type
+   */
   type: 'realm_export_consent'
+  /**
+   * The operation of the event
+   */
   op: never
   /**
    * The ID of the user whose setting was changed
@@ -1724,18 +2361,18 @@ export type RealmExportConsentEvent = EventItemCommon & {
  * @see https://zulip.com/api/get-events#realm_bot-add
  */
 export type RealmBotAddEvent = EventItemCommon & {
+  /**
+   * The event's type
+   */
   type: 'realm_bot'
+  /**
+   * The operation of the event
+   */
   op: 'add'
   /**
    * Object containing details of the bot
    */
-  bot: EventRealmBotItem & {
-    email: string
-    full_name: string
-    bot_type: BotTypeValues
-    is_active: boolean
-    owner_id?: number | null
-  }
+  bot: EventRealmBotItem
 }
 
 /**
@@ -1743,7 +2380,13 @@ export type RealmBotAddEvent = EventItemCommon & {
  * @see https://zulip.com/api/get-events#realm_bot-update
  */
 export type RealmBotUpdateEvent = EventItemCommon & {
+  /**
+   * The event's type
+   */
   type: 'realm_bot'
+  /**
+   * The operation of the event
+   */
   op: 'update'
   /**
    * Object containing the user ID of the bot and the changed property
@@ -1752,17 +2395,37 @@ export type RealmBotUpdateEvent = EventItemCommon & {
 }
 
 /**
+ * Removed bot for realm bot remove event
+ */
+export type RealmBotRemoveEventRemovedBot = {
+  /**
+   * The user ID of the deactivated bot
+   */
+  user_id: number
+  /**
+   * The full name of the deactivated bot
+   */
+  full_name: string
+}
+
+/**
  * Realm bot remove event (legacy)
  * @see https://zulip.com/api/get-events#realm_bot-remove
- * @deprecated Since Zulip 8.0 (feature level 222)
+ * @deprecated From Zulip 8.0 (feature level 222), use delete op instead
  */
 export type RealmBotRemoveEvent = EventItemCommon & {
+  /**
+   * The event's type
+   */
   type: 'realm_bot'
+  /**
+   * The operation of the event
+   */
   op: 'remove'
   /**
    * Object containing details about the deactivated bot
    */
-  bot: { user_id: number; full_name: string }
+  bot: RealmBotRemoveEventRemovedBot
 }
 
 /**
@@ -1770,12 +2433,18 @@ export type RealmBotRemoveEvent = EventItemCommon & {
  * @see https://zulip.com/api/get-events#realm_bot-delete
  */
 export type RealmBotDeleteEvent = EventItemCommon & {
+  /**
+   * The event's type
+   */
   type: 'realm_bot'
+  /**
+   * The operation of the event
+   */
   op: 'delete'
   /**
-   * Object containing details about the deactivated bot
+   * Object containing details about the deactivated bot user ID
    */
-  bot: { user_id: number; full_name: string }
+  bot: { user_id: number }
 }
 
 /**
@@ -1783,7 +2452,13 @@ export type RealmBotDeleteEvent = EventItemCommon & {
  * @see https://zulip.com/api/get-events#realm-update
  */
 export type RealmUpdateEvent = EventItemCommon & {
+  /**
+   * The event's type
+   */
   type: 'realm'
+  /**
+   * The operation of the event
+   */
   op: 'update'
   /**
    * The name of the property that was changed
@@ -1800,7 +2475,13 @@ export type RealmUpdateEvent = EventItemCommon & {
  * @see https://zulip.com/api/get-events#realm-deactivated
  */
 export type RealmDeactivatedEvent = EventItemCommon & {
+  /**
+   * The event's type
+   */
   type: 'realm'
+  /**
+   * The operation of the event
+   */
   op: 'deactivated'
   /**
    * The ID of the deactivated realm
@@ -1813,18 +2494,27 @@ export type RealmDeactivatedEvent = EventItemCommon & {
  * @see https://zulip.com/api/get-events#restart
  */
 export type RestartEvent = EventItemCommon & {
+  /**
+   * The event's type
+   */
   type: 'restart'
+  /**
+   * The operation of the event
+   */
   op: never
   /**
    * The Zulip version number
+   * @since Zulip 4.0 (feature level 59)
    */
   zulip_version: string
   /**
    * The Zulip merge base number
+   * @since Zulip 5.0 (feature level 88)
    */
   zulip_merge_base: string
   /**
    * The Zulip feature level of the server after the restart
+   * @since Zulip 4.0 (feature level 59)
    */
   zulip_feature_level: number
   /**
@@ -1838,7 +2528,13 @@ export type RestartEvent = EventItemCommon & {
  * @see https://zulip.com/api/get-events#web_reload_client
  */
 export type WebReloadClientEvent = EventItemCommon & {
+  /**
+   * The event's type
+   */
   type: 'web_reload_client'
+  /**
+   * The operation of the event
+   */
   op: never
   /**
    * Whether the client should fetch a new event queue immediately
@@ -1851,13 +2547,19 @@ export type WebReloadClientEvent = EventItemCommon & {
  * @see https://zulip.com/api/get-events#realm-update_dict
  */
 export type RealmUpdateDictEvent = EventItemCommon & {
+  /**
+   * The event's type
+   */
   type: 'realm'
+  /**
+   * The operation of the event
+   */
   op: 'update_dict'
   /**
    * Always `"default"`. Present for backwards-compatibility.
    * @deprecated
    */
-  property?: string
+  property: 'default'
   /**
    * An object containing the properties that have changed
    */

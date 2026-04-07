@@ -3027,7 +3027,13 @@ export type RealmUpdateDictEvent = EventItemCommon & {
  * @see https://zulip.com/api/get-events#realm_user_settings_defaults-update
  */
 export type RealmUserSettingsDefaultsUpdateEvent = EventItemCommon & {
+  /**
+   * The event's type
+   */
   type: 'realm_user_settings_defaults'
+  /**
+   * The operation of the event
+   */
   op: 'update'
   /**
    * The name of the property that was changed
@@ -3044,7 +3050,13 @@ export type RealmUserSettingsDefaultsUpdateEvent = EventItemCommon & {
  * @see https://zulip.com/api/get-events#drafts-add
  */
 export type DraftsAddEvent = EventItemCommon & {
+  /**
+   * The event's type
+   */
   type: 'drafts'
+  /**
+   * The operation of the event
+   */
   op: 'add'
   /**
    * An array containing objects for the newly created drafts
@@ -3057,7 +3069,13 @@ export type DraftsAddEvent = EventItemCommon & {
  * @see https://zulip.com/api/get-events#drafts-update
  */
 export type DraftsUpdateEvent = EventItemCommon & {
+  /**
+   * The event's type
+   */
   type: 'drafts'
+  /**
+   * The operation of the event
+   */
   op: 'update'
   /**
    * A dictionary representing the updated message draft
@@ -3070,7 +3088,13 @@ export type DraftsUpdateEvent = EventItemCommon & {
  * @see https://zulip.com/api/get-events#drafts-remove
  */
 export type DraftsRemoveEvent = EventItemCommon & {
+  /**
+   * The event's type
+   */
   type: 'drafts'
+  /**
+   * The operation of the event
+   */
   op: 'remove'
   /**
    * The ID of the draft that was deleted
@@ -3084,7 +3108,13 @@ export type DraftsRemoveEvent = EventItemCommon & {
  * @since Zulip 11.0 (feature level 390)
  */
 export type NavigationViewAddEvent = EventItemCommon & {
+  /**
+   * The event's type
+   */
   type: 'navigation_view'
+  /**
+   * The operation of the event
+   */
   op: 'add'
   /**
    * Represents a user's personal configuration for a specific navigation view
@@ -3098,7 +3128,13 @@ export type NavigationViewAddEvent = EventItemCommon & {
  * @since Zulip 11.0 (feature level 390)
  */
 export type NavigationViewUpdateEvent = EventItemCommon & {
+  /**
+   * The event's type
+   */
   type: 'navigation_view'
+  /**
+   * The operation of the event
+   */
   op: 'update'
   /**
    * The unique URL hash of the navigation view being updated
@@ -3116,7 +3152,13 @@ export type NavigationViewUpdateEvent = EventItemCommon & {
  * @since Zulip 11.0 (feature level 390)
  */
 export type NavigationViewRemoveEvent = EventItemCommon & {
+  /**
+   * The event's type
+   */
   type: 'navigation_view'
+  /**
+   * The operation of the event
+   */
   op: 'remove'
   /**
    * The unique URL hash of the navigation view that was deleted
@@ -3130,7 +3172,13 @@ export type NavigationViewRemoveEvent = EventItemCommon & {
  * @since Zulip 10.0 (feature level 297)
  */
 export type SavedSnippetsAddEvent = EventItemCommon & {
+  /**
+   * The event's type
+   */
   type: 'saved_snippets'
+  /**
+   * The operation of the event
+   */
   op: 'add'
   /**
    * Object containing the details of the saved snippet
@@ -3144,7 +3192,13 @@ export type SavedSnippetsAddEvent = EventItemCommon & {
  * @since Zulip 10.0 (feature level 297)
  */
 export type SavedSnippetsUpdateEvent = EventItemCommon & {
+  /**
+   * The event's type
+   */
   type: 'saved_snippets'
+  /**
+   * The operation of the event
+   */
   op: 'update'
   /**
    * Object containing the details of the updated saved snippet
@@ -3158,7 +3212,13 @@ export type SavedSnippetsUpdateEvent = EventItemCommon & {
  * @since Zulip 10.0 (feature level 297)
  */
 export type SavedSnippetsRemoveEvent = EventItemCommon & {
+  /**
+   * The event's type
+   */
   type: 'saved_snippets'
+  /**
+   * The operation of the event
+   */
   op: 'remove'
   /**
    * The ID of the saved snippet that was deleted
@@ -3172,7 +3232,13 @@ export type SavedSnippetsRemoveEvent = EventItemCommon & {
  * @since Zulip 11.0 (feature level 399)
  */
 export type RemindersAddEvent = EventItemCommon & {
+  /**
+   * The event's type
+   */
   type: 'reminders'
+  /**
+   * The operation of the event
+   */
   op: 'add'
   /**
    * An array of objects containing details of the newly created reminders
@@ -3186,7 +3252,13 @@ export type RemindersAddEvent = EventItemCommon & {
  * @since Zulip 11.0 (feature level 399)
  */
 export type RemindersRemoveEvent = EventItemCommon & {
+  /**
+   * The event's type
+   */
   type: 'reminders'
+  /**
+   * The operation of the event
+   */
   op: 'remove'
   /**
    * The ID of the reminder that was deleted
@@ -3200,7 +3272,13 @@ export type RemindersRemoveEvent = EventItemCommon & {
  * @since Zulip 7.0 (feature level 179)
  */
 export type ScheduledMessagesAddEvent = EventItemCommon & {
+  /**
+   * The event's type
+   */
   type: 'scheduled_messages'
+  /**
+   * The operation of the event
+   */
   op: 'add'
   /**
    * An array of objects containing details of the newly created scheduled messages
@@ -3214,7 +3292,13 @@ export type ScheduledMessagesAddEvent = EventItemCommon & {
  * @since Zulip 7.0 (feature level 179)
  */
 export type ScheduledMessagesUpdateEvent = EventItemCommon & {
+  /**
+   * The event's type
+   */
   type: 'scheduled_messages'
+  /**
+   * The operation of the event
+   */
   op: 'update'
   /**
    * Object containing details of the updated scheduled message
@@ -3228,7 +3312,13 @@ export type ScheduledMessagesUpdateEvent = EventItemCommon & {
  * @since Zulip 7.0 (feature level 179)
  */
 export type ScheduledMessagesRemoveEvent = EventItemCommon & {
+  /**
+   * The event's type
+   */
   type: 'scheduled_messages'
+  /**
+   * The operation of the event
+   */
   op: 'remove'
   /**
    * The ID of the scheduled message that was deleted
@@ -3242,7 +3332,13 @@ export type ScheduledMessagesRemoveEvent = EventItemCommon & {
  * @since Zulip 11.0 (feature level 389)
  */
 export type ChannelFolderAddEvent = EventItemCommon & {
+  /**
+   * The event's type
+   */
   type: 'channel_folder'
+  /**
+   * The operation of the event
+   */
   op: 'add'
   /**
    * Object containing the channel folder's attributes
@@ -3256,7 +3352,13 @@ export type ChannelFolderAddEvent = EventItemCommon & {
  * @since Zulip 11.0 (feature level 389)
  */
 export type ChannelFolderUpdateEvent = EventItemCommon & {
+  /**
+   * The event's type
+   */
   type: 'channel_folder'
+  /**
+   * The operation of the event
+   */
   op: 'update'
   /**
    * ID of the updated channel folder
@@ -3265,7 +3367,12 @@ export type ChannelFolderUpdateEvent = EventItemCommon & {
   /**
    * Dictionary containing the changed details of the channel folder
    */
-  data: Partial<Omit<GetChannelFoldersResponseItem, 'id'>>
+  data: Partial<
+    Omit<
+      GetChannelFoldersResponseItem,
+      'id' | 'date_created' | 'creator_id' | 'order'
+    >
+  >
 }
 
 /**
@@ -3274,7 +3381,13 @@ export type ChannelFolderUpdateEvent = EventItemCommon & {
  * @since Zulip 11.0 (feature level 418)
  */
 export type ChannelFolderReorderEvent = EventItemCommon & {
+  /**
+   * The event's type
+   */
   type: 'channel_folder'
+  /**
+   * The operation of the event
+   */
   op: 'reorder'
   /**
    * A list of channel folder IDs representing the new order

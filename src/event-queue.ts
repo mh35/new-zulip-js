@@ -56,6 +56,7 @@ import {
   UpdateUserSettingsParamsWebAnimateImagePreviewsValues,
   UpdateUserSettingsParamsWebHomeViewValues,
 } from './user/user'
+import type { ZulipEvent } from './event-types'
 
 /**
  * Zulip event types
@@ -2717,6 +2718,22 @@ export type GetEventsFromEventQueueParams = {
    * @see https://zulip.com/api/get-events#parameter-dont_block
    */
   dont_block?: boolean
+}
+
+/**
+ * The response of GetEventsFromEventQueue API
+ * @see https://zulip.com/api/get-events#response
+ */
+export type GetEventsFromEventQueueResponse = GeneralSuccessResponse & {
+  /**
+   * IDs newer than last_event_id.
+   * Event IDs are guaranteed to be increasing, but they are not guaranteed to be consecutive
+   */
+  events: ZulipEvent[]
+  /**
+   * The ID of the registered queue
+   */
+  queue_id: string
 }
 
 /**

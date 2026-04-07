@@ -4,7 +4,6 @@ import type { GetChannelsChannel } from './channel/channel'
 import type { GetChannelFoldersResponseItem } from './channel/folder'
 import type { GetSubscriptionsResponseItem } from './channel/subscription'
 import type {
-  BotServiceOutgoingWebhookFormats,
   CreateStreamPolicyValues,
   CreateWebPublicStreamPolicyValues,
   MediaPreviewSizeSettingValues,
@@ -30,6 +29,14 @@ import type {
 import type { GetCustomProfileFieldsItem } from './custom-profile-field'
 import type { GetDraftsResponseItem } from './draft'
 import type { GetEmojisResponseItem } from './emoji'
+import type {
+  EventOnboardingStepItem,
+  EventMutedUserItem,
+  EventRealmDomainItem,
+  EventPlaygroundItem,
+  EventRealmBotItem,
+  EventDefaultStreamGroupItem,
+} from './event-types'
 import type { GetLinkifiersItem } from './linkifier'
 import type { GetNavigationViewsResponseItem } from './navigation-view'
 import type { GetRemindersResponseItem } from './reminder'
@@ -49,6 +56,7 @@ import {
   UpdateUserSettingsParamsWebAnimateImagePreviewsValues,
   UpdateUserSettingsParamsWebHomeViewValues,
 } from './user/user'
+import type { ZulipEvent } from './event-types'
 
 /**
  * Zulip event types
@@ -273,137 +281,6 @@ export type EventCustomFieldTypeItem = {
    * The name of the custom profile field type
    */
   name: string
-}
-
-/**
- * A single onboarding step that should be shown to the user
- */
-export type EventOnboardingStepItem = {
-  /**
-   * The type of the onboarding step. Currently, only one_time_notice is the valid value
-   * @since Zulip 8.0 (feature level 233)
-   */
-  type: 'one_time_notice'
-  /**
-   * The name of the onboarding step
-   */
-  name: string
-}
-
-/**
- * Muted user information
- * @since Zulip 4.0 (feature level 48)
- */
-export type EventMutedUserItem = {
-  /**
-   * The ID of the muted user
-   */
-  id: number
-  /**
-   * UNIX timestamp representing when the user was muted
-   */
-  timestamp: number
-}
-
-/**
- * Realm domain information
- */
-export type EventRealmDomainItem = {
-  /**
-   * The new allowed domain
-   */
-  domain: string
-  /**
-   * Whether subdomains are allowed for this domain
-   */
-  allow_subdomains: true
-}
-
-/**
- * Realm playground information
- * @since Zulip 4.0 (feature level 49)
- */
-export type EventPlaygroundItem = {
-  /**
-   * ID for the realm playground
-   */
-  id: number
-  /**
-   * The user-visible display name of the playground
-   */
-  name: string
-  /**
-   * The name of the Pygments language lexer
-   */
-  pygments_language: string
-  /**
-   * URL template for the playground
-   * @since Zulip 8.0 (feature level 196)
-   */
-  url_template: string
-}
-
-/**
- * Bot service for outgoing webhook
- */
-export type EventBotOutgoingWebhookService = {
-  /**
-   * The URL the outgoing webhook is configured to post to
-   */
-  base_url: string
-  /**
-   * Token that the third-party service can use to confirm that the
-   * request is indeed coming from Zulip
-   */
-  token: string
-  /**
-   * What format requests are posted in
-   *
-   * - 1: Zulip's native outgoing webhook format
-   * - 2: Emulate the Slack outgoing webhook format
-   */
-  interface: BotServiceOutgoingWebhookFormats
-}
-
-/**
- * Bot service for embedded service
- */
-export type EventRealmBotEmbeddedService = {
-  /**
-   * The name of the bot
-   */
-  service_name: string
-  /**
-   * A dictionary of string key/value pairs, which describe the configuration
-   * for the bot
-   */
-  config_data: Record<string, string>
-}
-
-export type EventRealmBotItem = {
-  /**
-   * The user ID of the bot
-   */
-  user_id: number
-  /**
-   * The default sending channel of the bot. If this value is null,
-   * no default channel
-   */
-  default_sending_stream: string | null
-  /**
-   * The default channel for which the bot receives events/register data.
-   * If this value is null, no default channel
-   */
-  default_events_register_stream: string | null
-  /**
-   * Whether the bot can send messages to all channels by default
-   */
-  default_all_public_streams: boolean
-  /**
-   * An array containing extra configuration fields only relevant for outgoing
-   * webhook bots and embedded bots. This is always a single-element array
-   */
-  services?: [EventBotOutgoingWebhookService | EventRealmBotEmbeddedService]
 }
 
 /**
@@ -841,28 +718,6 @@ export type EventUnreadMsgs = {
 }
 
 /**
- * Default channel group
- */
-export type EventDefaultStreamGroupItem = {
-  /**
-   * Name of the default channel group
-   */
-  name: string
-  /**
-   * Description of the default channel group
-   */
-  description: string
-  /**
-   * ID of the default channel group
-   */
-  id: number
-  /**
-   * IDs of all the channels in the default stream group
-   */
-  streams: number[]
-}
-
-/**
  * Emoji set supported by this version of the Zulip server
  */
 export type EventEmojisetChoiceItem = {
@@ -1278,7 +1133,7 @@ export type EventUserSettings = {
 /**
  * User topic settings item
  */
-export type EventUserTopic = {
+export type EventUserTopicInit = {
   /**
    * Channel ID
    */
@@ -1301,7 +1156,7 @@ export type EventUserTopic = {
  * User's logged-in device
  * @since Zulip 12.0 (feature level 468)
  */
-export type EventDeviceItem = {
+export type EventDeviceItemInit = {
   /**
    * ID to reference the encryption key
    */
@@ -1743,7 +1598,7 @@ export type RegisterEventQueueResponse = GeneralSuccessResponse & {
    * Domains within which users can join the organization without and invitation.
    * Exists only if fetch_event_types includes realm_domains
    */
-  realm_domains?: EventRealmDomainItem
+  realm_domains?: EventRealmDomainItem[]
   /**
    * Custom emojis that has been uploaded in this organization.
    * Exists only if fetch_event_types includes realm_emoji
@@ -1876,7 +1731,7 @@ export type RegisterEventQueueResponse = GeneralSuccessResponse & {
    * Exists only if fetch_event_types includes user_topic
    * @since Zulip 6.0 (feature level 134)
    */
-  user_topics?: EventUserTopic[]
+  user_topics?: EventUserTopicInit[]
   /**
    * Whether the user has a Zoom token and has thus completed OAuth flow
    * for the Zoom integration.
@@ -1900,7 +1755,7 @@ export type RegisterEventQueueResponse = GeneralSuccessResponse & {
    * Exists only if fetch_event_types includes device
    * @since Zulip 12.0 (feature level 468)
    */
-  devices?: Record<string, EventDeviceItem>
+  devices?: Record<string, EventDeviceItemInit>
   /**
    * Whether the user is configured to receive typing notifications from other users.
    * @since Zulip 9.0 (feature level 253)
@@ -2844,6 +2699,44 @@ export type DeleteEventQueueParams = {
 }
 
 /**
+ * Parameters for GetEventsFromEventQueue API
+ * @see https://zulip.com/api/get-events#parameters
+ */
+export type GetEventsFromEventQueueParams = {
+  /**
+   * The ID of an event queue that was previously registered via RegisterEventQueue API
+   * @see https://zulip.com/api/get-events#parameter-queue_id
+   */
+  queue_id: string
+  /**
+   * The highest event ID in this queue that you've received and wish to acknowledge.
+   * @see https://zulip.com/api/get-events#parameter-last_event_id
+   */
+  last_event_id?: number
+  /**
+   * Set to true if the client is requesting a nonblocking reply. Default is false
+   * @see https://zulip.com/api/get-events#parameter-dont_block
+   */
+  dont_block?: boolean
+}
+
+/**
+ * The response of GetEventsFromEventQueue API
+ * @see https://zulip.com/api/get-events#response
+ */
+export type GetEventsFromEventQueueResponse = GeneralSuccessResponse & {
+  /**
+   * IDs newer than last_event_id.
+   * Event IDs are guaranteed to be increasing, but they are not guaranteed to be consecutive
+   */
+  events: ZulipEvent[]
+  /**
+   * The ID of the registered queue
+   */
+  queue_id: string
+}
+
+/**
  * Register a Zulip event queue
  * @param client Axios client initialized by generateCallApi function in api.ts
  * @param params API parameters
@@ -2886,6 +2779,31 @@ export async function deleteEventQueue(
 
   const resp = await client.delete<GeneralSuccessResponse>('/events', {
     data: body,
+  })
+
+  return resp.data
+}
+
+/**
+ * Get events from event queue
+ * @param client Axios client initialized by generateCallApi function in api.ts
+ * @param params API parameters
+ * @returns The response of GetEventsFromEventQueue API
+ * @see https://zulip.com/api/get-events
+ */
+export async function getEventsFromEventQueue(
+  client: AxiosInstance,
+  params: GetEventsFromEventQueueParams,
+) {
+  const sendParams = {} as Record<string, string>
+  for (const [key, value] of Object.entries(params)) {
+    if (value === undefined || value === null) {
+      continue
+    }
+    sendParams[key] = String(value)
+  }
+  const resp = await client.get<GetEventsFromEventQueueResponse>('/events', {
+    params: sendParams,
   })
 
   return resp.data

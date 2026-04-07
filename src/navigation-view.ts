@@ -87,8 +87,14 @@ export type EditNavigationViewParams =
  * @since Zulip 11.0 (feature level 390)
  * @see https://zulip.com/api/get-navigation-views
  */
-export async function getNavigationViews(client: AxiosInstance) {
-  const resp = await client.get<GetNavigationViewsResponse>('/navigation_views')
+export async function getNavigationViews(
+  client: AxiosInstance,
+  signal?: AbortSignal,
+) {
+  const resp = await client.get<GetNavigationViewsResponse>(
+    '/navigation_views',
+    { signal },
+  )
 
   return resp.data
 }
@@ -104,6 +110,7 @@ export async function getNavigationViews(client: AxiosInstance) {
 export async function addNavigationView(
   client: AxiosInstance,
   params: AddNavigationViewParams,
+  signal?: AbortSignal,
 ) {
   const body = new URLSearchParams()
 
@@ -124,6 +131,7 @@ export async function addNavigationView(
   const resp = await client.post<GeneralSuccessResponse>(
     '/navigation_views',
     body,
+    { signal },
   )
 
   return resp.data
@@ -142,6 +150,7 @@ export async function editNavigationView(
   client: AxiosInstance,
   fragment: string,
   params: EditNavigationViewParams,
+  signal?: AbortSignal,
 ) {
   const body = new URLSearchParams()
 
@@ -161,6 +170,7 @@ export async function editNavigationView(
   const resp = await client.patch<GeneralSuccessResponse>(
     `/navigation_views/${encodeURIComponent(fragment)}`,
     body,
+    { signal },
   )
 
   return resp.data
@@ -177,9 +187,11 @@ export async function editNavigationView(
 export async function removeNavigationView(
   client: AxiosInstance,
   fragment: string,
+  signal?: AbortSignal,
 ) {
   const resp = await client.delete<GeneralSuccessResponse>(
     `/navigation_views/${encodeURIComponent(fragment)}`,
+    { signal },
   )
 
   return resp.data

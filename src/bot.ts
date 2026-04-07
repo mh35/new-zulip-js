@@ -27,9 +27,14 @@ export type RegenerateBotApiKeyResponse = GetBotApiKeyResponse
  * @since Zulip 12.0 (feature level 463)
  * @see https://zulip.com/api/get-bot-api-key
  */
-export async function getBotApiKey(client: AxiosInstance, botUserId: number) {
+export async function getBotApiKey(
+  client: AxiosInstance,
+  botUserId: number,
+  signal?: AbortSignal,
+) {
   const resp = await client.get<GetBotApiKeyResponse>(
     `/bots/${botUserId}/api_key`,
+    { signal },
   )
 
   return resp.data
@@ -45,10 +50,12 @@ export async function getBotApiKey(client: AxiosInstance, botUserId: number) {
 export async function regenerateBotApiKey(
   client: AxiosInstance,
   botUserId: number,
+  signal?: AbortSignal,
 ) {
   const resp = await client.post<RegenerateBotApiKeyResponse>(
     `/bots/${botUserId}/api_key/regenerate`,
     new URLSearchParams(),
+    { signal },
   )
 
   return resp.data

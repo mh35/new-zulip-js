@@ -84,6 +84,7 @@ export type UnregisterFcmTokenParams = {
 export async function sendTestMobileNotification(
   client: AxiosInstance,
   params: SendTestMobileNotificationParams = {},
+  signal?: AbortSignal,
 ) {
   const body = new URLSearchParams()
   if (params.token !== undefined) {
@@ -93,6 +94,7 @@ export async function sendTestMobileNotification(
   const resp = await client.post<GeneralSuccessResponse>(
     '/mobile_push/test_notification',
     body,
+    { signal },
   )
 
   return resp.data
@@ -109,12 +111,14 @@ export async function sendTestMobileNotification(
 export async function registerApnsToken(
   client: AxiosInstance,
   params: RegisterApnsTokenParams,
+  signal?: AbortSignal,
 ) {
   const body = new URLSearchParams(params)
 
   const resp = await client.post<GeneralSuccessResponse>(
     '/users/me/apns_device_token',
     body,
+    { signal },
   )
 
   return resp.data
@@ -131,6 +135,7 @@ export async function registerApnsToken(
 export async function unregisterApnsToken(
   client: AxiosInstance,
   params: UnregisterApnsTokenParams,
+  signal?: AbortSignal,
 ) {
   const body = new URLSearchParams(params)
 
@@ -138,6 +143,7 @@ export async function unregisterApnsToken(
     '/users/me/apns_device_token',
     {
       data: body,
+      signal,
     },
   )
 
@@ -155,12 +161,14 @@ export async function unregisterApnsToken(
 export async function registerFcmToken(
   client: AxiosInstance,
   params: RegisterFcmTokenParams,
+  signal?: AbortSignal,
 ) {
   const body = new URLSearchParams(params)
 
   const resp = await client.post<GeneralSuccessResponse>(
     '/users/me/android_gcm_reg_id',
     body,
+    { signal },
   )
 
   return resp.data
@@ -177,6 +185,7 @@ export async function registerFcmToken(
 export async function unregisterFcmToken(
   client: AxiosInstance,
   params: UnregisterFcmTokenParams,
+  signal?: AbortSignal,
 ) {
   const body = new URLSearchParams(params)
 
@@ -184,6 +193,7 @@ export async function unregisterFcmToken(
     '/users/me/android_gcm_reg_id',
     {
       data: body,
+      signal,
     },
   )
 

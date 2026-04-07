@@ -37,12 +37,14 @@ export type TestWelcomeBotCustomMessageResponse = GeneralSuccessResponse & {
 export async function testWelcomeBotCustomMessage(
   client: AxiosInstance,
   params: TestWelcomeBotCustomMessageParams,
+  signal?: AbortSignal,
 ) {
   const body = new URLSearchParams(params)
 
   const resp = await client.post<TestWelcomeBotCustomMessageResponse>(
     '/realm/test_welcome_bot_custom_message',
     body,
+    { signal },
   )
 
   return resp.data

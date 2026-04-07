@@ -118,8 +118,11 @@ export type EditDraftParams = {
  * @returns The response of GetDrafts API
  * @see https://zulip.com/api/get-drafts
  */
-export async function getDrafts(client: AxiosInstance) {
-  const resp = await client.get<GetDraftsResponse>('/drafts')
+export async function getDrafts(
+  client: AxiosInstance,
+  signal?: AbortSignal,
+) {
+  const resp = await client.get<GetDraftsResponse>('/drafts', { signal })
 
   return resp.data
 }
@@ -134,12 +137,15 @@ export async function getDrafts(client: AxiosInstance) {
 export async function createDrafts(
   client: AxiosInstance,
   params: CreateDraftsParams,
+  signal?: AbortSignal,
 ) {
   const body = new URLSearchParams()
 
   body.append('drafts', JSON.stringify(params.drafts))
 
-  const resp = await client.post<CreateDraftsResponse>('/drafts', body)
+  const resp = await client.post<CreateDraftsResponse>('/drafts', body, {
+    signal,
+  })
 
   return resp.data
 }
@@ -156,6 +162,7 @@ export async function editDraft(
   client: AxiosInstance,
   draftId: number,
   params: EditDraftParams,
+  signal?: AbortSignal,
 ) {
   const body = new URLSearchParams()
 
@@ -164,6 +171,7 @@ export async function editDraft(
   const resp = await client.patch<GeneralSuccessResponse>(
     `/drafts/${draftId}`,
     body,
+    { signal },
   )
 
   return resp.data
@@ -176,8 +184,15 @@ export async function editDraft(
  * @returns The response of DeleteDraft API
  * @see https://zulip.com/api/delete-draft
  */
-export async function deleteDraft(client: AxiosInstance, draftId: number) {
-  const resp = await client.delete<GeneralSuccessResponse>(`/drafts/${draftId}`)
+export async function deleteDraft(
+  client: AxiosInstance,
+  draftId: number,
+  signal?: AbortSignal,
+) {
+  const resp = await client.delete<GeneralSuccessResponse>(
+    `/drafts/${draftId}`,
+    { signal },
+  )
 
   return resp.data
 }

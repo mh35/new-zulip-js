@@ -48,12 +48,14 @@ export type AddCodePlaygroundResponse = GeneralSuccessResponse & {
 export async function addCodePlayground(
   client: AxiosInstance,
   params: AddCodePlaygroundParams,
+  signal?: AbortSignal,
 ) {
   const body = new URLSearchParams(params)
 
   const resp = await client.post<AddCodePlaygroundParams>(
     '/realm/playgrounds',
     body,
+    { signal },
   )
 
   return resp.data
@@ -70,9 +72,11 @@ export async function addCodePlayground(
 export async function removeCodePlayground(
   client: AxiosInstance,
   playgroundId: number,
+  signal?: AbortSignal,
 ) {
   const resp = await client.delete<GeneralSuccessResponse>(
     `/realm/playgrounds/${playgroundId}`,
+    { signal },
   )
   return resp.data
 }

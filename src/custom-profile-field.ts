@@ -509,9 +509,13 @@ export type CreateCustomProfileFieldResponse = GeneralSuccessResponse & {
  * @returns The response of GetCustomProfileFields API
  * @see https://zulip.com/api/get-custom-profile-fields
  */
-export async function getCustomProfileFields(client: AxiosInstance) {
+export async function getCustomProfileFields(
+  client: AxiosInstance,
+  signal?: AbortSignal,
+) {
   const resp = await client.get<GetCusomProfileFieldsResponse>(
     '/realm/profile_fields',
+    { signal },
   )
 
   return resp.data
@@ -527,6 +531,7 @@ export async function getCustomProfileFields(client: AxiosInstance) {
 export async function reorderCustomProfileFields(
   client: AxiosInstance,
   params: ReorderCustomProfileFieldsParams,
+  signal?: AbortSignal,
 ) {
   const body = new URLSearchParams({
     order: JSON.stringify(params.order),
@@ -535,6 +540,7 @@ export async function reorderCustomProfileFields(
   const resp = await client.patch<GeneralSuccessResponse>(
     '/realm/profile_fields',
     body,
+    { signal },
   )
 
   return resp.data
@@ -550,6 +556,7 @@ export async function reorderCustomProfileFields(
 export async function createCustomProfileField(
   client: AxiosInstance,
   params: CreateCustomProfileFieldParams,
+  signal?: AbortSignal,
 ) {
   const body = new URLSearchParams()
   for (const [key, value] of Object.entries(params)) {
@@ -569,6 +576,7 @@ export async function createCustomProfileField(
   const resp = await client.post<CreateCustomProfileFieldResponse>(
     '/realm/profile_fields',
     body,
+    { signal },
   )
 
   return resp.data

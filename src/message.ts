@@ -1727,6 +1727,7 @@ export type ReportMessageParams =
 export async function sendMessage(
   client: AxiosInstance,
   params: SendMessageParams,
+  signal?: AbortSignal,
 ) {
   const body = new URLSearchParams()
 
@@ -1747,7 +1748,9 @@ export async function sendMessage(
     }
   }
 
-  const response = await client.post<SendMessageResponse>('/messages', body)
+  const response = await client.post<SendMessageResponse>('/messages', body, {
+    signal,
+  })
 
   return response.data
 }
@@ -1759,13 +1762,18 @@ export async function sendMessage(
  * @returns The response of UploadFile API.
  * @see https://zulip.com/api/upload-file
  */
-export async function uploadFile(client: AxiosInstance, file: File) {
+export async function uploadFile(
+  client: AxiosInstance,
+  file: File,
+  signal?: AbortSignal,
+) {
   const formData = new FormData()
   formData.append('filename', file)
 
   const response = await client.post<UploadFileResponse>(
     '/user_uploads',
     formData,
+    { signal },
   )
 
   return response.data
@@ -1783,6 +1791,7 @@ export async function editMesssage(
   client: AxiosInstance,
   messageId: number,
   params: EditMessageParams,
+  signal?: AbortSignal,
 ) {
   const body = new URLSearchParams()
 
@@ -1806,6 +1815,7 @@ export async function editMesssage(
   const response = await client.patch<EditMessageResponse>(
     `/messages/${messageId}`,
     body,
+    { signal },
   )
 
   return response.data
@@ -1818,9 +1828,14 @@ export async function editMesssage(
  * @returns The response of the DeleteMessage API.
  * @see https://zulip.com/api/delete-message
  */
-export async function deleteMessage(client: AxiosInstance, messageId: number) {
+export async function deleteMessage(
+  client: AxiosInstance,
+  messageId: number,
+  signal?: AbortSignal,
+) {
   const response = await client.delete<GeneralSuccessResponse>(
     `/messages/${messageId}`,
+    { signal },
   )
 
   return response.data
@@ -1836,6 +1851,7 @@ export async function deleteMessage(client: AxiosInstance, messageId: number) {
 export async function getMessages(
   client: AxiosInstance,
   params: GetMessagesParams,
+  signal?: AbortSignal,
 ) {
   const sendParams = {} as Record<string, string>
   for (const [key, value] of Object.entries(params)) {
@@ -1856,6 +1872,7 @@ export async function getMessages(
   }
   const response = await client.get<GetMessagesResponse>('/messages', {
     params: sendParams,
+    signal,
   })
 
   return response.data
@@ -1873,11 +1890,13 @@ export async function addReaction(
   client: AxiosInstance,
   messageId: number,
   params: AddReactionParams,
+  signal?: AbortSignal,
 ) {
   const body = new URLSearchParams(params)
   const response = await client.post<GeneralSuccessResponse>(
     `/messages/${messageId}/reactions`,
     body,
+    { signal },
   )
 
   return response.data
@@ -1895,11 +1914,13 @@ export async function removeReaction(
   client: AxiosInstance,
   messageId: number,
   params: RemoveReactionParams = {},
+  signal?: AbortSignal,
 ) {
   const body = new URLSearchParams(params)
   if (body.size === 0) {
     const response = await client.delete<GeneralSuccessResponse>(
       `/messages/${messageId}/reactions`,
+      { signal },
     )
     return response.data
   } else {
@@ -1907,6 +1928,7 @@ export async function removeReaction(
       `/messages/${messageId}/reactions`,
       {
         data: body,
+        signal,
       },
     )
     return response.data
@@ -1923,11 +1945,13 @@ export async function removeReaction(
 export async function renderMessage(
   client: AxiosInstance,
   params: RenderMessageParams,
+  signal?: AbortSignal,
 ) {
   const body = new URLSearchParams(params)
   const response = await client.post<RenderMessageResponse>(
     '/messages/render',
     body,
+    { signal },
   )
 
   return response.data
@@ -1945,6 +1969,7 @@ export async function getMessage(
   client: AxiosInstance,
   messageId: number,
   params: GetMessageParams = {},
+  signal?: AbortSignal,
 ) {
   const sendParams = {} as Record<string, string>
   for (const [key, value] of Object.entries(params)) {
@@ -1957,6 +1982,7 @@ export async function getMessage(
     `/messages/${messageId}`,
     {
       params: sendParams,
+      signal,
     },
   )
 
@@ -1973,6 +1999,7 @@ export async function getMessage(
 export async function checkMessagesMatchNarrow(
   client: AxiosInstance,
   params: CheckMessagesMatchNarrowParams,
+  signal?: AbortSignal,
 ) {
   const body = new URLSearchParams()
 
@@ -1983,6 +2010,7 @@ export async function checkMessagesMatchNarrow(
   const response = await client.post<CheckMessagesMatchNarrowResponse>(
     '/messages/matches_narrow',
     body,
+    { signal },
   )
   return response.data
 }
@@ -1999,6 +2027,7 @@ export async function getMessageEditHistory(
   client: AxiosInstance,
   messageId: number,
   params: GetMessageHistoryParams = {},
+  signal?: AbortSignal,
 ) {
   const sendParams = {} as Record<string, string>
   for (const [key, value] of Object.entries(params)) {
@@ -2011,6 +2040,7 @@ export async function getMessageEditHistory(
     `/messages/${messageId}/history`,
     {
       params: sendParams,
+      signal,
     },
   )
 
@@ -2027,6 +2057,7 @@ export async function getMessageEditHistory(
 export async function updateMessageFlags(
   client: AxiosInstance,
   params: UpdateMessageFlagsParams,
+  signal?: AbortSignal,
 ) {
   const body = new URLSearchParams()
 
@@ -2049,6 +2080,7 @@ export async function updateMessageFlags(
   const resp = await client.post<UpdateMessageFlagsResponse>(
     '/messages/flags',
     body,
+    { signal },
   )
 
   return resp.data
@@ -2065,6 +2097,7 @@ export async function updateMessageFlags(
 export async function updateMessageFlagsForNarrow(
   client: AxiosInstance,
   params: UpdateMessageFlagsForNarrowParams,
+  signal?: AbortSignal,
 ) {
   const body = new URLSearchParams()
 
@@ -2088,6 +2121,7 @@ export async function updateMessageFlagsForNarrow(
   const resp = await client.post<UpdateMessageFlagsForNarrowResponse>(
     '/messages/flags/narrow',
     body,
+    { signal },
   )
 
   return resp.data
@@ -2100,8 +2134,15 @@ export async function updateMessageFlagsForNarrow(
  * @deprecated Use updateMessageFlagsForNarrow function instead.
  * @see https://zulip.com/api/mark-all-as-read
  */
-export async function markAllAsRead(client: AxiosInstance) {
-  const resp = await client.post<MarkAllAsReadResponse>('/mark_all_as_read')
+export async function markAllAsRead(
+  client: AxiosInstance,
+  signal?: AbortSignal,
+) {
+  const resp = await client.post<MarkAllAsReadResponse>(
+    '/mark_all_as_read',
+    undefined,
+    { signal },
+  )
 
   return resp.data
 }
@@ -2117,6 +2158,7 @@ export async function markAllAsRead(client: AxiosInstance) {
 export async function markStreamAsRead(
   client: AxiosInstance,
   params: MarkStreamAsReadParams,
+  signal?: AbortSignal,
 ) {
   const body = new URLSearchParams()
 
@@ -2126,7 +2168,11 @@ export async function markStreamAsRead(
     }
     body.append(key, String(value))
   }
-  const resp = await client.post<GeneralSuccessResponse>('/mark_stream_as_read')
+  const resp = await client.post<GeneralSuccessResponse>(
+    '/mark_stream_as_read',
+    undefined,
+    { signal },
+  )
 
   return resp.data
 }
@@ -2142,6 +2188,7 @@ export async function markStreamAsRead(
 export async function markTopicAsRead(
   client: AxiosInstance,
   params: MarkTopicAsReadParams,
+  signal?: AbortSignal,
 ) {
   const body = new URLSearchParams()
 
@@ -2151,7 +2198,11 @@ export async function markTopicAsRead(
     }
     body.append(key, String(value))
   }
-  const resp = await client.post<GeneralSuccessResponse>('/mark_topic_as_read')
+  const resp = await client.post<GeneralSuccessResponse>(
+    '/mark_topic_as_read',
+    undefined,
+    { signal },
+  )
 
   return resp.data
 }
@@ -2166,9 +2217,11 @@ export async function markTopicAsRead(
 export async function getReadReceipts(
   client: AxiosInstance,
   messageId: number,
+  signal?: AbortSignal,
 ) {
   const resp = await client.get<GetReadReceiptsResponse>(
     `/messages/${messageId}/read_receipts`,
+    { signal },
   )
 
   return resp.data
@@ -2186,9 +2239,11 @@ export async function getFileTemporaryUrl(
   client: AxiosInstance,
   realmId: number,
   filename: string,
+  signal?: AbortSignal,
 ) {
   const resp = await client.get<GetFileTemporaryUrlResponse>(
     `/user_uploads/${realmId}/${filename}`,
+    { signal },
   )
 
   return resp.data
@@ -2207,6 +2262,7 @@ export async function reportMessage(
   client: AxiosInstance,
   messageId: number,
   params: ReportMessageParams,
+  signal?: AbortSignal,
 ) {
   const body = new URLSearchParams()
 
@@ -2220,6 +2276,7 @@ export async function reportMessage(
   const resp = await client.post<GeneralSuccessResponse>(
     `/messages/${messageId}/report`,
     body,
+    { signal },
   )
 
   return resp.data

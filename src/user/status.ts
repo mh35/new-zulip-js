@@ -713,9 +713,14 @@ export type UpdatePresenceResponse =
  * @since Zulip 9.0 (feature level 262)
  * @see https://zulip.com/api/get-user-status
  */
-export async function getUserStatus(client: AxiosInstance, userId: number) {
+export async function getUserStatus(
+  client: AxiosInstance,
+  userId: number,
+  signal?: AbortSignal,
+) {
   const resp = await client.get<GetUserStatusResponse>(
     `/users/${userId}/status`,
+    { signal },
   )
 
   return resp.data
@@ -731,6 +736,7 @@ export async function getUserStatus(client: AxiosInstance, userId: number) {
 export async function updateStatus(
   client: AxiosInstance,
   params: UpdateStatusParams,
+  signal?: AbortSignal,
 ) {
   const body = new URLSearchParams()
   for (const [key, value] of Object.entries(params)) {
@@ -743,6 +749,7 @@ export async function updateStatus(
   const resp = await client.post<GeneralSuccessResponse>(
     '/users/me/status',
     body,
+    { signal },
   )
 
   return resp.data
@@ -761,12 +768,14 @@ export async function updateUserStatus(
   client: AxiosInstance,
   userId: number,
   params: UpdateUserStatusParams,
+  signal?: AbortSignal,
 ) {
   const body = new URLSearchParams(params)
 
   const resp = await client.post<GeneralSuccessResponse>(
     `/users/${userId}/status`,
     body,
+    { signal },
   )
 
   return resp.data
@@ -782,6 +791,7 @@ export async function updateUserStatus(
 export async function setTypingStatus(
   client: AxiosInstance,
   params: SetTypingStatusParams,
+  signal?: AbortSignal,
 ) {
   const body = new URLSearchParams()
   for (const [key, value] of Object.entries(params)) {
@@ -795,7 +805,9 @@ export async function setTypingStatus(
     }
   }
 
-  const resp = await client.post<GeneralSuccessResponse>('/typing', body)
+  const resp = await client.post<GeneralSuccessResponse>('/typing', body, {
+    signal,
+  })
 
   return resp.data
 }
@@ -813,12 +825,14 @@ export async function setTypingStatusForEdit(
   client: AxiosInstance,
   messageId: number,
   params: SetTypingStatusForEditParams,
+  signal?: AbortSignal,
 ) {
   const body = new URLSearchParams(params)
 
   const resp = await client.post<GeneralSuccessResponse>(
     `/messages/${messageId}/typing`,
     body,
+    { signal },
   )
 
   return resp.data
@@ -834,9 +848,11 @@ export async function setTypingStatusForEdit(
 export async function getUserPresence(
   client: AxiosInstance,
   userIdOrEmail: string | number,
+  signal?: AbortSignal,
 ) {
   const resp = await client.get<GetUserPresenceResponse>(
     `/users/${encodeURIComponent(String(userIdOrEmail))}/presence`,
+    { signal },
   )
 
   return resp.data
@@ -848,8 +864,13 @@ export async function getUserPresence(
  * @returns The response of GetAllUserPresence API
  * @see https://zulip.com/api/get-presence
  */
-export async function getAllUserPresence(client: AxiosInstance) {
-  const resp = await client.get<GetAllUserPresenceResponse>('/realm/presence')
+export async function getAllUserPresence(
+  client: AxiosInstance,
+  signal?: AbortSignal,
+) {
+  const resp = await client.get<GetAllUserPresenceResponse>('/realm/presence', {
+    signal,
+  })
 
   return resp.data
 }
@@ -864,6 +885,7 @@ export async function getAllUserPresence(client: AxiosInstance) {
 export async function updatePresence(
   client: AxiosInstance,
   params: UpdatePresencePingOnlyParams,
+  signal?: AbortSignal,
 ): Promise<UpdatePresenceResponseWithoutPresences>
 /**
  * Update presence with getting slim presence data
@@ -875,6 +897,7 @@ export async function updatePresence(
 export async function updatePresence(
   client: AxiosInstance,
   params: UpdatePresenceSlimParams,
+  signal?: AbortSignal,
 ): Promise<UpdatePresenceResponseWithModernPresence>
 /**
  * Update presence with getting legacy full presence data
@@ -887,10 +910,12 @@ export async function updatePresence(
 export async function updatePresence(
   client: AxiosInstance,
   params: UpdatePresenceLegacyParams,
+  signal?: AbortSignal,
 ): Promise<UpdatePresenceResponseWithLegacyPresence>
 export async function updatePresence(
   client: AxiosInstance,
   params: UpdatePresenceParams,
+  signal?: AbortSignal,
 ) {
   const body = new URLSearchParams()
   for (const [key, value] of Object.entries(params)) {
@@ -903,6 +928,7 @@ export async function updatePresence(
   const resp = await client.post<UpdatePresenceResponse>(
     '/users/me/presence',
     body,
+    { signal },
   )
 
   return resp.data

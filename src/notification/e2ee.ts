@@ -110,6 +110,7 @@ export type RegisterRemotePushDeviceParams = {
 export async function sendE2eeTestNotification(
   client: AxiosInstance,
   params: SendE2eeTestNotificationParams = {},
+  signal?: AbortSignal,
 ) {
   const body = new URLSearchParams()
   if (params.device_id !== undefined) {
@@ -119,6 +120,7 @@ export async function sendE2eeTestNotification(
   const resp = await client.post<GeneralSuccessResponse>(
     '/mobile_push/e2ee/test_notification',
     body,
+    { signal },
   )
 
   return resp.data
@@ -135,6 +137,7 @@ export async function sendE2eeTestNotification(
 export async function registerE2eeDevice(
   client: AxiosInstance,
   params: RegisterE2eeDeviceParams,
+  signal?: AbortSignal,
 ) {
   const body = new URLSearchParams()
 
@@ -148,6 +151,7 @@ export async function registerE2eeDevice(
   const resp = await client.post<GeneralSuccessResponse>(
     '/mobile_push/register',
     body,
+    { signal },
   )
 
   return resp.data
@@ -164,12 +168,14 @@ export async function registerE2eeDevice(
 export async function registerRemotePushDevice(
   client: AxiosInstance,
   params: RegisterRemotePushDeviceParams,
+  signal?: AbortSignal,
 ) {
   const body = new URLSearchParams(params)
 
   const resp = await client.post<GeneralSuccessResponse>(
     '/remotes/push/e2ee/register',
     body,
+    { signal },
   )
 
   return resp.data

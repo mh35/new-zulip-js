@@ -488,6 +488,7 @@ export type GetUserGroupSubgroupsResponse = GeneralSuccessResponse & {
 export async function getUserGroups(
   client: AxiosInstance,
   params: GetUserGroupsParams = {},
+  signal?: AbortSignal,
 ) {
   const sendParams = {} as Record<string, string>
   for (const [key, value] of Object.entries(params)) {
@@ -509,6 +510,7 @@ export async function getUserGroups(
 
   const resp = await client.get<GetUserGroupsResponse>('/user_groups', {
     params: sendParams,
+    signal,
   })
 
   return resp.data
@@ -524,6 +526,7 @@ export async function getUserGroups(
 export async function createUserGroup(
   client: AxiosInstance,
   params: CreateUserGroupParams,
+  signal?: AbortSignal,
 ) {
   const body = new URLSearchParams()
   for (const [key, value] of Object.entries(params)) {
@@ -541,6 +544,7 @@ export async function createUserGroup(
   const resp = await client.post<CreateUserGroupResponse>(
     '/user_groups/create',
     body,
+    { signal },
   )
   return resp.data
 }
@@ -557,6 +561,7 @@ export async function updateUserGroup(
   client: AxiosInstance,
   groupId: number,
   params: UpdateUserGroupParams,
+  signal?: AbortSignal,
 ) {
   const body = new URLSearchParams()
   for (const [key, value] of Object.entries(params)) {
@@ -574,6 +579,7 @@ export async function updateUserGroup(
   const resp = await client.patch<GeneralSuccessResponse>(
     `/user_groups/${groupId}`,
     body,
+    { signal },
   )
 
   return resp.data
@@ -590,12 +596,14 @@ export async function updateUserGroup(
 export async function deactivateUserGroup(
   client: AxiosInstance,
   groupId: number,
+  signal?: AbortSignal,
 ) {
   const body = new URLSearchParams()
 
   const resp = await client.post<GeneralSuccessResponse>(
     `/user_groups/${groupId}/deactivate`,
     body,
+    { signal },
   )
 
   return resp.data
@@ -613,6 +621,7 @@ export async function updateUserGroupMembers(
   client: AxiosInstance,
   groupId: number,
   params: UpdateGroupMemberParams,
+  signal?: AbortSignal,
 ) {
   const body = new URLSearchParams()
   for (const [key, value] of Object.entries(params)) {
@@ -624,6 +633,7 @@ export async function updateUserGroupMembers(
   const resp = await client.post<GeneralSuccessResponse>(
     `/user_groups/${groupId}/members`,
     body,
+    { signal },
   )
 
   return resp.data
@@ -642,6 +652,7 @@ export async function updateUserGroupSubgroups(
   client: AxiosInstance,
   groupId: number,
   params: UpdateUserGroupSubgroupsParams,
+  signal?: AbortSignal,
 ) {
   const body = new URLSearchParams()
   for (const [key, value] of Object.entries(params)) {
@@ -653,6 +664,7 @@ export async function updateUserGroupSubgroups(
   const resp = await client.post<GeneralSuccessResponse>(
     `/user_groups/${groupId}/subgroups`,
     body,
+    { signal },
   )
 
   return resp.data
@@ -673,6 +685,7 @@ export async function checkUserGroupMembershipStatus(
   groupId: number,
   userId: number,
   params: CheckUserGroupMembershipStatusParams = {},
+  signal?: AbortSignal,
 ) {
   const sendParams = {} as Record<string, string>
   for (const [key, value] of Object.entries(params)) {
@@ -696,6 +709,7 @@ export async function checkUserGroupMembershipStatus(
     `/user_groups/${groupId}/members/${userId}`,
     {
       params: sendParams,
+      signal,
     },
   )
 
@@ -715,6 +729,7 @@ export async function getUserGroupMembers(
   client: AxiosInstance,
   groupId: number,
   params: GetUserGroupMembersParams = {},
+  signal?: AbortSignal,
 ) {
   const sendParams = {} as Record<string, string>
   for (const [key, value] of Object.entries(params)) {
@@ -738,6 +753,7 @@ export async function getUserGroupMembers(
     `/user_groups/${groupId}/members`,
     {
       params: sendParams,
+      signal,
     },
   )
 
@@ -757,6 +773,7 @@ export async function getUserGroupSubgroups(
   client: AxiosInstance,
   groupId: number,
   params: GetUserGroupSubgroupsParams = {},
+  signal?: AbortSignal,
 ) {
   const sendParams = {} as Record<string, string>
   for (const [key, value] of Object.entries(params)) {
@@ -780,6 +797,7 @@ export async function getUserGroupSubgroups(
     `/user_groups/${groupId}/subgroups`,
     {
       params: sendParams,
+      signal,
     },
   )
 

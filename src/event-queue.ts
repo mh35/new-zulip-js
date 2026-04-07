@@ -2783,3 +2783,28 @@ export async function deleteEventQueue(
 
   return resp.data
 }
+
+/**
+ * Get events from event queue
+ * @param client Axios client initialized by generateCallApi function in api.ts
+ * @param params API parameters
+ * @returns The response of GetEventsFromEventQueue API
+ * @see https://zulip.com/api/get-events
+ */
+export async function getEventsFromEventQueue(
+  client: AxiosInstance,
+  params: GetEventsFromEventQueueParams,
+) {
+  const sendParams = {} as Record<string, string>
+  for (const [key, value] of Object.entries(params)) {
+    if (value === undefined || value === null) {
+      continue
+    }
+    sendParams[key] = String(value)
+  }
+  const resp = await client.get<GetEventsFromEventQueueResponse>('/events', {
+    params: sendParams,
+  })
+
+  return resp.data
+}

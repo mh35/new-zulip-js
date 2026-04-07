@@ -2745,7 +2745,7 @@ export type GetEventsFromEventQueueResponse = GeneralSuccessResponse & {
  */
 export async function registerEventQueue(
   client: AxiosInstance,
-  params: RegisterEventQueueParams,
+  params: RegisterEventQueueParams = {},
 ) {
   const body = new URLSearchParams()
   for (const [key, value] of Object.entries(params)) {

@@ -11,7 +11,11 @@ import type { GetCustomProfileFieldsItem } from './custom-profile-field'
 import type { GetDraftsResponseItem } from './draft'
 import type { GetEmojisResponseItem } from './emoji'
 import type { GetLinkifiersItem } from './linkifier'
-import type { EmojiTypes, GetMessagesResponseMessageItem, MessageFlags } from './message'
+import type {
+  EmojiTypes,
+  GetMessagesResponseMessageItem,
+  MessageFlags,
+} from './message'
 import type { GetNavigationViewsResponseItem } from './navigation-view'
 import type { GetExportsResponseItem } from './realm-export'
 import type { GetRemindersResponseItem } from './reminder'
@@ -216,7 +220,7 @@ export type AlertWordsEvent = EventItemCommon & {
 /**
  * Common fields for the person in user_settings-update event
  */
-export type UpdateUserSettingsPersonCommon = {
+export type UpdateRealmUserPersonCommon = {
   /**
    * The ID of the user affected by this change
    */
@@ -226,18 +230,17 @@ export type UpdateUserSettingsPersonCommon = {
 /**
  * Person full name update
  */
-export type UpdateUserSettingsPersonFullName =
-  UpdateUserSettingsPersonCommon & {
-    /**
-     * The new full name for the user
-     */
-    full_name: string
-  }
+export type UpdateRealmUserPersonFullName = UpdateRealmUserPersonCommon & {
+  /**
+   * The new full name for the user
+   */
+  full_name: string
+}
 
 /**
  * Person avater update
  */
-export type UpdateUserSettingsPersonAvatar = UpdateUserSettingsPersonCommon & {
+export type UpdateRealmUserPersonAvatar = UpdateRealmUserPersonCommon & {
   /**
    * The URL of the new avatar for the user
    */
@@ -263,23 +266,22 @@ export type UpdateUserSettingsPersonAvatar = UpdateUserSettingsPersonCommon & {
 /**
  * Timezone update
  */
-export type UpdateUserSettingsPersonTimezone =
-  UpdateUserSettingsPersonCommon & {
-    /**
-     * The Zulip API email of the user
-     * @deprecated It is redundant with the user_id
-     */
-    email: string
-    /**
-     * The IANA identifier of the new profile time zone for the user
-     */
-    timezone: string
-  }
+export type UpdateRealmUserPersonTimezone = UpdateRealmUserPersonCommon & {
+  /**
+   * The Zulip API email of the user
+   * @deprecated It is redundant with the user_id
+   */
+  email: string
+  /**
+   * The IANA identifier of the new profile time zone for the user
+   */
+  timezone: string
+}
 
 /**
  * Bot owner update
  */
-export type UpdateUserSettingsPersonOwner = UpdateUserSettingsPersonCommon & {
+export type UpdateRealmUserPersonOwner = UpdateRealmUserPersonCommon & {
   /**
    * The user ID of the new bot owner
    */
@@ -289,7 +291,7 @@ export type UpdateUserSettingsPersonOwner = UpdateUserSettingsPersonCommon & {
 /**
  * Role update
  */
-export type UpdateUserSettingsPersonRole = UpdateUserSettingsPersonCommon & {
+export type UpdateRealmUserPersonRole = UpdateRealmUserPersonCommon & {
   /**
    * The new role of the user.
    */
@@ -299,18 +301,17 @@ export type UpdateUserSettingsPersonRole = UpdateUserSettingsPersonCommon & {
 /**
  * Delivery email address update
  */
-export type UpdateUserSettingsPersonDeliveryEmail =
-  UpdateUserSettingsPersonCommon & {
-    /**
-     * The new delivery email of the user. null indicates you cannot access their real email.
-     */
-    delivery_email: string | null
-  }
+export type UpdateRealmUserPersonDeliveryEmail = UpdateRealmUserPersonCommon & {
+  /**
+   * The new delivery email of the user. null indicates you cannot access their real email.
+   */
+  delivery_email: string | null
+}
 
 /**
  * Custom field data for custom field value update
  */
-export type UpdateUserSettingPersonCustomFieldValue = {
+export type UpdateRealmUserPersonCustomFieldValue = {
   /**
    * The ID of the custom profile field
    */
@@ -329,18 +330,17 @@ export type UpdateUserSettingPersonCustomFieldValue = {
 /**
  * Custom field data update
  */
-export type UpdateUserSettingsPersonCustomField =
-  UpdateUserSettingsPersonCommon & {
-    /**
-     * Custom profile data change
-     */
-    custom_profile_field: UpdateUserSettingPersonCustomFieldValue
-  }
+export type UpdateRealmUserPersonCustomField = UpdateRealmUserPersonCommon & {
+  /**
+   * Custom profile data change
+   */
+  custom_profile_field: UpdateRealmUserPersonCustomFieldValue
+}
 
 /**
  * Email update
  */
-export type UpdateUserSettingsPersonEmail = UpdateUserSettingsPersonCommon & {
+export type UpdateRealmUserPersonEmail = UpdateRealmUserPersonCommon & {
   /**
    * The new value of email for the user.
    */
@@ -351,8 +351,8 @@ export type UpdateUserSettingsPersonEmail = UpdateUserSettingsPersonCommon & {
  * Deactivated or reactivated
  * @since Zulip 8.0 (feature level 222)
  */
-export type UpdateUserSettingsPersonActivateStatus =
-  UpdateUserSettingsPersonCommon & {
+export type UpdateRealmUserPersonActivateStatus =
+  UpdateRealmUserPersonCommon & {
     /**
      * Whether the user account has been deactivated
      */
@@ -363,47 +363,45 @@ export type UpdateUserSettingsPersonActivateStatus =
  * Import stub status update
  * @since Zulip 12.0 (feature level 433)
  */
-export type UpdateUserSettingsPersonImportStatus =
-  UpdateUserSettingsPersonCommon & {
-    /**
-     * Whether the user account is stub or not. This value is always false.
-     */
-    is_imported_stub: false
-  }
+export type UpdateRealmUserPersonImportStatus = UpdateRealmUserPersonCommon & {
+  /**
+   * Whether the user account is stub or not. This value is always false.
+   */
+  is_imported_stub: false
+}
 
 /**
  * User created by API first login
  * @since Zulip 12.0 (feature level 475)
  */
-export type UpdateUserSettingsPersonJoinDate =
-  UpdateUserSettingsPersonCommon & {
-    /**
-     * The time when the user logged in to their account for the first time
-     */
-    date_joined: string
-  }
+export type UpdateRealmUserPersonJoinDate = UpdateRealmUserPersonCommon & {
+  /**
+   * The time when the user logged in to their account for the first time
+   */
+  date_joined: string
+}
 
 /**
  * Person field types for user_settings-update event
  */
-export type UpdateUserSettingsPerson =
-  | UpdateUserSettingsPersonFullName
-  | UpdateUserSettingsPersonAvatar
-  | UpdateUserSettingsPersonTimezone
-  | UpdateUserSettingsPersonOwner
-  | UpdateUserSettingsPersonRole
-  | UpdateUserSettingsPersonDeliveryEmail
-  | UpdateUserSettingsPersonCustomField
-  | UpdateUserSettingsPersonEmail
-  | UpdateUserSettingsPersonActivateStatus
-  | UpdateUserSettingsPersonImportStatus
-  | UpdateUserSettingsPersonJoinDate
+export type UpdateRealmUserPerson =
+  | UpdateRealmUserPersonFullName
+  | UpdateRealmUserPersonAvatar
+  | UpdateRealmUserPersonTimezone
+  | UpdateRealmUserPersonOwner
+  | UpdateRealmUserPersonRole
+  | UpdateRealmUserPersonDeliveryEmail
+  | UpdateRealmUserPersonCustomField
+  | UpdateRealmUserPersonEmail
+  | UpdateRealmUserPersonActivateStatus
+  | UpdateRealmUserPersonImportStatus
+  | UpdateRealmUserPersonJoinDate
 
 /**
  * Update realm user event (user profile change)
  * @see https://zulip.com/api/get-events#realm_user-update
  */
-export type UpdateUserSettingsEvent = EventItemCommon & {
+export type UpdateRealmUserEvent = EventItemCommon & {
   /**
    * The event's type
    */
@@ -415,7 +413,7 @@ export type UpdateUserSettingsEvent = EventItemCommon & {
   /**
    * Update user settings event target and content
    */
-  person: UpdateUserSettingsPerson
+  person: UpdateRealmUserPerson
 }
 
 /**
@@ -2133,7 +2131,7 @@ export type ChannelFolderReorderEvent = EventItemCommon & {
 export type ZulipEvent =
   | AlertWordsEvent
   | UserSettingsUpdateEvent
-  | UpdateUserSettingsEvent
+  | UpdateRealmUserEvent
   | RealmUserAddEvent
   | RealmUserRemoveEvent
   | AddSubscriptionEvent

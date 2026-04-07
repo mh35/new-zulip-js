@@ -5,8 +5,16 @@ import type { GetSubscriptionsResponseItem } from './channel/subscription'
 import type {
   BotServiceOutgoingWebhookFormats,
   BotTypeValues,
+  CreateStreamPolicyValues,
+  CreateWebPublicStreamPolicyValues,
+  MediaPreviewSizeSettingValues,
+  RealmDigestWeekdayValues,
+  RealmPlanTypeValues,
+  RealmTypeValues,
   TopicVisibilityValues,
   UserRoleValues,
+  VideoChatProviderValues,
+  WildcardMentionPolicyValues,
 } from './constants'
 import type { GetCustomProfileFieldsItem } from './custom-profile-field'
 import type { GetDraftsResponseItem } from './draft'
@@ -2543,6 +2551,241 @@ export type WebReloadClientEvent = EventItemCommon & {
 }
 
 /**
+ * Authentication method object in realm/update_dict event data
+ * @see https://zulip.com/api/get-events#realm-update_dict
+ */
+export type RealmUpdateDictAuthMethod = {
+  /** Whether the authentication method is enabled */
+  enabled: boolean
+  /** Whether the authentication method is available for use */
+  available: boolean
+  /** Reason why the authentication method is unavailable (only present when available is false) */
+  unavailable_reason?: string
+}
+
+/**
+ * Data object in realm/update_dict event containing the changed organization settings.
+ * All properties are optional — only those that have changed are included.
+ * @see https://zulip.com/api/get-events#realm-update_dict
+ */
+export type RealmUpdateDictData = {
+  /** Whether this organization allows editing the content of messages */
+  allow_message_editing?: boolean
+  /** Dictionary of authentication method names mapped to their enabled/available state */
+  authentication_methods?: Record<string, RealmUpdateDictAuthMethod>
+  /** Users who are allowed to access all users in the organization */
+  can_access_all_users_group?: EventUserGroupPermissionGroup
+  /** Users who have permission to add custom emoji */
+  can_add_custom_emoji_group?: EventUserGroupPermissionGroup
+  /** Users who have permission to add subscribers to channels */
+  can_add_subscribers_group?: EventUserGroupPermissionGroup
+  /** Users who have permission to create all types of bot users */
+  can_create_bots_group?: EventUserGroupPermissionGroup
+  /** Users who have permission to create private channels */
+  can_create_private_channel_group?: EventUserGroupPermissionGroup
+  /** Users who have permission to create public channels */
+  can_create_public_channel_group?: EventUserGroupPermissionGroup
+  /** Users who have permission to create user groups */
+  can_create_groups?: EventUserGroupPermissionGroup
+  /** Users who have permission to create web-public channels */
+  can_create_web_public_channel_group?: EventUserGroupPermissionGroup
+  /** Users who have permission to create bot users that can only send messages */
+  can_create_write_only_bots_group?: EventUserGroupPermissionGroup
+  /** Users who have permission to delete any message */
+  can_delete_any_message_group?: EventUserGroupPermissionGroup
+  /** Users who have permission to delete messages that they sent */
+  can_delete_own_message_group?: EventUserGroupPermissionGroup
+  /** Users who have permission to invite users via email */
+  can_invite_users_group?: EventUserGroupPermissionGroup
+  /** Users who have permission to administer all existing groups */
+  can_manage_all_groups?: EventUserGroupPermissionGroup
+  /** Users who have permission to manage plans and billing */
+  can_manage_billing_group?: EventUserGroupPermissionGroup
+  /** Users who have permission to use wildcard mentions in large channels */
+  can_mention_many_users_group?: EventUserGroupPermissionGroup
+  /** Users who have permission to move messages between channels */
+  can_move_messages_between_channels_group?: EventUserGroupPermissionGroup
+  /** Users who have permission to move messages between topics */
+  can_move_messages_between_topics_group?: EventUserGroupPermissionGroup
+  /** Users who have permission to resolve topics */
+  can_resolve_topics_group?: EventUserGroupPermissionGroup
+  /** Users who have permission to change per-channel can_delete_any_message_group/can_delete_own_message_group */
+  can_set_delete_message_policy_group?: EventUserGroupPermissionGroup
+  /** Users who have permission to change per-channel topics_policy setting */
+  can_set_topics_policy_group?: EventUserGroupPermissionGroup
+  /** Users who are allowed to use AI summarization */
+  can_summarize_topics_group?: EventUserGroupPermissionGroup
+  /** Users who are allowed to create reusable invitation links */
+  create_multiuse_invite_group?: EventUserGroupPermissionGroup
+  /**
+   * The avatar data source type for new users
+   * - G - Hosted by Gravatar
+   * - J - Generated using Jdenticon
+   */
+  default_avatar_source?: 'G' | 'J'
+  /** The default programming language for code blocks */
+  default_code_block_language?: string
+  /** The organization language for automated messages and invitation emails */
+  default_language?: string
+  /** The description of the organization */
+  description?: string
+  /** Whether the organization has enabled weekly digest emails */
+  digest_emails_enabled?: boolean
+  /** The day of the week the digest email is sent (0=Monday...6=Sunday) */
+  digest_weekday?: RealmDigestWeekdayValues
+  /** Users who are allowed to initiate direct messages */
+  direct_message_initiator_group?: EventUserGroupPermissionGroup
+  /** Users who have permission to send direct messages */
+  direct_message_permission_group?: EventUserGroupPermissionGroup
+  /** Whether the organization disallows disposable email addresses */
+  disallow_disposable_email_addresses?: boolean
+  /** Whether the organization disallows users to change their email address */
+  email_changes_disabled?: boolean
+  /** Whether this organization restricts access to email addresses to realm domains */
+  emails_restricted_to_domains?: boolean
+  /** Whether clients should show a warning when composing a DM to a guest user */
+  enable_guest_user_dm_warning?: boolean
+  /** Whether clients should display "(guest)" after guest user names */
+  enable_guest_user_indicator?: boolean
+  /** Whether the organization has enabled spectator access */
+  enable_spectator_access?: boolean
+  /** Whether the organization has enabled Zulip's read receipts feature */
+  enable_read_receipts?: boolean
+  /** The organization's configured GIF rating policy */
+  gif_rating_policy?: number
+  /**
+   * The source of the organization's icon
+   * - G - Default Zulip icon
+   * - U - Uploaded by an administrator
+   */
+  icon_source?: 'G' | 'U'
+  /** The URL of the organization's icon */
+  icon_url?: string
+  /** Whether this organization has been configured to enable previews of linked images */
+  inline_image_preview?: boolean
+  /** Whether this organization has been configured to enable previews of linked websites */
+  inline_url_embed_preview?: boolean
+  /** Whether an invitation is required to join this organization */
+  invite_required?: boolean
+  /** The URL of the Jitsi server for video calls */
+  jitsi_server_url?: string | null
+  /**
+   * The source of the organization's wide logo
+   * - D - Default Zulip logo
+   * - U - Uploaded by an administrator
+   */
+  logo_source?: 'D' | 'U'
+  /** The URL of the organization's wide logo */
+  logo_url?: string
+  /**
+   * @deprecated From Zulip 11.0 (feature level 392), use topics_policy instead
+   */
+  mandatory_topics?: boolean
+  /** The maximum file size allowed for file uploads */
+  max_file_upload_size_mib?: number
+  /** Whether message content is included in missed-message emails */
+  message_content_allowed_in_email_notifications?: boolean
+  /** The maximum age in seconds of messages that can be deleted (null = no limit) */
+  message_content_delete_limit_seconds?: number | null
+  /** The maximum age in seconds of messages that can be edited (null = no limit) */
+  message_content_edit_limit_seconds?: number | null
+  /**
+   * Visibility setting for message edit history
+   * - all - All users can see edit history
+   * - moves - Only message moves are shown
+   * - none - Edit history is disabled
+   */
+  message_edit_history_visibility_policy?: 'all' | 'moves' | 'none'
+  /** The ID of the private channel for moderation request messages (-1 = disabled) */
+  moderation_request_channel_id?: number
+  /** Time limit in seconds for moving messages between channels (null = no limit) */
+  move_messages_between_streams_limit_seconds?: number | null
+  /** Time limit in seconds for moving messages within a channel (null = no limit) */
+  move_messages_within_stream_limit_seconds?: number | null
+  /** The name of the organization */
+  name?: string
+  /** Whether the organization disallows users to change their name */
+  name_changes_disabled?: boolean
+  /** The ID of the channel for new channel announcements (-1 = disabled) */
+  new_stream_announcements_stream_id?: number
+  /**
+   * The source of the organization's dark-theme wide logo
+   * - D - Default Zulip logo
+   * - U - Uploaded by an administrator
+   */
+  night_logo_source?: 'D' | 'U'
+  /** The URL of the organization's dark-theme wide logo */
+  night_logo_url?: string
+  /** The organization type */
+  org_type?: RealmTypeValues
+  /** The plan type of the organization */
+  plan_type?: RealmPlanTypeValues
+  /** Whether online presence of other users is hidden */
+  presence_disabled?: boolean
+  /** Whether push notifications are enabled */
+  push_notifications_enabled?: boolean
+  /** UNIX timestamp when push notifications access is expected to end (null = no end) */
+  push_notifications_enabled_end_timestamp?: number | null
+  /** The rendered HTML description of the organization */
+  rendered_description?: string
+  /** Whether the organization requires end-to-end encrypted push notifications */
+  require_e2ee_push_notifications?: boolean
+  /** Whether the organization requires unique names for users */
+  require_unique_names?: boolean
+  /** Whether the organization sends automated messages to channels on channel events */
+  send_channel_events_messages?: boolean
+  /** Whether the organization sends welcome emails to new users */
+  send_welcome_emails?: boolean
+  /** The ID of the channel for signup announcements (-1 = disabled) */
+  signup_announcements_stream_id?: number
+  /**
+   * Default policy for sending channel messages to the empty topic
+   * - allow_empty_topic - Channel messages can be sent to the empty topic
+   * - disable_empty_topic - Channel messages cannot be sent to the empty topic
+   */
+  topics_policy?: 'allow_empty_topic' | 'disable_empty_topic'
+  /** The total quota for uploaded files in this organization (null = no limit) */
+  upload_quota_mib?: number | null
+  /** The video chat provider for the organization */
+  video_chat_provider?: VideoChatProviderValues
+  /** The waiting period before new members can send certain types of messages */
+  waiting_period_threshold?: number
+  /** Whether the organization wants to be listed in the Zulip communities directory */
+  want_advertise_in_communities_directory?: boolean
+  /** The custom welcome message for Welcome Bot */
+  welcome_message_custom_text?: string
+  /** Users with admin-equivalent access for workplace management */
+  workplace_users_group?: EventUserGroupPermissionGroup
+  /** The ID of the channel for Zulip update announcements (-1 = disabled) */
+  zulip_update_announcements_stream_id?: number
+  /**
+   * @deprecated From Zulip 9.0 (feature level 264), use can_create_public_channel_group
+   */
+  create_public_stream_policy?: CreateStreamPolicyValues
+  /**
+   * @deprecated From Zulip 9.0 (feature level 266), use can_create_private_channel_group
+   */
+  create_private_stream_policy?: CreateStreamPolicyValues
+  /**
+   * @deprecated From Zulip 10.0 (feature level 280), use can_create_web_public_channel_group
+   */
+  create_web_public_stream_policy?: CreateWebPublicStreamPolicyValues
+  /**
+   * @deprecated From Zulip 10.0 (feature level 352), use can_mention_many_users_group
+   */
+  wildcard_mention_policy?: WildcardMentionPolicyValues
+  /**
+   * The organization's policy for the size of image and video thumbnails
+   * - 100 - 100% height (the default)
+   * - 150 - 150% height
+   * - 200 - 200% height
+   */
+  media_preview_size?: MediaPreviewSizeSettingValues
+  /** Whether users can change their own avatar */
+  avatar_changes_disabled?: boolean
+}
+
+/**
  * Realm update dict event (multiple organization settings change)
  * @see https://zulip.com/api/get-events#realm-update_dict
  */
@@ -2561,9 +2804,10 @@ export type RealmUpdateDictEvent = EventItemCommon & {
    */
   property: 'default'
   /**
-   * An object containing the properties that have changed
+   * An object containing the properties that have changed.
+   * Only the settings that were modified are included.
    */
-  data: Record<string, boolean | number | string | null | object>
+  data: RealmUpdateDictData
 }
 
 /**

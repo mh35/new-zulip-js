@@ -19,11 +19,12 @@ export class ZulipEventEvent extends Event {
 export async function createQueue(
   client: AxiosInstance,
   params: eventQueue.RegisterEventQueueParams = {},
+  signal?: AbortSignal,
 ) {
   if (params.fetch_event_types && !params.fetch_event_types.includes('realm')) {
     params.fetch_event_types.push('realm')
   }
-  const registerResp = await eventQueue.registerEventQueue(client, params)
+  const registerResp = await eventQueue.registerEventQueue(client, params, signal)
   const queueId = registerResp.queue_id
   if (queueId === null) {
     throw new Error('Queue ID does not exist')

@@ -1195,6 +1195,7 @@ export type RemoveDefaultChannelParams = {
 export async function getChannels(
   client: AxiosInstance,
   params: GetChannelsParams = {},
+  signal?: AbortSignal,
 ) {
   const sendParams = {} as Record<string, string>
   for (const [key, value] of Object.entries(params)) {
@@ -1216,6 +1217,7 @@ export async function getChannels(
 
   const resp = await client.get<GetChannelsResponse>('/streams', {
     params: sendParams,
+    signal,
   })
 
   return resp.data
@@ -1229,8 +1231,14 @@ export async function getChannels(
  * @since Zulip 6.0 (feature level 132)
  * @see https://zulip.com/api/get-stream-by-id
  */
-export async function getChannelById(client: AxiosInstance, streamId: number) {
-  const resp = await client.get<GetChannelByIdResponse>(`/streams/${streamId}`)
+export async function getChannelById(
+  client: AxiosInstance,
+  streamId: number,
+  signal?: AbortSignal,
+) {
+  const resp = await client.get<GetChannelByIdResponse>(`/streams/${streamId}`, {
+    signal,
+  })
 
   return resp.data
 }
@@ -1245,9 +1253,11 @@ export async function getChannelById(client: AxiosInstance, streamId: number) {
 export async function getChannelId(
   client: AxiosInstance,
   params: GetChannelIdParams,
+  signal?: AbortSignal,
 ) {
   const resp = await client.get<GetChannelIdResponse>('/get_stream_id', {
     params,
+    signal,
   })
 
   return resp.data
@@ -1264,6 +1274,7 @@ export async function getChannelId(
 export async function createChannel(
   client: AxiosInstance,
   params: CreateChannelParams,
+  signal?: AbortSignal,
 ) {
   const body = new URLSearchParams()
 
@@ -1282,6 +1293,7 @@ export async function createChannel(
   const resp = await client.post<CreateChannelResponse>(
     '/channels/create',
     body,
+    { signal },
   )
 
   return resp.data
@@ -1299,6 +1311,7 @@ export async function updateChannel(
   client: AxiosInstance,
   streamId: number,
   params: UpdateChannelParams,
+  signal?: AbortSignal,
 ) {
   const body = new URLSearchParams()
 
@@ -1317,6 +1330,7 @@ export async function updateChannel(
   const resp = await client.patch<GeneralSuccessResponse>(
     `/streams/${streamId}`,
     body,
+    { signal },
   )
 
   return resp.data
@@ -1329,9 +1343,14 @@ export async function updateChannel(
  * @returns The response of ArchiveChannel API
  * @see https://zulip.com/api/archive-stream
  */
-export async function archiveChannel(client: AxiosInstance, streamId: number) {
+export async function archiveChannel(
+  client: AxiosInstance,
+  streamId: number,
+  signal?: AbortSignal,
+) {
   const resp = await client.delete<GeneralSuccessResponse>(
     `/streams/${streamId}`,
+    { signal },
   )
 
   return resp.data
@@ -1350,6 +1369,7 @@ export async function getChannelEmail(
   client: AxiosInstance,
   streamId: number,
   params: GetChannelEmailParams = {},
+  signal?: AbortSignal,
 ) {
   const sendParams = {} as Record<string, string>
   for (const [key, value] of Object.entries(params)) {
@@ -1373,6 +1393,7 @@ export async function getChannelEmail(
     `/streams/${streamId}/email_address`,
     {
       params: sendParams,
+      signal,
     },
   )
 
@@ -1389,6 +1410,7 @@ export async function getChannelEmail(
 export async function addDefaultChannel(
   client: AxiosInstance,
   params: AddDefaultChannelParams,
+  signal?: AbortSignal,
 ) {
   const body = new URLSearchParams()
 
@@ -1403,6 +1425,7 @@ export async function addDefaultChannel(
   const resp = await client.post<GeneralSuccessResponse>(
     '/default_streams',
     body,
+    { signal },
   )
 
   return resp.data
@@ -1418,6 +1441,7 @@ export async function addDefaultChannel(
 export async function removeDefaultChannel(
   client: AxiosInstance,
   params: RemoveDefaultChannelParams,
+  signal?: AbortSignal,
 ) {
   const body = new URLSearchParams()
 
@@ -1431,6 +1455,7 @@ export async function removeDefaultChannel(
 
   const resp = await client.delete<GeneralSuccessResponse>('/default_streams', {
     data: body,
+    signal,
   })
 
   return resp.data

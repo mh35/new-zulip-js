@@ -91,10 +91,14 @@ export type RegenerateApiKeyResponse = GeneralSuccessResponse & {
  * @returns The response of RegenerateApiKey function
  * @see https://zulip.com/api/regenerate-api-key
  */
-export async function regenerateApiKey(client: AxiosInstance) {
+export async function regenerateApiKey(
+  client: AxiosInstance,
+  signal?: AbortSignal,
+) {
   const resp = await client.post<RegenerateApiKeyResponse>(
     '/users/me/api_key/regenerate',
     new URLSearchParams(),
+    { signal },
   )
 
   const ret = resp.data

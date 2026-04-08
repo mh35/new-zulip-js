@@ -166,12 +166,14 @@ export type UpdateChannelFolderParams =
 export async function createChannelFolder(
   client: AxiosInstance,
   params: CreateChannelFolderParams,
+  signal?: AbortSignal,
 ) {
   const body = new URLSearchParams(params)
 
   const resp = await client.post<CreateChannelFolderResponse>(
     '/channel_folders/create',
     body,
+    { signal },
   )
 
   return resp.data
@@ -188,6 +190,7 @@ export async function createChannelFolder(
 export async function getChannelFolders(
   client: AxiosInstance,
   params: GetChannelFoldersParams = {},
+  signal?: AbortSignal,
 ) {
   const sendParams = {} as Record<string, string>
   for (const [key, value] of Object.entries(params)) {
@@ -200,6 +203,7 @@ export async function getChannelFolders(
 
   const resp = await client.get<GetChannelFoldersResponse>('/channel_folders', {
     params: sendParams,
+    signal,
   })
 
   return resp.data
@@ -216,6 +220,7 @@ export async function getChannelFolders(
 export async function reorderChannelFolders(
   client: AxiosInstance,
   params: ReorderChannelFoldersParams,
+  signal?: AbortSignal,
 ) {
   const body = new URLSearchParams()
 
@@ -230,6 +235,7 @@ export async function reorderChannelFolders(
   const resp = await client.patch<GeneralSuccessResponse>(
     '/channel_folders',
     body,
+    { signal },
   )
 
   return resp.data
@@ -248,6 +254,7 @@ export async function updateChannelFolder(
   client: AxiosInstance,
   channelFolderId: number,
   params: UpdateChannelFolderParams,
+  signal?: AbortSignal,
 ) {
   const body = new URLSearchParams()
 
@@ -262,6 +269,7 @@ export async function updateChannelFolder(
   const resp = await client.patch<GeneralSuccessResponse>(
     `/channel_folders/${channelFolderId}`,
     body,
+    { signal },
   )
 
   return resp.data

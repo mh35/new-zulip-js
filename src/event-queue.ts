@@ -2746,6 +2746,7 @@ export type GetEventsFromEventQueueResponse = GeneralSuccessResponse & {
 export async function registerEventQueue(
   client: AxiosInstance,
   params: RegisterEventQueueParams = {},
+  signal?: AbortSignal,
 ) {
   const body = new URLSearchParams()
   for (const [key, value] of Object.entries(params)) {
@@ -2759,7 +2760,9 @@ export async function registerEventQueue(
     }
   }
 
-  const resp = await client.post<RegisterEventQueueResponse>('/register', body)
+  const resp = await client.post<RegisterEventQueueResponse>('/register', body, {
+    signal,
+  })
 
   return resp.data
 }
@@ -2774,11 +2777,13 @@ export async function registerEventQueue(
 export async function deleteEventQueue(
   client: AxiosInstance,
   params: DeleteEventQueueParams,
+  signal?: AbortSignal,
 ) {
   const body = new URLSearchParams(params)
 
   const resp = await client.delete<GeneralSuccessResponse>('/events', {
     data: body,
+    signal,
   })
 
   return resp.data
@@ -2794,6 +2799,7 @@ export async function deleteEventQueue(
 export async function getEventsFromEventQueue(
   client: AxiosInstance,
   params: GetEventsFromEventQueueParams,
+  signal?: AbortSignal,
 ) {
   const sendParams = {} as Record<string, string>
   for (const [key, value] of Object.entries(params)) {
@@ -2804,6 +2810,7 @@ export async function getEventsFromEventQueue(
   }
   const resp = await client.get<GetEventsFromEventQueueResponse>('/events', {
     params: sendParams,
+    signal,
   })
 
   return resp.data

@@ -160,6 +160,7 @@ export async function getChannelTopics(
   client: AxiosInstance,
   streamId: number,
   params: GetChannelTopicsParams = {},
+  signal?: AbortSignal,
 ) {
   const sendParams = {} as Record<string, string>
   for (const [key, value] of Object.entries(params)) {
@@ -174,6 +175,7 @@ export async function getChannelTopics(
     `/users/me/${streamId}/topics`,
     {
       params: sendParams,
+      signal,
     },
   )
 
@@ -191,6 +193,7 @@ export async function getChannelTopics(
 export async function muteTopic(
   client: AxiosInstance,
   params: MuteTopicParams,
+  signal?: AbortSignal,
 ) {
   const body = new URLSearchParams()
 
@@ -205,6 +208,7 @@ export async function muteTopic(
   const resp = await client.patch<GeneralSuccessResponse>(
     '/users/me/subscriptions/muted_topics',
     body,
+    { signal },
   )
 
   return resp.data
@@ -221,6 +225,7 @@ export async function muteTopic(
 export async function updateUserTopic(
   client: AxiosInstance,
   params: UpdateUserTopicParams,
+  signal?: AbortSignal,
 ) {
   const body = new URLSearchParams()
 
@@ -232,7 +237,7 @@ export async function updateUserTopic(
     body.append(key, String(value))
   }
 
-  const resp = await client.patch<GeneralSuccessResponse>('/user_topics')
+  const resp = await client.patch<GeneralSuccessResponse>('/user_topics', undefined, { signal })
 
   return resp.data
 }
@@ -251,12 +256,14 @@ export async function deleteTopic(
   client: AxiosInstance,
   streamId: number,
   params: DeleteTopicParams,
+  signal?: AbortSignal,
 ) {
   const body = new URLSearchParams(params)
 
   const resp = await client.post<DeleteTopicResponse>(
     `/streams/${streamId}/delete_topic`,
     body,
+    { signal },
   )
 
   return resp.data

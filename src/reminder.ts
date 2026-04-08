@@ -96,6 +96,7 @@ export type GetRemindersResponse = GeneralSuccessResponse & {
 export async function createReminder(
   client: AxiosInstance,
   params: CreateReminderParams,
+  signal?: AbortSignal,
 ) {
   const body = new URLSearchParams()
 
@@ -113,7 +114,9 @@ export async function createReminder(
     }
   }
 
-  const resp = await client.post<CreateReminderResponse>('/reminders', body)
+  const resp = await client.post<CreateReminderResponse>('/reminders', body, {
+    signal,
+  })
 
   return resp.data
 }
@@ -125,8 +128,11 @@ export async function createReminder(
  * @since Zulip 11.0 (feature level 399)
  * @see https://zulip.com/api/get-reminders
  */
-export async function getReminders(client: AxiosInstance) {
-  const resp = await client.get<GetRemindersResponse>('/reminders')
+export async function getReminders(
+  client: AxiosInstance,
+  signal?: AbortSignal,
+) {
+  const resp = await client.get<GetRemindersResponse>('/reminders', { signal })
 
   return resp.data
 }
@@ -142,9 +148,11 @@ export async function getReminders(client: AxiosInstance) {
 export async function deleteReminder(
   client: AxiosInstance,
   reminderId: number,
+  signal?: AbortSignal,
 ) {
   const resp = await client.delete<GeneralSuccessResponse>(
     `/reminders/${reminderId}`,
+    { signal },
   )
 
   return resp.data

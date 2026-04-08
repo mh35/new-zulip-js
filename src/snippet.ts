@@ -103,8 +103,13 @@ export type EditSnippetParams =
  * @since Zulip 10.0 (feature level 297)
  * @see https://zulip.com/api/get-saved-snippets
  */
-export async function getSnippets(client: AxiosInstance) {
-  const resp = await client.get<GetSnippetsResponse>('/saved_snippets')
+export async function getSnippets(
+  client: AxiosInstance,
+  signal?: AbortSignal,
+) {
+  const resp = await client.get<GetSnippetsResponse>('/saved_snippets', {
+    signal,
+  })
 
   return resp.data
 }
@@ -120,10 +125,15 @@ export async function getSnippets(client: AxiosInstance) {
 export async function createSnippet(
   client: AxiosInstance,
   params: CreateSnippetParams,
+  signal?: AbortSignal,
 ) {
   const body = new URLSearchParams(params)
 
-  const resp = await client.post<CreateSnippetResponse>('/saved_snippets', body)
+  const resp = await client.post<CreateSnippetResponse>(
+    '/saved_snippets',
+    body,
+    { signal },
+  )
 
   return resp.data
 }
@@ -141,6 +151,7 @@ export async function editSnippet(
   client: AxiosInstance,
   snippetId: number,
   params: EditSnippetParams,
+  signal?: AbortSignal,
 ) {
   const body = new URLSearchParams()
 
@@ -154,6 +165,7 @@ export async function editSnippet(
   const resp = await client.patch<GeneralSuccessResponse>(
     `/saved_snippets/${snippetId}`,
     body,
+    { signal },
   )
 
   return resp.data
@@ -167,9 +179,14 @@ export async function editSnippet(
  * @since Zulip 10.0 (feature level 297)
  * @see https://zulip.com/api/delete-saved-snippet
  */
-export async function deleteSnippet(client: AxiosInstance, snippetId: number) {
+export async function deleteSnippet(
+  client: AxiosInstance,
+  snippetId: number,
+  signal?: AbortSignal,
+) {
   const resp = await client.delete<GeneralSuccessResponse>(
     `/saved_snippets/${snippetId}`,
+    { signal },
   )
 
   return resp.data

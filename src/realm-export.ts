@@ -128,8 +128,11 @@ export type GetExportConsentStateResponse = GeneralSuccessResponse & {
  * @since Zulip 2.1
  * @see https://zulip.com/api/get-realm-exports
  */
-export async function getExports(client: AxiosInstance) {
-  const resp = await client.get<GetExportsResponse>('/export/realm')
+export async function getExports(
+  client: AxiosInstance,
+  signal?: AbortSignal,
+) {
+  const resp = await client.get<GetExportsResponse>('/export/realm', { signal })
 
   return resp.data
 }
@@ -145,12 +148,15 @@ export async function getExports(client: AxiosInstance) {
 export async function createExport(
   client: AxiosInstance,
   params: CreateExportParams = {},
+  signal?: AbortSignal,
 ) {
   const body = new URLSearchParams()
   if (params.export_type !== undefined) {
     body.append('export_type', params.export_type)
   }
-  const resp = await client.post<CreateExportResponse>('/export/realm', body)
+  const resp = await client.post<CreateExportResponse>('/export/realm', body, {
+    signal,
+  })
 
   return resp.data
 }
@@ -162,9 +168,13 @@ export async function createExport(
  * @since Zulip 10.0 (feature level 304)
  * @see https://zulip.com/api/get-realm-export-consents
  */
-export async function getExportConsentState(client: AxiosInstance) {
+export async function getExportConsentState(
+  client: AxiosInstance,
+  signal?: AbortSignal,
+) {
   const resp = await client.get<GetExportConsentStateResponse>(
     '/export/realm/consents',
+    { signal },
   )
 
   return resp.data

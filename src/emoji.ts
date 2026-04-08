@@ -48,8 +48,11 @@ export type GetEmojisResponse = GeneralSuccessResponse & {
  * @returns The response of GetEmojis API
  * @see https://zulip.com/api/get-custom-emoji
  */
-export async function getEmojis(client: AxiosInstance) {
-  const resp = await client.get<GetEmojisResponse>('/realm/emoji')
+export async function getEmojis(
+  client: AxiosInstance,
+  signal?: AbortSignal,
+) {
+  const resp = await client.get<GetEmojisResponse>('/realm/emoji', { signal })
 
   return resp.data
 }
@@ -66,6 +69,7 @@ export async function uploadEmoji(
   client: AxiosInstance,
   emojiName: string,
   file: File,
+  signal?: AbortSignal,
 ) {
   const formData = new FormData()
   formData.append('filename', file)
@@ -73,6 +77,7 @@ export async function uploadEmoji(
   const resp = await client.post<GeneralSuccessResponse>(
     `/realm/emoji/${encodeURIComponent(emojiName)}`,
     formData,
+    { signal },
   )
 
   return resp.data
@@ -88,9 +93,11 @@ export async function uploadEmoji(
 export async function deactivateEmoji(
   client: AxiosInstance,
   emojiName: string,
+  signal?: AbortSignal,
 ) {
   const resp = await client.delete<GeneralSuccessResponse>(
     `/realm/emoji/${encodeURIComponent(emojiName)}`,
+    { signal },
   )
 
   return resp.data

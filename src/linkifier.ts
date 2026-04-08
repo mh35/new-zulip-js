@@ -160,8 +160,13 @@ export type ReorderLinkifiersParams = {
  * @since Zulip 4.0 (feature level 54)
  * @see https://zulip.com/api/get-linkifiers
  */
-export async function getLinkifiers(client: AxiosInstance) {
-  const resp = await client.get<GetLinkifiersResponse>('/realm/linkifiers')
+export async function getLinkifiers(
+  client: AxiosInstance,
+  signal?: AbortSignal,
+) {
+  const resp = await client.get<GetLinkifiersResponse>('/realm/linkifiers', {
+    signal,
+  })
 
   return resp.data
 }
@@ -176,6 +181,7 @@ export async function getLinkifiers(client: AxiosInstance) {
 export async function addLinkifier(
   client: AxiosInstance,
   params: AddLinkifierParams,
+  signal?: AbortSignal,
 ) {
   const body = new URLSearchParams()
 
@@ -194,7 +200,9 @@ export async function addLinkifier(
     }
   }
 
-  const resp = await client.post<AddLinkifierResponse>('/realm/filters', body)
+  const resp = await client.post<AddLinkifierResponse>('/realm/filters', body, {
+    signal,
+  })
 
   return resp.data
 }
@@ -212,6 +220,7 @@ export async function updateLinkifier(
   client: AxiosInstance,
   filterId: number,
   params: UpdateLinkifierParams,
+  signal?: AbortSignal,
 ) {
   const body = new URLSearchParams()
 
@@ -233,6 +242,7 @@ export async function updateLinkifier(
   const resp = await client.patch<GeneralSuccessResponse>(
     `/realm/filters/${filterId}`,
     body,
+    { signal },
   )
 
   return resp.data
@@ -245,9 +255,14 @@ export async function updateLinkifier(
  * @returns The response of RemoveLinkifier API
  * @see https://zulip.com/api/remove-linkifier
  */
-export async function removeLinkifier(client: AxiosInstance, filterId: number) {
+export async function removeLinkifier(
+  client: AxiosInstance,
+  filterId: number,
+  signal?: AbortSignal,
+) {
   const resp = await client.delete<GeneralSuccessResponse>(
     `/realm/filters/${filterId}`,
+    { signal },
   )
 
   return resp.data
@@ -264,6 +279,7 @@ export async function removeLinkifier(client: AxiosInstance, filterId: number) {
 export async function reorderLinkifiers(
   client: AxiosInstance,
   params: ReorderLinkifiersParams,
+  signal?: AbortSignal,
 ) {
   const body = new URLSearchParams({
     ordered_linkifier_ids: JSON.stringify(params.ordered_linkifier_ids),
@@ -272,6 +288,7 @@ export async function reorderLinkifiers(
   const resp = await client.patch<GeneralSuccessResponse>(
     '/realm/linkifiers',
     body,
+    { signal },
   )
 
   return resp.data

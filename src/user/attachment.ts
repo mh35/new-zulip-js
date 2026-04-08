@@ -71,8 +71,13 @@ export type GetAttachmentsResponse = GeneralSuccessResponse & {
  * @returns The response of GetAttachments API
  * @see https://zulip.com/api/get-attachments
  */
-export async function getAttachments(client: AxiosInstance) {
-  const resp = await client.get<GetAttachmentsResponse>('/attachments')
+export async function getAttachments(
+  client: AxiosInstance,
+  signal?: AbortSignal,
+) {
+  const resp = await client.get<GetAttachmentsResponse>('/attachments', {
+    signal,
+  })
 
   return resp.data
 }
@@ -87,9 +92,11 @@ export async function getAttachments(client: AxiosInstance) {
 export async function deleteAttachment(
   client: AxiosInstance,
   attachmentId: number,
+  signal?: AbortSignal,
 ) {
   const resp = await client.delete<GeneralSuccessResponse>(
     `/attachments/${attachmentId}`,
+    { signal },
   )
 
   return resp.data

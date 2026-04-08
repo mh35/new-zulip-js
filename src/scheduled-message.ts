@@ -448,9 +448,13 @@ export type EditScheduledMessageParams =
  * @since Zulip 7.0 (feature level 173)
  * @see https://zulip.com/api/get-scheduled-messages
  */
-export async function getScheduledMessages(client: AxiosInstance) {
+export async function getScheduledMessages(
+  client: AxiosInstance,
+  signal?: AbortSignal,
+) {
   const resp = await client.get<GetScheduleMessagesResponse>(
     '/scheduled_messages',
+    { signal },
   )
 
   return resp.data
@@ -467,6 +471,7 @@ export async function getScheduledMessages(client: AxiosInstance) {
 export async function createScheduledMessage(
   client: AxiosInstance,
   params: CreateScheduledMessageParams,
+  signal?: AbortSignal,
 ) {
   const body = new URLSearchParams()
 
@@ -487,6 +492,7 @@ export async function createScheduledMessage(
   const resp = await client.post<CreateScheduledMessageResponse>(
     '/scheduled_messages',
     body,
+    { signal },
   )
 
   return resp.data
@@ -505,6 +511,7 @@ export async function editScheduledMessage(
   client: AxiosInstance,
   scheduledMessageId: number,
   params: EditScheduledMessageParams,
+  signal?: AbortSignal,
 ) {
   const body = new URLSearchParams()
 
@@ -525,6 +532,7 @@ export async function editScheduledMessage(
   const resp = await client.patch<GeneralSuccessResponse>(
     `/scheduled_messages/${scheduledMessageId}`,
     body,
+    { signal },
   )
 
   return resp.data
@@ -541,9 +549,11 @@ export async function editScheduledMessage(
 export async function deleteScheduledMessage(
   client: AxiosInstance,
   scheduledMessageId: number,
+  signal?: AbortSignal,
 ) {
   const resp = await client.delete<GeneralSuccessResponse>(
     `/scheduled_messages/${scheduledMessageId}`,
+    { signal },
   )
 
   return resp.data

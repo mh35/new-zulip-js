@@ -1534,6 +1534,7 @@ export async function getUserById(
   client: AxiosInstance,
   userId: number,
   params: GetUserByIdParams = {},
+  signal?: AbortSignal,
 ) {
   const sendParams = {} as Record<string, string>
   for (const [key, value] of Object.entries(params)) {
@@ -1545,6 +1546,7 @@ export async function getUserById(
 
   const resp = await client.get<GetUserByIdResponse>(`/users/${userId}`, {
     params: sendParams,
+    signal,
   })
 
   return resp.data
@@ -1563,6 +1565,7 @@ export async function getUserByEmail(
   client: AxiosInstance,
   email: string,
   params: GetUserByEmailParams = {},
+  signal?: AbortSignal,
 ) {
   const sendParams = {} as Record<string, string>
   for (const [key, value] of Object.entries(params)) {
@@ -1576,6 +1579,7 @@ export async function getUserByEmail(
     `/users/${encodeURIComponent(email)}`,
     {
       params: sendParams,
+      signal,
     },
   )
 
@@ -1588,8 +1592,11 @@ export async function getUserByEmail(
  * @returns The response of GetOwnUser API
  * @see https://zulip.com/api/get-own-user
  */
-export async function getOwnUser(client: AxiosInstance) {
-  const resp = await client.get<GetOwnUserResponse>('/users/me')
+export async function getOwnUser(
+  client: AxiosInstance,
+  signal?: AbortSignal,
+) {
+  const resp = await client.get<GetOwnUserResponse>('/users/me', { signal })
 
   return resp.data
 }
@@ -1604,6 +1611,7 @@ export async function getOwnUser(client: AxiosInstance) {
 export async function getUsers(
   client: AxiosInstance,
   params: GetUsersParams = {},
+  signal?: AbortSignal,
 ) {
   const sendParams = {} as Record<string, string>
   for (const [key, value] of Object.entries(params)) {
@@ -1619,6 +1627,7 @@ export async function getUsers(
 
   const resp = await client.get<GetUsersResponse>('/users', {
     params: sendParams,
+    signal,
   })
 
   return resp.data
@@ -1634,10 +1643,11 @@ export async function getUsers(
 export async function createUser(
   client: AxiosInstance,
   params: CreateUserParams,
+  signal?: AbortSignal,
 ) {
   const body = new URLSearchParams(params)
 
-  const resp = await client.post<CreateUserResponse>('/users', body)
+  const resp = await client.post<CreateUserResponse>('/users', body, { signal })
 
   return resp.data
 }
@@ -1654,6 +1664,7 @@ export async function updateUser(
   client: AxiosInstance,
   userId: number,
   params: UpdateUserParams,
+  signal?: AbortSignal,
 ) {
   const body = new URLSearchParams()
   for (const [key, value] of Object.entries(params)) {
@@ -1670,6 +1681,7 @@ export async function updateUser(
   const resp = await client.patch<GeneralSuccessResponse>(
     `/users/${userId}`,
     body,
+    { signal },
   )
   return resp.data
 }
@@ -1687,6 +1699,7 @@ export async function updateUserByEmail(
   client: AxiosInstance,
   email: string,
   params: UpdateUserByEmailParams,
+  signal?: AbortSignal,
 ) {
   const body = new URLSearchParams()
   for (const [key, value] of Object.entries(params)) {
@@ -1703,6 +1716,7 @@ export async function updateUserByEmail(
   const resp = await client.patch<GeneralSuccessResponse>(
     `/users/${encodeURIComponent(email)}`,
     body,
+    { signal },
   )
 
   return resp.data
@@ -1720,6 +1734,7 @@ export async function deactivateUser(
   client: AxiosInstance,
   userId: number,
   params: DeactivateUserParams = {},
+  signal?: AbortSignal,
 ) {
   const body = new URLSearchParams()
   for (const [key, value] of Object.entries(params)) {
@@ -1735,6 +1750,7 @@ export async function deactivateUser(
 
   const resp = await client.delete<GeneralSuccessResponse>(`/users/${userId}`, {
     data: body,
+    signal,
   })
 
   return resp.data
@@ -1746,8 +1762,13 @@ export async function deactivateUser(
  * @returns The response of DeactivateSelf API
  * @see https://zulip.com/api/deactivate-own-user
  */
-export async function deactivateSelf(client: AxiosInstance) {
-  const resp = await client.delete<GeneralSuccessResponse>('/users/me')
+export async function deactivateSelf(
+  client: AxiosInstance,
+  signal?: AbortSignal,
+) {
+  const resp = await client.delete<GeneralSuccessResponse>('/users/me', {
+    signal,
+  })
 
   return resp.data
 }
@@ -1759,9 +1780,15 @@ export async function deactivateSelf(client: AxiosInstance) {
  * @returns The response of ReactivateUser API
  * @see https://zulip.com/api/reactivate-user
  */
-export async function reactivateUser(client: AxiosInstance, userId: number) {
+export async function reactivateUser(
+  client: AxiosInstance,
+  userId: number,
+  signal?: AbortSignal,
+) {
   const resp = await client.post<GeneralSuccessResponse>(
     `/users/${userId}/reactivate`,
+    undefined,
+    { signal },
   )
 
   return resp.data
@@ -1777,6 +1804,7 @@ export async function reactivateUser(client: AxiosInstance, userId: number) {
 export async function updateUserSettings(
   client: AxiosInstance,
   params: UpdateUserSettingsParams,
+  signal?: AbortSignal,
 ) {
   const body = new URLSearchParams()
   for (const [key, value] of Object.entries(params)) {
@@ -1790,7 +1818,9 @@ export async function updateUserSettings(
     }
   }
 
-  const resp = await client.patch<GeneralSuccessResponse>('/settings', body)
+  const resp = await client.patch<GeneralSuccessResponse>('/settings', body, {
+    signal,
+  })
 
   return resp.data
 }
@@ -1806,6 +1836,7 @@ export async function updateUserSettings(
 export async function updateDefaultUserSettings(
   client: AxiosInstance,
   params: UpdateDefaultUserSettingsParams,
+  signal?: AbortSignal,
 ) {
   const body = new URLSearchParams()
   for (const [key, value] of Object.entries(params)) {
@@ -1822,6 +1853,7 @@ export async function updateDefaultUserSettings(
   const resp = await client.patch<GeneralSuccessResponse>(
     '/realm/user_settings_defaults',
     body,
+    { signal },
   )
 
   return resp.data

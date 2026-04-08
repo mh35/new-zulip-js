@@ -168,8 +168,13 @@ export type GetServerSettingsResponse = GeneralSuccessResponse & {
  * @returns The response of GetServerSettings API
  * @see https://zulip.com/api/get-server-settings
  */
-export async function getServerSettings(client: AxiosInstance) {
-  const resp = await client.get<GetServerSettingsResponse>('/server_settings')
+export async function getServerSettings(
+  client: AxiosInstance,
+  signal?: AbortSignal,
+) {
+  const resp = await client.get<GetServerSettingsResponse>('/server_settings', {
+    signal,
+  })
 
   return resp.data
 }

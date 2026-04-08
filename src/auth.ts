@@ -12,6 +12,7 @@ export async function authByPassword(
   serverUrl: string,
   email: string,
   password: string,
+  signal?: AbortSignal,
 ) {
   const response = await axios.post<{
     result: string
@@ -23,6 +24,7 @@ export async function authByPassword(
       username: email,
       password,
     }),
+    { signal },
   )
   return response.data.api_key
 }
@@ -34,7 +36,11 @@ export async function authByPassword(
  * @returns API key for authenticated user
  * @see https://zulip.com/api/dev-fetch-api-key
  */
-export async function authDev(serverUrl: string, email: string) {
+export async function authDev(
+  serverUrl: string,
+  email: string,
+  signal?: AbortSignal,
+) {
   const response = await axios.post<{
     result: string
     msg: string
@@ -44,6 +50,7 @@ export async function authDev(serverUrl: string, email: string) {
     new URLSearchParams({
       username: email,
     }),
+    { signal },
   )
   return response.data.api_key
 }
@@ -56,7 +63,11 @@ export async function authDev(serverUrl: string, email: string) {
  * @since Zulip 7.0 (feature level 160)
  * @see https://zulip.com/api/jwt-fetch-api-key
  */
-export async function authByJwt(serverUrl: string, jwt: string) {
+export async function authByJwt(
+  serverUrl: string,
+  jwt: string,
+  signal?: AbortSignal,
+) {
   const response = await axios.post<{
     result: string
     msg: string
@@ -66,6 +77,7 @@ export async function authByJwt(serverUrl: string, jwt: string) {
     new URLSearchParams({
       token: jwt,
     }),
+    { signal },
   )
   return response.data.api_key
 }

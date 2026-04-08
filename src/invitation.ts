@@ -214,8 +214,11 @@ export type CreateInvitationLinkResponse = GeneralSuccessResponse & {
  * @returns The response of GetInvitations API
  * @see https://zulip.com/api/get-invites
  */
-export async function getInvitations(client: AxiosInstance) {
-  const resp = await client.get<GetInvitationsResponse>('/invites')
+export async function getInvitations(
+  client: AxiosInstance,
+  signal?: AbortSignal,
+) {
+  const resp = await client.get<GetInvitationsResponse>('/invites', { signal })
 
   return resp.data
 }
@@ -230,6 +233,7 @@ export async function getInvitations(client: AxiosInstance) {
 export async function sendInvitation(
   client: AxiosInstance,
   params: SendInvitationParams,
+  signal?: AbortSignal,
 ) {
   const body = new URLSearchParams()
 
@@ -250,7 +254,9 @@ export async function sendInvitation(
     }
   }
 
-  const resp = await client.post<GeneralSuccessResponse>('/invites', body)
+  const resp = await client.post<GeneralSuccessResponse>('/invites', body, {
+    signal,
+  })
 
   return resp.data
 }
@@ -265,6 +271,7 @@ export async function sendInvitation(
 export async function createInvitationLink(
   client: AxiosInstance,
   params: CreateInvitationLinkParams = {},
+  signal?: AbortSignal,
 ) {
   const body = new URLSearchParams()
 
@@ -288,6 +295,7 @@ export async function createInvitationLink(
   const resp = await client.post<CreateInvitationLinkResponse>(
     '/invites/multiuse',
     body,
+    { signal },
   )
 
   return resp.data
@@ -303,10 +311,12 @@ export async function createInvitationLink(
 export async function resendEmailInvitation(
   client: AxiosInstance,
   invitationId: number,
+  signal?: AbortSignal,
 ) {
   const resp = await client.post<GeneralSuccessResponse>(
     `/invites/${invitationId}/resend`,
     new URLSearchParams(),
+    { signal },
   )
 
   return resp.data
@@ -322,9 +332,11 @@ export async function resendEmailInvitation(
 export async function revokeEmailInvitation(
   client: AxiosInstance,
   invitationId: number,
+  signal?: AbortSignal,
 ) {
   const resp = await client.delete<GeneralSuccessResponse>(
     `/invites/${invitationId}`,
+    { signal },
   )
 
   return resp.data
@@ -340,9 +352,11 @@ export async function revokeEmailInvitation(
 export async function revokeInvitationLink(
   client: AxiosInstance,
   invitationId: number,
+  signal?: AbortSignal,
 ) {
   const resp = await client.delete<GeneralSuccessResponse>(
     `/invites/multiuse/${invitationId}`,
+    { signal },
   )
 
   return resp.data

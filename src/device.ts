@@ -33,10 +33,14 @@ export type UnregisterDeviceParams = {
  * @since Zulip 12.0 (feature level 468)
  * @see https://zulip.com/api/register-client-device
  */
-export async function registerDevice(client: AxiosInstance) {
+export async function registerDevice(
+  client: AxiosInstance,
+  signal?: AbortSignal,
+) {
   const resp = await client.post<RegisterDeviceResponse>(
     '/register_client_device',
     new URLSearchParams(),
+    { signal },
   )
 
   return resp.data
@@ -54,12 +58,14 @@ export async function registerDevice(client: AxiosInstance) {
 export async function unregisterDevice(
   client: AxiosInstance,
   params: UnregisterDeviceParams,
+  signal?: AbortSignal,
 ) {
   const body = new URLSearchParams({ device_id: String(params.device_id) })
 
   const resp = await client.post<GeneralSuccessResponse>(
     '/remove_client_device',
     body,
+    { signal },
   )
 
   return resp.data

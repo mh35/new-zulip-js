@@ -75,6 +75,7 @@ export type CreateNextcloudTalkCallResponse = GeneralSuccessResponse & {
 export async function createBigBlueButtonCall(
   client: AxiosInstance,
   params: CreateBigBlueButtonCallParams,
+  signal?: AbortSignal,
 ) {
   const body = new URLSearchParams()
 
@@ -98,6 +99,7 @@ export async function createBigBlueButtonCall(
   const resp = await client.post<CreateBigBlueButtonCallResponse>(
     '/calls/bigbluebutton/create',
     body,
+    { signal },
   )
 
   return resp.data
@@ -110,10 +112,14 @@ export async function createBigBlueButtonCall(
  * @since Zulip 12.0 (feature level 460)
  * @see https://zulip.com/api/create-constructor-groups-video-call
  */
-export async function createConstructorGroupsCall(client: AxiosInstance) {
+export async function createConstructorGroupsCall(
+  client: AxiosInstance,
+  signal?: AbortSignal,
+) {
   const resp = await client.post<CreateConstructorGroupsCallResponse>(
     '/calls/constructorgroups/create',
     new URLSearchParams(),
+    { signal },
   )
 
   return resp.data
@@ -130,12 +136,14 @@ export async function createConstructorGroupsCall(client: AxiosInstance) {
 export async function creatNextcloudTalkCall(
   client: AxiosInstance,
   params: CreateNextcloudTalkCallParams,
+  signal?: AbortSignal,
 ) {
   const body = new URLSearchParams(params)
 
   const resp = await client.post<CreateNextcloudTalkCallResponse>(
     '/calls/nextcloud_talk/create',
     body,
+    { signal },
   )
 
   return resp.data

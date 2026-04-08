@@ -54,8 +54,13 @@ export type RemoveAlertWordsResponse = GetAlertWordsResponse
  * @returns The response of GetAlertWords API
  * @see https://zulip.com/api/get-alert-words
  */
-export async function getAlertWords(client: AxiosInstance) {
-  const resp = await client.get<GetAlertWordsResponse>('/users/me/alert_words')
+export async function getAlertWords(
+  client: AxiosInstance,
+  signal?: AbortSignal,
+) {
+  const resp = await client.get<GetAlertWordsResponse>('/users/me/alert_words', {
+    signal,
+  })
 
   return resp.data
 }
@@ -70,6 +75,7 @@ export async function getAlertWords(client: AxiosInstance) {
 export async function addAlertWords(
   client: AxiosInstance,
   params: AddAlertWordsParams,
+  signal?: AbortSignal,
 ) {
   const body = new URLSearchParams({
     alert_words: JSON.stringify(params.alert_words),
@@ -78,6 +84,7 @@ export async function addAlertWords(
   const resp = await client.post<AddAlertWordsResponse>(
     '/users/me/alert_words',
     body,
+    { signal },
   )
 
   return resp.data
@@ -93,6 +100,7 @@ export async function addAlertWords(
 export async function removeAlertWords(
   client: AxiosInstance,
   params: RemoveAlertWordsParams,
+  signal?: AbortSignal,
 ) {
   const body = new URLSearchParams({
     alert_words: JSON.stringify(params.alert_words),
@@ -102,6 +110,7 @@ export async function removeAlertWords(
     '/users/me/alert_words',
     {
       data: body,
+      signal,
     },
   )
   return resp.data

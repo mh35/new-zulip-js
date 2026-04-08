@@ -657,11 +657,13 @@ export type UpdateSubscriptionSettingsParams = {
 export async function getSubscriptions(
   client: AxiosInstance,
   params: GetSubscriptionsParams = {},
+  signal?: AbortSignal,
 ) {
   const resp = await client.get<GetSubscriptionsResponse>(
     '/users/me/subscriptions',
     {
       params,
+      signal,
     },
   )
   return resp.data
@@ -677,6 +679,7 @@ export async function getSubscriptions(
 export async function subscribeChannels(
   client: AxiosInstance,
   params: SubscribeChannelsParams,
+  signal?: AbortSignal,
 ) {
   const body = new URLSearchParams()
 
@@ -695,6 +698,7 @@ export async function subscribeChannels(
   const resp = await client.post<SubscribeChannelsResponse>(
     '/users/me/subscriptions',
     body,
+    { signal },
   )
 
   return resp.data
@@ -710,6 +714,7 @@ export async function subscribeChannels(
 export async function unsubscribeChannels(
   client: AxiosInstance,
   params: UnsubscribeChannelsParams,
+  signal?: AbortSignal,
 ) {
   const body = new URLSearchParams()
 
@@ -729,6 +734,7 @@ export async function unsubscribeChannels(
     '/users/me/subscriptions',
     {
       data: body,
+      signal,
     },
   )
 
@@ -747,9 +753,11 @@ export async function getSubscriptionStatus(
   client: AxiosInstance,
   userId: number,
   streamId: number,
+  signal?: AbortSignal,
 ) {
   const resp = await client.get<GetSubscriptionStatusResponse>(
     `/users/${userId}/subscriptions/${streamId}`,
+    { signal },
   )
   return resp.data
 }
@@ -761,9 +769,14 @@ export async function getSubscriptionStatus(
  * @returns The response of GetSubscribers API
  * @see https://zulip.com/api/get-subscribers
  */
-export async function getSubscribers(client: AxiosInstance, streamId: number) {
+export async function getSubscribers(
+  client: AxiosInstance,
+  streamId: number,
+  signal?: AbortSignal,
+) {
   const resp = await client.get<GetSubscribersResponse>(
     `/streams/${streamId}/members`,
+    { signal },
   )
   return resp.data
 }
@@ -776,9 +789,14 @@ export async function getSubscribers(client: AxiosInstance, streamId: number) {
  * @since Zulip 12.0 (feature level 440)
  * @see https://zulip.com/api/get-user-channels
  */
-export async function getUserChannels(client: AxiosInstance, userId: number) {
+export async function getUserChannels(
+  client: AxiosInstance,
+  userId: number,
+  signal?: AbortSignal,
+) {
   const resp = await client.get<GetUserChannelsResponse>(
     `/users/${userId}/channels`,
+    { signal },
   )
   return resp.data
 }
@@ -793,6 +811,7 @@ export async function getUserChannels(client: AxiosInstance, userId: number) {
 export async function updateSubscriptionSettings(
   client: AxiosInstance,
   params: UpdateSubscriptionSettingsParams,
+  signal?: AbortSignal,
 ) {
   const body = new URLSearchParams()
 
@@ -811,6 +830,7 @@ export async function updateSubscriptionSettings(
   const resp = await client.post<GeneralSuccessResponse>(
     '/users/me/subscriptions/properties',
     body,
+    { signal },
   )
 
   return resp.data

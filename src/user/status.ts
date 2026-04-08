@@ -712,6 +712,7 @@ export type UpdatePresenceResponse =
  * @returns The response of GetUserStatus API
  * @since Zulip 9.0 (feature level 262)
  * @see https://zulip.com/api/get-user-status
+ * @param signal AbortSignal to cancel the request
  */
 export async function getUserStatus(
   client: AxiosInstance,
@@ -732,6 +733,7 @@ export async function getUserStatus(
  * @param params API parameters
  * @returns The response of UpdateStatus API
  * @see https://zulip.com/api/update-status
+ * @param signal AbortSignal to cancel the request
  */
 export async function updateStatus(
   client: AxiosInstance,
@@ -763,6 +765,7 @@ export async function updateStatus(
  * @returns The response of UpdateUserStatus API
  * @since Zulip 11.0 (feature level 407)
  * @see https://zulip.com/api/update-status-for-user
+ * @param signal AbortSignal to cancel the request
  */
 export async function updateUserStatus(
   client: AxiosInstance,
@@ -787,6 +790,7 @@ export async function updateUserStatus(
  * @param params API parameters
  * @returns The response of SetTypingStatus API
  * @see https://zulip.com/api/set-typing-status
+ * @param signal AbortSignal to cancel the request
  */
 export async function setTypingStatus(
   client: AxiosInstance,
@@ -820,6 +824,7 @@ export async function setTypingStatus(
  * @returns The response of SetTypingStatusForEdit API
  * @since Zulip 10.0 (feature level 351)
  * @see https://zulip.com/api/set-typing-status-for-message-edit
+ * @param signal AbortSignal to cancel the request
  */
 export async function setTypingStatusForEdit(
   client: AxiosInstance,
@@ -844,6 +849,7 @@ export async function setTypingStatusForEdit(
  * @param userIdOrEmail ID or email address of the user
  * @returns The response of GetUserPresence API
  * @see https://zulip.com/api/get-user-presence
+ * @param signal AbortSignal to cancel the request
  */
 export async function getUserPresence(
   client: AxiosInstance,
@@ -863,6 +869,7 @@ export async function getUserPresence(
  * @param client Axios client initialized by generateCallApi function in api.ts
  * @returns The response of GetAllUserPresence API
  * @see https://zulip.com/api/get-presence
+ * @param signal AbortSignal to cancel the request
  */
 export async function getAllUserPresence(
   client: AxiosInstance,
@@ -881,6 +888,7 @@ export async function getAllUserPresence(
  * @param params API parameters
  * @returns The response of UpdatePresence API
  * @see https://zulip.com/api/update-presence
+ * @param signal AbortSignal to cancel the request
  */
 export async function updatePresence(
   client: AxiosInstance,
@@ -893,6 +901,7 @@ export async function updatePresence(
  * @param params API parameters
  * @returns The response of UpdatePresence API
  * @see https://zulip.com/api/update-presence
+ * @param signal AbortSignal to cancel the request
  */
 export async function updatePresence(
   client: AxiosInstance,
@@ -906,6 +915,7 @@ export async function updatePresence(
  * @returns The response of UpdatePresence API
  * @deprecated Since Zulip 9.0 (feature level 263), use modern presence
  * @see https://zulip.com/api/update-presence
+ * @param signal AbortSignal to cancel the request
  */
 export async function updatePresence(
   client: AxiosInstance,

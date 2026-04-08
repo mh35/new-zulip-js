@@ -16,6 +16,12 @@ export class ZulipEventEvent extends Event {
   }
 }
 
+/**
+ * Create an event queue
+ * @param client Axios client initialized by generateCallApi function in api.ts
+ * @param params API parameters
+ * @param signal AbortSignal to cancel the request
+ */
 export async function createQueue(
   client: AxiosInstance,
   params: eventQueue.RegisterEventQueueParams = {},

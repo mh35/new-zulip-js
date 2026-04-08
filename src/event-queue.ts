@@ -2742,6 +2742,7 @@ export type GetEventsFromEventQueueResponse = GeneralSuccessResponse & {
  * @param params API parameters
  * @returns The response of RegisterEventQueue API
  * @see https://zulip.com/api/register-queue
+ * @param signal AbortSignal to cancel the request
  */
 export async function registerEventQueue(
   client: AxiosInstance,
@@ -2773,6 +2774,7 @@ export async function registerEventQueue(
  * @param params API parameters
  * @returns The response of DeleteEventQueue API
  * @see https://zulip.com/api/delete-queue
+ * @param signal AbortSignal to cancel the request
  */
 export async function deleteEventQueue(
   client: AxiosInstance,
@@ -2795,6 +2797,7 @@ export async function deleteEventQueue(
  * @param params API parameters
  * @returns The response of GetEventsFromEventQueue API
  * @see https://zulip.com/api/get-events
+ * @param signal AbortSignal to cancel the request
  */
 export async function getEventsFromEventQueue(
   client: AxiosInstance,

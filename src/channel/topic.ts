@@ -155,6 +155,7 @@ export type DeleteTopicResponse = GeneralSuccessResponse & {
  * @param params API parameters
  * @returns The response of GetChannelTopics API
  * @see https://zulip.com/api/get-stream-topics
+ * @param signal AbortSignal to cancel the request
  */
 export async function getChannelTopics(
   client: AxiosInstance,
@@ -189,6 +190,7 @@ export async function getChannelTopics(
  * @returns The response of MuteTopic API
  * @deprecated From Zulip 7.0 (feature level 170), use UpdateUserTopic API instead.
  * @see https://zulip.com/api/mute-topic
+ * @param signal AbortSignal to cancel the request
  */
 export async function muteTopic(
   client: AxiosInstance,
@@ -221,6 +223,7 @@ export async function muteTopic(
  * @returns The response of UpdateUserTopic API
  * @since Zulip 7.0 (feature level 170)
  * @see https://zulip.com/api/update-user-topic
+ * @param signal AbortSignal to cancel the request
  */
 export async function updateUserTopic(
   client: AxiosInstance,
@@ -251,6 +254,7 @@ export async function updateUserTopic(
  * @param params API parameters
  * @returns The response of DeleteTopic API
  * @see https://zulip.com/api/delete-topic
+ * @param signal AbortSignal to cancel the request
  */
 export async function deleteTopic(
   client: AxiosInstance,

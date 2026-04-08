@@ -1723,6 +1723,7 @@ export type ReportMessageParams =
  * @param params API parameters
  * @returns The response of SendMessage API.
  * @see https://zulip.com/api/send-message
+ * @param signal AbortSignal to cancel the request
  */
 export async function sendMessage(
   client: AxiosInstance,
@@ -1761,6 +1762,7 @@ export async function sendMessage(
  * @param file Upload target file
  * @returns The response of UploadFile API.
  * @see https://zulip.com/api/upload-file
+ * @param signal AbortSignal to cancel the request
  */
 export async function uploadFile(
   client: AxiosInstance,
@@ -1786,6 +1788,7 @@ export async function uploadFile(
  * @param params EditMessage API parameters.
  * @returns The response of the EditMessage API.
  * @see https://zulip.com/api/update-message
+ * @param signal AbortSignal to cancel the request
  */
 export async function editMesssage(
   client: AxiosInstance,
@@ -1827,6 +1830,7 @@ export async function editMesssage(
  * @param messageId Message ID
  * @returns The response of the DeleteMessage API.
  * @see https://zulip.com/api/delete-message
+ * @param signal AbortSignal to cancel the request
  */
 export async function deleteMessage(
   client: AxiosInstance,
@@ -1847,6 +1851,7 @@ export async function deleteMessage(
  * @param params API parameters
  * @returns The response of the GetMessages API
  * @see https://zulip.com/api/get-messages
+ * @param signal AbortSignal to cancel the request
  */
 export async function getMessages(
   client: AxiosInstance,
@@ -1885,6 +1890,7 @@ export async function getMessages(
  * @param params API parameters
  * @returns The response of the AddReaction API
  * @see https://zulip.com/api/add-reaction
+ * @param signal AbortSignal to cancel the request
  */
 export async function addReaction(
   client: AxiosInstance,
@@ -1909,6 +1915,7 @@ export async function addReaction(
  * @param params API parameters
  * @returns The response of the RemoveReaction API
  * @see https://zulip.com/api/remove-reaction
+ * @param signal AbortSignal to cancel the request
  */
 export async function removeReaction(
   client: AxiosInstance,
@@ -1941,6 +1948,7 @@ export async function removeReaction(
  * @param params API parameters
  * @returns The response of the RenderMessage API
  * @see https://zulip.com/api/render-message
+ * @param signal AbortSignal to cancel the request
  */
 export async function renderMessage(
   client: AxiosInstance,
@@ -1964,6 +1972,7 @@ export async function renderMessage(
  * @param params API parameters
  * @returns The response of GetMessage API
  * @see https://zulip.com/api/get-message
+ * @param signal AbortSignal to cancel the request
  */
 export async function getMessage(
   client: AxiosInstance,
@@ -1995,6 +2004,7 @@ export async function getMessage(
  * @param params API parameters
  * @returns The response of CheckMessagesMatchNarrow API
  * @see https://zulip.com/api/check-messages-match-narrow
+ * @param signal AbortSignal to cancel the request
  */
 export async function checkMessagesMatchNarrow(
   client: AxiosInstance,
@@ -2022,6 +2032,7 @@ export async function checkMessagesMatchNarrow(
  * @param params API parameters
  * @returns The response of GetMessageHistory API
  * @see https://zulip.com/api/get-message-history
+ * @param signal AbortSignal to cancel the request
  */
 export async function getMessageEditHistory(
   client: AxiosInstance,
@@ -2053,6 +2064,7 @@ export async function getMessageEditHistory(
  * @param params API parameters
  * @returns The response of UpdateMessageFlags API
  * @see https://zulip.com/api/update-message-flags
+ * @param signal AbortSignal to cancel the request
  */
 export async function updateMessageFlags(
   client: AxiosInstance,
@@ -2093,6 +2105,7 @@ export async function updateMessageFlags(
  * @returns The response of UpdateMessageFlagsForNarrow
  * @since Zulip 6.0 (feature level 155)
  * @see https://zulip.com/api/update-message-flags-for-narrow
+ * @param signal AbortSignal to cancel the request
  */
 export async function updateMessageFlagsForNarrow(
   client: AxiosInstance,
@@ -2133,6 +2146,7 @@ export async function updateMessageFlagsForNarrow(
  * @returns The response of MarkAllAsRead API
  * @deprecated Use updateMessageFlagsForNarrow function instead.
  * @see https://zulip.com/api/mark-all-as-read
+ * @param signal AbortSignal to cancel the request
  */
 export async function markAllAsRead(
   client: AxiosInstance,
@@ -2154,6 +2168,7 @@ export async function markAllAsRead(
  * @returns The response of MarkStreamAsRead response
  * @deprecated Use updateMessageFlagsForNarrow function instead.
  * @see https://zulip.com/api/mark-stream-as-read
+ * @param signal AbortSignal to cancel the request
  */
 export async function markStreamAsRead(
   client: AxiosInstance,
@@ -2184,6 +2199,7 @@ export async function markStreamAsRead(
  * @returns The response of MarkTopicAsRead response
  * @deprecated Use updateMessageFlagsForNarrow function instead.
  * @see https://zulip.com/api/mark-topic-as-read
+ * @param signal AbortSignal to cancel the request
  */
 export async function markTopicAsRead(
   client: AxiosInstance,
@@ -2213,6 +2229,7 @@ export async function markTopicAsRead(
  * @param messageId Message ID
  * @returns The response of GetReadReceipts API.
  * @see https://zulip.com/api/get-read-receipts
+ * @param signal AbortSignal to cancel the request
  */
 export async function getReadReceipts(
   client: AxiosInstance,
@@ -2234,6 +2251,7 @@ export async function getReadReceipts(
  * @param filename Path to the uploaded file.
  * @returns The response of GetFileTemporaryUrl API
  * @see https://zulip.com/api/get-file-temporary-url
+ * @param signal AbortSignal to cancel the request
  */
 export async function getFileTemporaryUrl(
   client: AxiosInstance,
@@ -2257,6 +2275,7 @@ export async function getFileTemporaryUrl(
  * @returns The response of ReportMessage API
  * @since Zulip 11.0 (feature level 382)
  * @see https://zulip.com/api/report-message
+ * @param signal AbortSignal to cancel the request
  */
 export async function reportMessage(
   client: AxiosInstance,

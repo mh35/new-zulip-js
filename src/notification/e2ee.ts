@@ -106,6 +106,7 @@ export type RegisterRemotePushDeviceParams = {
  * @returns The response of SendE2eeTestNotification API
  * @since Zulip 11.0 (feature level 420)
  * @see https://zulip.com/api/e2ee-test-notify
+ * @param signal AbortSignal to cancel the request
  */
 export async function sendE2eeTestNotification(
   client: AxiosInstance,
@@ -133,6 +134,7 @@ export async function sendE2eeTestNotification(
  * @returns The response of RegisgterE2eeDevice API
  * @since Zulip 11.0 (feature level 406)
  * @see https://zulip.com/api/register-push-device
+ * @param signal AbortSignal to cancel the request
  */
 export async function registerE2eeDevice(
   client: AxiosInstance,
@@ -164,6 +166,7 @@ export async function registerE2eeDevice(
  * @returns The response of RegisterRemotePushDevice API
  * @since Zulip 11.0 (feature level 406)
  * @see https://zulip.com/api/register-remote-push-device
+ * @param signal AbortSignal to cancel the request
  */
 export async function registerRemotePushDevice(
   client: AxiosInstance,

@@ -53,6 +53,7 @@ export type RemoveAlertWordsResponse = GetAlertWordsResponse
  * @param client Axios client initialized by generateCallApi function in api.ts
  * @returns The response of GetAlertWords API
  * @see https://zulip.com/api/get-alert-words
+ * @param signal AbortSignal to cancel the request
  */
 export async function getAlertWords(
   client: AxiosInstance,
@@ -71,6 +72,7 @@ export async function getAlertWords(
  * @param params API parameters
  * @returns The response of AddAlertWords API
  * @see https://zulip.com/api/add-alert-words
+ * @param signal AbortSignal to cancel the request
  */
 export async function addAlertWords(
   client: AxiosInstance,
@@ -96,6 +98,7 @@ export async function addAlertWords(
  * @param params API parameters
  * @returns The response of RemoveAlertWords API
  * @see https://zulip.com/api/remove-alert-words
+ * @param signal AbortSignal to cancel the request
  */
 export async function removeAlertWords(
   client: AxiosInstance,

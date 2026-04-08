@@ -80,6 +80,7 @@ export type UnregisterFcmTokenParams = {
  * @since Zulip 8.0 (feature level 217)
  * @deprecated From Zulip 11.0 (feature level 420), use E2EE notification instead
  * @see https://zulip.com/api/test-notify
+ * @param signal AbortSignal to cancel the request
  */
 export async function sendTestMobileNotification(
   client: AxiosInstance,
@@ -107,6 +108,7 @@ export async function sendTestMobileNotification(
  * @returns The response of RegisterApnsToken API
  * @deprecated From Zulip 11.0 (feature level 406), use E2EE notification instead
  * @see https://zulip.com/api/add-apns-token
+ * @param signal AbortSignal to cancel the request
  */
 export async function registerApnsToken(
   client: AxiosInstance,
@@ -131,6 +133,7 @@ export async function registerApnsToken(
  * @returns The response of UnregisterApnsToken API
  * @deprecated From Zulip 11.0 (feature level 406), use E2EE notification instead
  * @see https://zulip.com/api/remove-apns-token
+ * @param signal AbortSignal to cancel the request
  */
 export async function unregisterApnsToken(
   client: AxiosInstance,
@@ -157,6 +160,7 @@ export async function unregisterApnsToken(
  * @returns The response of RegisterFcmToken API
  * @deprecated From Zulip 11.0 (feature level 406), use E2EE notification instead
  * @see https://zulip.com/api/add-fcm-token
+ * @param signal AbortSignal to cancel the request
  */
 export async function registerFcmToken(
   client: AxiosInstance,
@@ -181,6 +185,7 @@ export async function registerFcmToken(
  * @returns The response of UnregisterFcmToken API
  * @deprecated From Zulip 11.0 (feature level 406), use E2EE notification instead
  * @see https://zulip.com/api/remove-fcm-token
+ * @param signal AbortSignal to cancel the request
  */
 export async function unregisterFcmToken(
   client: AxiosInstance,

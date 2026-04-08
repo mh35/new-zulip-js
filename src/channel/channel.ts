@@ -1191,6 +1191,7 @@ export type RemoveDefaultChannelParams = {
  * @param params API parameters
  * @returns The response of GetChannels API
  * @see https://zulip.com/api/get-streams
+ * @param signal AbortSignal to cancel the request
  */
 export async function getChannels(
   client: AxiosInstance,
@@ -1230,6 +1231,7 @@ export async function getChannels(
  * @returns The response of GetChannelById API
  * @since Zulip 6.0 (feature level 132)
  * @see https://zulip.com/api/get-stream-by-id
+ * @param signal AbortSignal to cancel the request
  */
 export async function getChannelById(
   client: AxiosInstance,
@@ -1249,6 +1251,7 @@ export async function getChannelById(
  * @param params API parameters
  * @returns The response of GetChannelId API
  * @see https://zulip.com/api/get-stream-id
+ * @param signal AbortSignal to cancel the request
  */
 export async function getChannelId(
   client: AxiosInstance,
@@ -1270,6 +1273,7 @@ export async function getChannelId(
  * @returns The response of CreateChannel API
  * @since Zulip 11.0 (feature level 417)
  * @see https://zulip.com/api/create-channel
+ * @param signal AbortSignal to cancel the request
  */
 export async function createChannel(
   client: AxiosInstance,
@@ -1306,6 +1310,7 @@ export async function createChannel(
  * @param params API parameters
  * @returns The response of UpdateChannel API
  * @see https://zulip.com/api/update-stream
+ * @param signal AbortSignal to cancel the request
  */
 export async function updateChannel(
   client: AxiosInstance,
@@ -1342,6 +1347,7 @@ export async function updateChannel(
  * @param streamId Stream ID
  * @returns The response of ArchiveChannel API
  * @see https://zulip.com/api/archive-stream
+ * @param signal AbortSignal to cancel the request
  */
 export async function archiveChannel(
   client: AxiosInstance,
@@ -1364,6 +1370,7 @@ export async function archiveChannel(
  * @returns The response of GetChannelEmail API
  * @since Zulip 8.0 (feature level 226)
  * @see https://zulip.com/api/get-stream-email-address
+ * @param signal AbortSignal to cancel the request
  */
 export async function getChannelEmail(
   client: AxiosInstance,
@@ -1406,6 +1413,7 @@ export async function getChannelEmail(
  * @param params API parameters
  * @returns The response of AddDefaultChannel API
  * @see https://zulip.com/api/add-default-stream
+ * @param signal AbortSignal to cancel the request
  */
 export async function addDefaultChannel(
   client: AxiosInstance,
@@ -1437,6 +1445,7 @@ export async function addDefaultChannel(
  * @param params API parameters
  * @returns The response of RemoveDefaultChannel API
  * @see https://zulip.com/api/remove-default-stream
+ * @param signal AbortSignal to cancel the request
  */
 export async function removeDefaultChannel(
   client: AxiosInstance,

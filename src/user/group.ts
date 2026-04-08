@@ -484,6 +484,7 @@ export type GetUserGroupSubgroupsResponse = GeneralSuccessResponse & {
  * @param params API parameters
  * @returns The response of GetUserGroups API
  * @see https://zulip.com/api/get-user-groups
+ * @param signal AbortSignal to cancel the request
  */
 export async function getUserGroups(
   client: AxiosInstance,
@@ -522,6 +523,7 @@ export async function getUserGroups(
  * @param params API parameters
  * @returns The response of CreateUserGroup API
  * @see https://zulip.com/api/create-user-group
+ * @param signal AbortSignal to cancel the request
  */
 export async function createUserGroup(
   client: AxiosInstance,
@@ -556,6 +558,7 @@ export async function createUserGroup(
  * @param params API parameters
  * @returns The response of UpdateUserGroup API
  * @see https://zulip.com/api/update-user-group
+ * @param signal AbortSignal to cancel the request
  */
 export async function updateUserGroup(
   client: AxiosInstance,
@@ -592,6 +595,7 @@ export async function updateUserGroup(
  * @returns The response of DeactivateUserGroup API
  * @since Zulip 10.0 (feature level 290)
  * @see https://zulip.com/api/deactivate-user-group
+ * @param signal AbortSignal to cancel the request
  */
 export async function deactivateUserGroup(
   client: AxiosInstance,
@@ -616,6 +620,7 @@ export async function deactivateUserGroup(
  * @param params API parameters
  * @returns The response of UpdateUserGroupMembers API
  * @see https://zulip.com/api/update-user-group-members
+ * @param signal AbortSignal to cancel the request
  */
 export async function updateUserGroupMembers(
   client: AxiosInstance,
@@ -647,6 +652,7 @@ export async function updateUserGroupMembers(
  * @returns The response of UpdateUserGroupSubgroups API
  * @since Zulip 6.0 (feature level 127)
  * @see https://zulip.com/api/update-user-group-subgroups
+ * @param signal AbortSignal to cancel the request
  */
 export async function updateUserGroupSubgroups(
   client: AxiosInstance,
@@ -679,6 +685,7 @@ export async function updateUserGroupSubgroups(
  * @returns The response of CheckUserGroupMembershipStatus API
  * @since Zulip 6.0 (feature level 127)
  * @see https://zulip.com/api/get-is-user-group-member
+ * @param signal AbortSignal to cancel the request
  */
 export async function checkUserGroupMembershipStatus(
   client: AxiosInstance,
@@ -724,6 +731,7 @@ export async function checkUserGroupMembershipStatus(
  * @returns The response of GetUserGroupMembers API
  * @since Zulip 6.0 (feature level 127)
  * @see https://zulip.com/api/get-user-group-members
+ * @param signal AbortSignal to cancel the request
  */
 export async function getUserGroupMembers(
   client: AxiosInstance,
@@ -768,6 +776,7 @@ export async function getUserGroupMembers(
  * @returns The response of GetUserGroupSubgroups API
  * @since Zulip 6.0 (feature level 127)
  * @see https://zulip.com/api/get-user-group-subgroups
+ * @param signal AbortSignal to cancel the request
  */
 export async function getUserGroupSubgroups(
   client: AxiosInstance,

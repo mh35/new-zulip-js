@@ -117,6 +117,7 @@ export type EditDraftParams = {
  * @param client Axios client initialized by generateCallApi function in api.ts
  * @returns The response of GetDrafts API
  * @see https://zulip.com/api/get-drafts
+ * @param signal AbortSignal to cancel the request
  */
 export async function getDrafts(
   client: AxiosInstance,
@@ -133,6 +134,7 @@ export async function getDrafts(
  * @param params API parameters
  * @returns The response of CreateDrafts API
  * @see https://zulip.com/api/create-drafts
+ * @param signal AbortSignal to cancel the request
  */
 export async function createDrafts(
   client: AxiosInstance,
@@ -157,6 +159,7 @@ export async function createDrafts(
  * @param params API parameters
  * @returns The response of EditDraft API
  * @see https://zulip.com/api/edit-draft
+ * @param signal AbortSignal to cancel the request
  */
 export async function editDraft(
   client: AxiosInstance,
@@ -183,6 +186,7 @@ export async function editDraft(
  * @param draftId Draft ID
  * @returns The response of DeleteDraft API
  * @see https://zulip.com/api/delete-draft
+ * @param signal AbortSignal to cancel the request
  */
 export async function deleteDraft(
   client: AxiosInstance,

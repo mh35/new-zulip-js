@@ -7,6 +7,7 @@ import axios from 'axios'
  * @param password User password
  * @returns API key for authenticated user
  * @see https://zulip.com/api/fetch-api-key
+ * @param signal AbortSignal to cancel the request
  */
 export async function authByPassword(
   serverUrl: string,
@@ -35,6 +36,7 @@ export async function authByPassword(
  * @param email User email
  * @returns API key for authenticated user
  * @see https://zulip.com/api/dev-fetch-api-key
+ * @param signal AbortSignal to cancel the request
  */
 export async function authDev(
   serverUrl: string,
@@ -62,6 +64,7 @@ export async function authDev(
  * @returns API key for authenticated user
  * @since Zulip 7.0 (feature level 160)
  * @see https://zulip.com/api/jwt-fetch-api-key
+ * @param signal AbortSignal to cancel the request
  */
 export async function authByJwt(
   serverUrl: string,

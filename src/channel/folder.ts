@@ -162,6 +162,7 @@ export type UpdateChannelFolderParams =
  * @returns The response of CreateChannelFolder API
  * @since Zulip 11.0 (feature level 389)
  * @see https://zulip.com/api/create-channel-folder
+ * @param signal AbortSignal to cancel the request
  */
 export async function createChannelFolder(
   client: AxiosInstance,
@@ -186,6 +187,7 @@ export async function createChannelFolder(
  * @returns The respoonse of GetChannelFolders API
  * @since Zulip 11.0 (feature level 389)
  * @see https://zulip.com/api/get-channel-folders
+ * @param signal AbortSignal to cancel the request
  */
 export async function getChannelFolders(
   client: AxiosInstance,
@@ -216,6 +218,7 @@ export async function getChannelFolders(
  * @returns The response of ReorderChannelFolders API
  * @since Zulip 11.0 (feature level 414)
  * @see https://zulip.com/api/patch-channel-folders
+ * @param signal AbortSignal to cancel the request
  */
 export async function reorderChannelFolders(
   client: AxiosInstance,
@@ -249,6 +252,7 @@ export async function reorderChannelFolders(
  * @returns The response of UpdateChannelFolder API
  * @since Zulip 11.0 (feature level 389)
  * @see https://zulip.com/api/update-channel-folder
+ * @param signal AbortSignal to cancel the request
  */
 export async function updateChannelFolder(
   client: AxiosInstance,

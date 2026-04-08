@@ -33,6 +33,7 @@ export type TestWelcomeBotCustomMessageResponse = GeneralSuccessResponse & {
  * @returns The response of TestWelcomeBotCustomMessage API
  * @since Zulip 11.0 (feature level 416)
  * @see https://zulip.com/api/test-welcome-bot-custom-message
+ * @param signal AbortSignal to cancel the request
  */
 export async function testWelcomeBotCustomMessage(
   client: AxiosInstance,

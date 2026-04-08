@@ -127,6 +127,7 @@ export type GetExportConsentStateResponse = GeneralSuccessResponse & {
  * @returns The response of GetExports API
  * @since Zulip 2.1
  * @see https://zulip.com/api/get-realm-exports
+ * @param signal AbortSignal to cancel the request
  */
 export async function getExports(
   client: AxiosInstance,
@@ -144,6 +145,7 @@ export async function getExports(
  * @returns The response of CreateExport API
  * @since Zulip 2.1
  * @see https://zulip.com/api/export-realm
+ * @param signal AbortSignal to cancel the request
  */
 export async function createExport(
   client: AxiosInstance,
@@ -167,6 +169,7 @@ export async function createExport(
  * @returns The response of GetExportConsentState API
  * @since Zulip 10.0 (feature level 304)
  * @see https://zulip.com/api/get-realm-export-consents
+ * @param signal AbortSignal to cancel the request
  */
 export async function getExportConsentState(
   client: AxiosInstance,

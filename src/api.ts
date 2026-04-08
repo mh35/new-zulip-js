@@ -90,6 +90,7 @@ export type RegenerateApiKeyResponse = GeneralSuccessResponse & {
  * @param client Axios client initialized by generateCallApi function
  * @returns The response of RegenerateApiKey function
  * @see https://zulip.com/api/regenerate-api-key
+ * @param signal AbortSignal to cancel the request
  */
 export async function regenerateApiKey(
   client: AxiosInstance,

@@ -653,6 +653,7 @@ export type UpdateSubscriptionSettingsParams = {
  * @param params API parameters
  * @returns The response of GetSubscriptions API
  * @see https://zulip.com/api/get-subscriptions
+ * @param signal AbortSignal to cancel the request
  */
 export async function getSubscriptions(
   client: AxiosInstance,
@@ -675,6 +676,7 @@ export async function getSubscriptions(
  * @param params API parameters
  * @returns The response of SubscribeChannels API
  * @see https://zulip.com/api/subscribe
+ * @param signal AbortSignal to cancel the request
  */
 export async function subscribeChannels(
   client: AxiosInstance,
@@ -710,6 +712,7 @@ export async function subscribeChannels(
  * @param params API parameters
  * @returns The response of UnsubscribeChannels API
  * @see https://zulip.com/api/unsubscribe
+ * @param signal AbortSignal to cancel the request
  */
 export async function unsubscribeChannels(
   client: AxiosInstance,
@@ -748,6 +751,7 @@ export async function unsubscribeChannels(
  * @param streamId Stream ID
  * @returns The response of GetSubscriptionStatus API
  * @see https://zulip.com/api/get-subscription-status
+ * @param signal AbortSignal to cancel the request
  */
 export async function getSubscriptionStatus(
   client: AxiosInstance,
@@ -768,6 +772,7 @@ export async function getSubscriptionStatus(
  * @param streamId Stream ID
  * @returns The response of GetSubscribers API
  * @see https://zulip.com/api/get-subscribers
+ * @param signal AbortSignal to cancel the request
  */
 export async function getSubscribers(
   client: AxiosInstance,
@@ -788,6 +793,7 @@ export async function getSubscribers(
  * @returns The response of GetUserChannels API
  * @since Zulip 12.0 (feature level 440)
  * @see https://zulip.com/api/get-user-channels
+ * @param signal AbortSignal to cancel the request
  */
 export async function getUserChannels(
   client: AxiosInstance,
@@ -807,6 +813,7 @@ export async function getUserChannels(
  * @param params API parameters
  * @returns The response of UpdateSubscriptionSettings API
  * @see https://zulip.com/api/update-subscription-settings
+ * @param signal AbortSignal to cancel the request
  */
 export async function updateSubscriptionSettings(
   client: AxiosInstance,

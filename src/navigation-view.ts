@@ -86,6 +86,7 @@ export type EditNavigationViewParams =
  * @returns The response of GetNavigationViews API
  * @since Zulip 11.0 (feature level 390)
  * @see https://zulip.com/api/get-navigation-views
+ * @param signal AbortSignal to cancel the request
  */
 export async function getNavigationViews(
   client: AxiosInstance,
@@ -106,6 +107,7 @@ export async function getNavigationViews(
  * @returns The response of AddNavigationView API
  * @since Zulip 11.0 (feature level 390)
  * @see https://zulip.com/api/add-navigation-view
+ * @param signal AbortSignal to cancel the request
  */
 export async function addNavigationView(
   client: AxiosInstance,
@@ -145,6 +147,7 @@ export async function addNavigationView(
  * @returns The response of EditNavigationView API
  * @since Zulip 11.0 (feature level 390)
  * @see https://zulip.com/api/edit-navigation-view
+ * @param signal AbortSignal to cancel the request
  */
 export async function editNavigationView(
   client: AxiosInstance,
@@ -183,6 +186,7 @@ export async function editNavigationView(
  * @returns The response of RemoveNavigationView API
  * @since Zulip 11.0 (feature level 390)
  * @see https://zulip.com/api/remove-navigation-view
+ * @param signal AbortSignal to cancel the request
  */
 export async function removeNavigationView(
   client: AxiosInstance,

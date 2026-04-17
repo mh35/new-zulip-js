@@ -213,6 +213,7 @@ export type CreateInvitationLinkResponse = GeneralSuccessResponse & {
  * @param client Axios client initialized by generateCallApi function in api.ts
  * @returns The response of GetInvitations API
  * @see https://zulip.com/api/get-invites
+ * @param signal AbortSignal to cancel the request
  */
 export async function getInvitations(
   client: AxiosInstance,
@@ -229,6 +230,7 @@ export async function getInvitations(
  * @param params API parameters
  * @returns The response of SendInvitation API
  * @see https://zulip.com/api/send-invites
+ * @param signal AbortSignal to cancel the request
  */
 export async function sendInvitation(
   client: AxiosInstance,
@@ -267,6 +269,7 @@ export async function sendInvitation(
  * @param params API parameters
  * @returns The response of CreateInvitationLink API
  * @see https://zulip.com/api/create-invite-link
+ * @param signal AbortSignal to cancel the request
  */
 export async function createInvitationLink(
   client: AxiosInstance,
@@ -307,6 +310,7 @@ export async function createInvitationLink(
  * @param invitationId Invitation ID
  * @returns The response of ResendEmailInvitation API
  * @see https://zulip.com/api/resend-email-invite
+ * @param signal AbortSignal to cancel the request
  */
 export async function resendEmailInvitation(
   client: AxiosInstance,
@@ -328,6 +332,7 @@ export async function resendEmailInvitation(
  * @param invitationId Invitation ID
  * @returns The response of RevokeEmailInvitation API
  * @see https://zulip.com/api/revoke-email-invite
+ * @param signal AbortSignal to cancel the request
  */
 export async function revokeEmailInvitation(
   client: AxiosInstance,
@@ -348,6 +353,7 @@ export async function revokeEmailInvitation(
  * @param invitationId Invitation ID
  * @returns The response of RevokeInvitationLink API
  * @see https://zulip.com/api/revoke-invite-link
+ * @param signal AbortSignal to cancel the request
  */
 export async function revokeInvitationLink(
   client: AxiosInstance,

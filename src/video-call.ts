@@ -71,6 +71,7 @@ export type CreateNextcloudTalkCallResponse = GeneralSuccessResponse & {
  * @param params API parameters
  * @returns The response of CreateBigBlueButtonCall API
  * @see https://zulip.com/api/create-big-blue-button-video-call
+ * @param signal AbortSignal to cancel the request
  */
 export async function createBigBlueButtonCall(
   client: AxiosInstance,
@@ -111,6 +112,7 @@ export async function createBigBlueButtonCall(
  * @returns The response of ConstructorGroupsCall API
  * @since Zulip 12.0 (feature level 460)
  * @see https://zulip.com/api/create-constructor-groups-video-call
+ * @param signal AbortSignal to cancel the request
  */
 export async function createConstructorGroupsCall(
   client: AxiosInstance,
@@ -132,6 +134,7 @@ export async function createConstructorGroupsCall(
  * @returns The response of CreateNextcloudTalkCall API
  * @since Zulip 12.0 (feature level 465)
  * @see https://zulip.com/api/create-nextcloud-talk-video-call
+ * @param signal AbortSignal to cancel the request
  */
 export async function creatNextcloudTalkCall(
   client: AxiosInstance,

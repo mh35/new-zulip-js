@@ -26,6 +26,7 @@ export type RegenerateBotApiKeyResponse = GetBotApiKeyResponse
  * @returns The response of GetBotApiKey API
  * @since Zulip 12.0 (feature level 463)
  * @see https://zulip.com/api/get-bot-api-key
+ * @param signal AbortSignal to cancel the request
  */
 export async function getBotApiKey(
   client: AxiosInstance,
@@ -46,6 +47,7 @@ export async function getBotApiKey(
  * @param botUserId User ID of the bot
  * @returns The response of RegenerateBotApiKey response
  * @see https://zulip.com/api/regenerate-bot-api-key
+ * @param signal AbortSignal to cancel the request
  */
 export async function regenerateBotApiKey(
   client: AxiosInstance,

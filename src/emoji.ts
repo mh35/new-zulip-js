@@ -47,6 +47,7 @@ export type GetEmojisResponse = GeneralSuccessResponse & {
  * @param client Axios client initialized by generateCallApi function in api.ts
  * @returns The response of GetEmojis API
  * @see https://zulip.com/api/get-custom-emoji
+ * @param signal AbortSignal to cancel the request
  */
 export async function getEmojis(
   client: AxiosInstance,
@@ -64,6 +65,7 @@ export async function getEmojis(
  * @param file The image file to upload as the custom emoji
  * @returns The response of UploadEmoji API
  * @see https://zulip.com/api/upload-custom-emoji
+ * @param signal AbortSignal to cancel the request
  */
 export async function uploadEmoji(
   client: AxiosInstance,
@@ -89,6 +91,7 @@ export async function uploadEmoji(
  * @param emojiName The name of the custom emoji to deactivate
  * @returns The response of DeactivateEmoji API
  * @see https://zulip.com/api/deactivate-custom-emoji
+ * @param signal AbortSignal to cancel the request
  */
 export async function deactivateEmoji(
   client: AxiosInstance,

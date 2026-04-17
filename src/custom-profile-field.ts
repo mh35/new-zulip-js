@@ -508,6 +508,7 @@ export type CreateCustomProfileFieldResponse = GeneralSuccessResponse & {
  * @param client Axios client initialized by generateCallApi function in api.ts
  * @returns The response of GetCustomProfileFields API
  * @see https://zulip.com/api/get-custom-profile-fields
+ * @param signal AbortSignal to cancel the request
  */
 export async function getCustomProfileFields(
   client: AxiosInstance,
@@ -527,6 +528,7 @@ export async function getCustomProfileFields(
  * @param params API parameters
  * @returns The response of ReorderCustomProfileFields API
  * @see https://zulip.com/api/reorder-custom-profile-fields
+ * @param signal AbortSignal to cancel the request
  */
 export async function reorderCustomProfileFields(
   client: AxiosInstance,
@@ -552,6 +554,7 @@ export async function reorderCustomProfileFields(
  * @param params API parameters
  * @returns The response of CreateCustomProfileField API
  * @see https://zulip.com/api/create-custom-profile-field
+ * @param signal AbortSignal to cancel the request
  */
 export async function createCustomProfileField(
   client: AxiosInstance,

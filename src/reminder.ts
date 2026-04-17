@@ -92,6 +92,7 @@ export type GetRemindersResponse = GeneralSuccessResponse & {
  * @returns The response of CreateReminder API
  * @since Zulip 11.0 (feature level 381)
  * @see https://zulip.com/api/create-message-reminder
+ * @param signal AbortSignal to cancel the request
  */
 export async function createReminder(
   client: AxiosInstance,
@@ -127,6 +128,7 @@ export async function createReminder(
  * @returns The response of GetReminders API
  * @since Zulip 11.0 (feature level 399)
  * @see https://zulip.com/api/get-reminders
+ * @param signal AbortSignal to cancel the request
  */
 export async function getReminders(
   client: AxiosInstance,
@@ -144,6 +146,7 @@ export async function getReminders(
  * @returns The response of DeleteReminder API
  * @since Zulip 11.0 (feature level 399)
  * @see https://zulip.com/api/delete-reminder
+ * @param signal AbortSignal to cancel the request
  */
 export async function deleteReminder(
   client: AxiosInstance,

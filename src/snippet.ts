@@ -102,6 +102,7 @@ export type EditSnippetParams =
  * @returns The response of GetSnippets API
  * @since Zulip 10.0 (feature level 297)
  * @see https://zulip.com/api/get-saved-snippets
+ * @param signal AbortSignal to cancel the request
  */
 export async function getSnippets(
   client: AxiosInstance,
@@ -121,6 +122,7 @@ export async function getSnippets(
  * @returns The response of CreateSnippet API
  * @since Zulip 10.0 (feature level 297)
  * @see https://zulip.com/api/create-saved-snippet
+ * @param signal AbortSignal to cancel the request
  */
 export async function createSnippet(
   client: AxiosInstance,
@@ -146,6 +148,7 @@ export async function createSnippet(
  * @returns The response of EditSnippet API
  * @since Zulip 10.0 (feature level 368)
  * @see https://zulip.com/api/edit-saved-snippet
+ * @param signal AbortSignal to cancel the request
  */
 export async function editSnippet(
   client: AxiosInstance,
@@ -178,6 +181,7 @@ export async function editSnippet(
  * @returns The response of DeleteSnippet API
  * @since Zulip 10.0 (feature level 297)
  * @see https://zulip.com/api/delete-saved-snippet
+ * @param signal AbortSignal to cancel the request
  */
 export async function deleteSnippet(
   client: AxiosInstance,

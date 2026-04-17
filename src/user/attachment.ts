@@ -70,6 +70,7 @@ export type GetAttachmentsResponse = GeneralSuccessResponse & {
  * @param client Axios client initialized by generateCallApi function in api.ts
  * @returns The response of GetAttachments API
  * @see https://zulip.com/api/get-attachments
+ * @param signal AbortSignal to cancel the request
  */
 export async function getAttachments(
   client: AxiosInstance,
@@ -88,6 +89,7 @@ export async function getAttachments(
  * @param attachmentId Attachment ID
  * @returns The response of DeleteAttachment API
  * @see https://zulip.com/api/remove-attachment
+ * @param signal AbortSignal to cancel the request
  */
 export async function deleteAttachment(
   client: AxiosInstance,

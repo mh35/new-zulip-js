@@ -159,6 +159,7 @@ export type ReorderLinkifiersParams = {
  * @returns The response of GetLinkifiers API
  * @since Zulip 4.0 (feature level 54)
  * @see https://zulip.com/api/get-linkifiers
+ * @param signal AbortSignal to cancel the request
  */
 export async function getLinkifiers(
   client: AxiosInstance,
@@ -177,6 +178,7 @@ export async function getLinkifiers(
  * @param params API parameters
  * @returns The response of AddLinkifier API
  * @see https://zulip.com/api/add-linkifier
+ * @param signal AbortSignal to cancel the request
  */
 export async function addLinkifier(
   client: AxiosInstance,
@@ -215,6 +217,7 @@ export async function addLinkifier(
  * @returns The response of UpdateLinkifier API
  * @since Zulip 4.0 (feature level 57)
  * @see https://zulip.com/api/update-linkifier
+ * @param signal AbortSignal to cancel the request
  */
 export async function updateLinkifier(
   client: AxiosInstance,
@@ -254,6 +257,7 @@ export async function updateLinkifier(
  * @param filterId Linkifier ID
  * @returns The response of RemoveLinkifier API
  * @see https://zulip.com/api/remove-linkifier
+ * @param signal AbortSignal to cancel the request
  */
 export async function removeLinkifier(
   client: AxiosInstance,
@@ -275,6 +279,7 @@ export async function removeLinkifier(
  * @returns The response of ReorderLinkifiers API
  * @since Zulip 8.0 (feature level 202)
  * @see https://zulip.com/api/reorder-linkifiers
+ * @param signal AbortSignal to cancel the request
  */
 export async function reorderLinkifiers(
   client: AxiosInstance,

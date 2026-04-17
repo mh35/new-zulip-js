@@ -167,6 +167,7 @@ export type GetServerSettingsResponse = GeneralSuccessResponse & {
  * generateCallApiWithoutAuth function in api.ts
  * @returns The response of GetServerSettings API
  * @see https://zulip.com/api/get-server-settings
+ * @param signal AbortSignal to cancel the request
  */
 export async function getServerSettings(
   client: AxiosInstance,

@@ -8,6 +8,7 @@ import type { GeneralSuccessResponse } from '../api'
  * @returns The response of MuteUser API
  * @since Zulip 4.0 (feature level 48)
  * @see https://zulip.com/api/mute-user
+ * @param signal AbortSignal to cancel the request
  */
 export async function muteUser(
   client: AxiosInstance,
@@ -29,6 +30,7 @@ export async function muteUser(
  * @returns The response of UnmuteUser API
  * @since Zulip 4.0 (feature level 48)
  * @see https://zulip.com/api/unmute-user
+ * @param signal AbortSignal to cancel the request
  */
 export async function unmuteUser(
   client: AxiosInstance,

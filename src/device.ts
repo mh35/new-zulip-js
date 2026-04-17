@@ -32,6 +32,7 @@ export type UnregisterDeviceParams = {
  * @returns The response of RegisterDevice API
  * @since Zulip 12.0 (feature level 468)
  * @see https://zulip.com/api/register-client-device
+ * @param signal AbortSignal to cancel the request
  */
 export async function registerDevice(
   client: AxiosInstance,
@@ -54,6 +55,7 @@ export async function registerDevice(
  * @returns The response of UnregisterDevice API
  * @since Zulip 12.0 (feature level 470)
  * @see https://zulip.com/api/remove-client-device
+ * @param signal AbortSignal to cancel the request
  */
 export async function unregisterDevice(
   client: AxiosInstance,

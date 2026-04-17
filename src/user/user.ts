@@ -1529,6 +1529,7 @@ export type UpdateDefaultUserSettingsParams =
  * @returns The response of GetUserById API
  * @since Zulip 3.0 (feature level 1)
  * @see https://zulip.com/api/get-user
+ * @param signal AbortSignal to cancel the request
  */
 export async function getUserById(
   client: AxiosInstance,
@@ -1560,6 +1561,7 @@ export async function getUserById(
  * @returns The response of GetUserByEmail API
  * @since Zulip 4.0 (feature level 39)
  * @see https://zulip.com/api/get-user-by-email
+ * @param signal AbortSignal to cancel the request
  */
 export async function getUserByEmail(
   client: AxiosInstance,
@@ -1591,6 +1593,7 @@ export async function getUserByEmail(
  * @param client Axios client initialized by generateCallApi function in api.ts
  * @returns The response of GetOwnUser API
  * @see https://zulip.com/api/get-own-user
+ * @param signal AbortSignal to cancel the request
  */
 export async function getOwnUser(
   client: AxiosInstance,
@@ -1607,6 +1610,7 @@ export async function getOwnUser(
  * @param params API parameters
  * @returns The response of GetUsers API
  * @see https://zulip.com/api/get-users
+ * @param signal AbortSignal to cancel the request
  */
 export async function getUsers(
   client: AxiosInstance,
@@ -1639,6 +1643,7 @@ export async function getUsers(
  * @param params API parameters
  * @returns The response of CreateUser API
  * @see https://zulip.com/api/create-user
+ * @param signal AbortSignal to cancel the request
  */
 export async function createUser(
   client: AxiosInstance,
@@ -1659,6 +1664,7 @@ export async function createUser(
  * @param params API parameters
  * @returns The response for UpdateUser API
  * @see https://zulip.com/api/update-user
+ * @param signal AbortSignal to cancel the request
  */
 export async function updateUser(
   client: AxiosInstance,
@@ -1694,6 +1700,7 @@ export async function updateUser(
  * @returns The response of UpdateUserByEmail API
  * @since Zulip 10.0 (feature level 313)
  * @see https://zulip.com/api/update-user-by-email
+ * @param signal AbortSignal to cancel the request
  */
 export async function updateUserByEmail(
   client: AxiosInstance,
@@ -1729,6 +1736,7 @@ export async function updateUserByEmail(
  * @param params API parameters
  * @returns The response of DeactivateUser API
  * @see https://zulip.com/api/deactivate-user
+ * @param signal AbortSignal to cancel the request
  */
 export async function deactivateUser(
   client: AxiosInstance,
@@ -1761,6 +1769,7 @@ export async function deactivateUser(
  * @param client Axios client initialized by generateCallApi function in api.ts
  * @returns The response of DeactivateSelf API
  * @see https://zulip.com/api/deactivate-own-user
+ * @param signal AbortSignal to cancel the request
  */
 export async function deactivateSelf(
   client: AxiosInstance,
@@ -1779,6 +1788,7 @@ export async function deactivateSelf(
  * @param userId User ID
  * @returns The response of ReactivateUser API
  * @see https://zulip.com/api/reactivate-user
+ * @param signal AbortSignal to cancel the request
  */
 export async function reactivateUser(
   client: AxiosInstance,
@@ -1800,6 +1810,7 @@ export async function reactivateUser(
  * @param params API parameters
  * @returns The response of UpdateUserSettings API
  * @see https://zulip.com/api/update-settings
+ * @param signal AbortSignal to cancel the request
  */
 export async function updateUserSettings(
   client: AxiosInstance,
@@ -1832,6 +1843,7 @@ export async function updateUserSettings(
  * @returns The response of UpdateDefaultUserSettings API
  * @since Zulip 5.0 (feature level 96)
  * @see https://zulip.com/api/update-realm-user-settings-defaults
+ * @param signal AbortSignal to cancel the request
  */
 export async function updateDefaultUserSettings(
   client: AxiosInstance,

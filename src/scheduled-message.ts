@@ -447,6 +447,7 @@ export type EditScheduledMessageParams =
  * @returns The response of GetScheduleMessages API
  * @since Zulip 7.0 (feature level 173)
  * @see https://zulip.com/api/get-scheduled-messages
+ * @param signal AbortSignal to cancel the request
  */
 export async function getScheduledMessages(
   client: AxiosInstance,
@@ -467,6 +468,7 @@ export async function getScheduledMessages(
  * @returns The response of CreateScheduledMessage API
  * @since Zulip 7.0 (feature level 179)
  * @see https://zulip.com/api/create-scheduled-message
+ * @param signal AbortSignal to cancel the request
  */
 export async function createScheduledMessage(
   client: AxiosInstance,
@@ -506,6 +508,7 @@ export async function createScheduledMessage(
  * @returns The response of EditScheduledMessage API
  * @since Zulip 7.0 (feature level 184)
  * @see https://zulip.com/api/update-scheduled-message
+ * @param signal AbortSignal to cancel the request
  */
 export async function editScheduledMessage(
   client: AxiosInstance,
@@ -545,6 +548,7 @@ export async function editScheduledMessage(
  * @returns The response of DeleteScheduledMessage API
  * @since Zulip 7.0 (feature level 173)
  * @see https://zulip.com/api/delete-scheduled-message
+ * @param signal AbortSignal to cancel the request
  */
 export async function deleteScheduledMessage(
   client: AxiosInstance,

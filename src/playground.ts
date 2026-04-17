@@ -44,6 +44,7 @@ export type AddCodePlaygroundResponse = GeneralSuccessResponse & {
  * @returns The response of AddCodePlayground API
  * @since Zulip 4.0 (feature level 49)
  * @see https://zulip.com/api/add-code-playground
+ * @param signal AbortSignal to cancel the request
  */
 export async function addCodePlayground(
   client: AxiosInstance,
@@ -68,6 +69,7 @@ export async function addCodePlayground(
  * @returns The response of code playground ID
  * @since Zulip 4.0 (feature level 49)
  * @see https://zulip.com/api/remove-code-playground
+ * @param signal AbortSignal to cancel the request
  */
 export async function removeCodePlayground(
   client: AxiosInstance,
